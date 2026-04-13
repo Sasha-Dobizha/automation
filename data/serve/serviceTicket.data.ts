@@ -1,0 +1,41 @@
+export const SERVICE_TICKET_CONFIG = {
+    urls: {
+        createServiceTicketType: '/settings/front-office/create-service-ticket-type',
+        serviceTickets: '/serve/tickets',
+        frontOffice: '/settings/front-office',
+    },
+
+    selectors: {
+        ticketTypeNameInput: 'name',
+        addActionButton: 'Add Action',
+        designTab: 'Design',
+        processTab: 'Process',
+        resultMessagesTab: 'Result Messages',
+        actionNameInput: 'name',
+        onSuccessMessageInput: 'onSuccessMessage',
+        onErrorMessageInput: 'onErrorMessage',
+        createButton: 'Create',
+        saveChangesButton: 'Save Changes',
+        ticketNameInput: 'displayName',
+        assigneePlaceholder: 'Automation',
+        assigneeFullName: 'Automation User',
+        executeActionButton: 'Execute Action',
+        ticketDetailsTab: 'Ticket Details',
+        actionsLabel: 'Actions',
+        deleteTicketText: 'Delete Ticket',
+        deleteButton: 'Delete',
+        confirmTicketTypeButton: 'Confirm',
+        confirmDeleteTicketTypeText: 'delete ticket type',
+        searchPlaceholder: 'Search',
+        searchTicketTypesPlaceholder: 'Search Ticket Types...',
+        createTicketButton: 'Create',
+    },
+
+    messages: {
+        ticketTypeCreated: 'Service Ticket Type created successfully',
+        ticketTypeDeleted: 'Service Ticket Type Configuration deleted successfully',
+        ticketCreated: 'has been created successfully!',
+        actionExecuted: 'Action executed successfully.',
+        ticketDeleted: 'has been deleted successfully!',
+    },
+} as const;

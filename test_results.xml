@@ -1,0 +1,1693 @@
+<testsuites id="" name="" tests="73" failures="10" skipped="27" errors="0" time="628.1425669999999">
+<testsuite name="auth.setup.ts" timestamp="2026-04-13T20:39:37.430Z" hostname="setup" tests="1" failures="0" skipped="0" time="26.917" errors="0">
+<testcase name="authenticate admin" classname="auth.setup.ts" time="26.917">
+</testcase>
+</testsuite>
+<testsuite name="accessManagement.test.ts" timestamp="2026-04-13T20:39:37.430Z" hostname="chromium" tests="6" failures="0" skipped="0" time="51.628" errors="0">
+<testcase name="Settings - Access Management › Invite new user and verify in users list" classname="accessManagement.test.ts" time="11.183">
+</testcase>
+<testcase name="Settings - Access Management - User Groups › Create a new user group" classname="accessManagement.test.ts" time="7.624">
+</testcase>
+<testcase name="Settings - Access Management - User Groups › Assign permissions to user group" classname="accessManagement.test.ts" time="8.939">
+</testcase>
+<testcase name="Settings - Access Management - User Groups › Assign user group to a user" classname="accessManagement.test.ts" time="10.035">
+</testcase>
+<testcase name="Settings - Access Management - User Groups › Delete user group" classname="accessManagement.test.ts" time="6.784">
+</testcase>
+<testcase name="Settings - Access Management - User Groups › Verify user group removed from associated user" classname="accessManagement.test.ts" time="7.063">
+</testcase>
+</testsuite>
+<testsuite name="agentManager.test.ts" timestamp="2026-04-13T20:39:37.430Z" hostname="chromium" tests="15" failures="1" skipped="14" time="57.064" errors="0">
+<testcase name="Converse - Agent Manager › Create Agent" classname="agentManager.test.ts" time="57.038">
+<failure message="agentManager.test.ts:15:9 Create Agent" type="FAILURE">
+<![CDATA[  [chromium] › agentManager.test.ts:15:9 › Converse - Agent Manager › Create Agent › Verify redirected to New Agent editor 
+
+    Error: Timed out 45000ms waiting for expect(locator).toBeVisible()
+
+    Locator: locator('nav[aria-label="breadcrumb"]').getByText('New Agent')
+    Expected: visible
+    Received: <element(s) not found>
+    Call log:
+      - expect.toBeVisible with timeout 45000ms
+      - waiting for locator('nav[aria-label="breadcrumb"]').getByText('New Agent')
+
+
+       at ..\pages\converse\agentManager.page.ts:254
+
+      252 |             await expect(
+      253 |                 this.breadcrumb.getByText(breadcrumbs.newAgent),
+    > 254 |             ).toBeVisible({ timeout: COMMON_TIMEOUTS.standard });
+          |               ^
+      255 |         });
+      256 |     }
+      257 |
+
+        at C:\SimplyAsk\automation-tests-main-main\pages\converse\agentManager.page.ts:254:15
+        at AgentManagerPage.createAgent (C:\SimplyAsk\automation-tests-main-main\pages\converse\agentManager.page.ts:251:20)
+        at C:\SimplyAsk\automation-tests-main-main\tests\agentManager.test.ts:16:9
+
+    attachment #1: screenshot (image/png) ───────────────────────────────────────────────────
+    test-results\agentManager-Converse---Agent-Manager-Create-Agent-chromium\test-failed-1.png
+    ─────────────────────────────────────────────────────────────────────────────────────────
+
+    attachment #2: video (video/webm) ───────────────────────────────────────────────────────
+    test-results\agentManager-Converse---Agent-Manager-Create-Agent-chromium\video.webm
+    ─────────────────────────────────────────────────────────────────────────────────────────
+]]>
+</failure>
+<system-out>
+<![CDATA[
+[[ATTACHMENT|test-results\agentManager-Converse---Agent-Manager-Create-Agent-chromium\test-failed-1.png]]
+
+[[ATTACHMENT|test-results\agentManager-Converse---Agent-Manager-Create-Agent-chromium\video.webm]]
+]]>
+</system-out>
+</testcase>
+<testcase name="Converse - Agent Manager › Greeting and Chat Init › Set greeting and objective" classname="agentManager.test.ts" time="0.008">
+<properties>
+<property name="skip" value="Skipped: Create Agent failed">
+</property>
+</properties>
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Converse - Agent Manager › Greeting and Chat Init › Initiate the chat conversation" classname="agentManager.test.ts" time="0.002">
+<properties>
+<property name="skip" value="Skipped: Create Agent failed">
+</property>
+</properties>
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Converse - Agent Manager › Service Ticket › Configure agent for action Service Ticket" classname="agentManager.test.ts" time="0.001">
+<properties>
+<property name="skip" value="Skipped: Create Agent failed">
+</property>
+</properties>
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Converse - Agent Manager › Service Ticket › Chat with an agent - create Service ticket" classname="agentManager.test.ts" time="0.001">
+<properties>
+<property name="skip" value="Skipped: Create Agent failed">
+</property>
+</properties>
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Converse - Agent Manager › Invoke API › Configure agent for action Invoke API" classname="agentManager.test.ts" time="0.003">
+<properties>
+<property name="skip" value="Skipped: Create Agent failed">
+</property>
+</properties>
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Converse - Agent Manager › Invoke API › Chat with an agent - API" classname="agentManager.test.ts" time="0.002">
+<properties>
+<property name="skip" value="Skipped: Create Agent failed">
+</property>
+</properties>
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Converse - Agent Manager › Execute Process › Configure agent for action Execute Process" classname="agentManager.test.ts" time="0.001">
+<properties>
+<property name="skip" value="Skipped: Create Agent failed">
+</property>
+</properties>
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Converse - Agent Manager › Execute Process › Chat with an agent - Process" classname="agentManager.test.ts" time="0.001">
+<properties>
+<property name="skip" value="Skipped: Create Agent failed">
+</property>
+</properties>
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Converse - Agent Manager › Transfer to Agent › Configure agent for action Transfer to Agent" classname="agentManager.test.ts" time="0.001">
+<properties>
+<property name="skip" value="Skipped: Create Agent failed">
+</property>
+</properties>
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Converse - Agent Manager › Transfer to Agent › Chat with an agent - Transfer to Agent" classname="agentManager.test.ts" time="0.001">
+<properties>
+<property name="skip" value="Skipped: Create Agent failed">
+</property>
+</properties>
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Converse - Agent Manager › Transfer to Human › Configure agent for action Transfer to Human" classname="agentManager.test.ts" time="0.002">
+<properties>
+<property name="skip" value="Skipped: Create Agent failed">
+</property>
+</properties>
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Converse - Agent Manager › Transfer to Human › Chat with an agent - Transfer to Human" classname="agentManager.test.ts" time="0.001">
+<properties>
+<property name="skip" value="Skipped: Create Agent failed">
+</property>
+</properties>
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Converse - Agent Manager › Knowledge Base › Configure agent for action Knowledge Base" classname="agentManager.test.ts" time="0.001">
+<properties>
+<property name="skip" value="Skipped: Create Agent failed">
+</property>
+</properties>
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Converse - Agent Manager › Knowledge Base › Chat with an agent - query knowledge base" classname="agentManager.test.ts" time="0.001">
+<properties>
+<property name="skip" value="Skipped: Create Agent failed">
+</property>
+</properties>
+<skipped>
+</skipped>
+</testcase>
+</testsuite>
+<testsuite name="general.test.ts" timestamp="2026-04-13T20:39:37.430Z" hostname="chromium" tests="3" failures="1" skipped="0" time="38.348" errors="0">
+<testcase name="Settings - General › Edit Organization Profile - Invalid phone number shows validation error" classname="general.test.ts" time="12.428">
+</testcase>
+<testcase name="Settings - General › Edit Organization Profile - Validation error disappears after entering valid phone" classname="general.test.ts" time="8.666">
+</testcase>
+<testcase name="Settings - General › Edit Organization Profile - Successfully update phone number" classname="general.test.ts" time="17.254">
+<failure message="general.test.ts:48:9 Edit Organization Profile - Successfully update phone number" type="FAILURE">
+<![CDATA[  [chromium] › general.test.ts:48:9 › Settings - General › Edit Organization Profile - Successfully update phone number › Verify success toast message is displayed 
+
+    Error: Timed out 10000ms waiting for expect(locator).toBeVisible()
+
+    Locator: locator('span').filter({ hasText: 'Success' }).first()
+    Expected: visible
+    Received: <element(s) not found>
+    Call log:
+      - expect.toBeVisible with timeout 10000ms
+      - waiting for locator('span').filter({ hasText: 'Success' }).first()
+
+
+       at ..\pages\settings\general.page.ts:70
+
+      68 |
+      69 |     async verifySuccessToastDisplayed(): Promise<void> {
+    > 70 |         await expect(this.successToastTitle).toBeVisible({ timeout: timeouts.short });
+         |                                              ^
+      71 |         await expect(this.successToastMessage).toBeVisible();
+      72 |     }
+      73 | }
+
+        at GeneralSettingsPage.verifySuccessToastDisplayed (C:\SimplyAsk\automation-tests-main-main\pages\settings\general.page.ts:70:46)
+        at C:\SimplyAsk\automation-tests-main-main\tests\general.test.ts:58:39
+        at C:\SimplyAsk\automation-tests-main-main\tests\general.test.ts:57:20
+
+    attachment #1: screenshot (image/png) ───────────────────────────────────────────────────
+    test-results\general-Settings---General-846dc-ssfully-update-phone-number-chromium\test-failed-1.png
+    ─────────────────────────────────────────────────────────────────────────────────────────
+
+    attachment #2: video (video/webm) ───────────────────────────────────────────────────────
+    test-results\general-Settings---General-846dc-ssfully-update-phone-number-chromium\video.webm
+    ─────────────────────────────────────────────────────────────────────────────────────────
+]]>
+</failure>
+<system-out>
+<![CDATA[
+[[ATTACHMENT|test-results\general-Settings---General-846dc-ssfully-update-phone-number-chromium\test-failed-1.png]]
+
+[[ATTACHMENT|test-results\general-Settings---General-846dc-ssfully-update-phone-number-chromium\video.webm]]
+]]>
+</system-out>
+</testcase>
+</testsuite>
+<testsuite name="knowledgeBase.test.ts" timestamp="2026-04-13T20:39:37.430Z" hostname="chromium" tests="20" failures="4" skipped="8" time="543.56" errors="0">
+<testcase name="Settings - AI Knowledge Base › KB with Text Source › Create Knowledge Base &amp; Text Knowledge Source" classname="knowledgeBase.test.ts" time="10.969">
+</testcase>
+<testcase name="Settings - AI Knowledge Base › KB with Text Source › Verify KB is visible in list" classname="knowledgeBase.test.ts" time="6.39">
+</testcase>
+<testcase name="Settings - AI Knowledge Base › KB with Text Source › Verify KB status is Ready (Up-to-Date)" classname="knowledgeBase.test.ts" time="120.172">
+<failure message="knowledgeBase.test.ts:26:17 Verify KB status is Ready (Up-to-Date)" type="FAILURE">
+<![CDATA[  [chromium] › knowledgeBase.test.ts:26:17 › Settings - AI Knowledge Base › KB with Text Source › Verify KB status is Ready (Up-to-Date) › Verify status is Ready (Up-to-Date) 
+
+    Test timeout of 120000ms exceeded.
+
+    Error: expect(locator).toContainText(expected)
+
+    Locator: getByRole('row').filter({ hasText: 'KB Text Mon, Apr 13, 1:40 PM' })
+    Expected string: "Ready (Up-to-Date)"
+    Received string: "KB Text Mon, Apr 13, 1:40 PMError1Apr 13, 20261:41 PMApr 13, 20261:41 PM"
+    Call log:
+      - expect.toContainText with timeout 120000ms
+      - waiting for getByRole('row').filter({ hasText: 'KB Text Mon, Apr 13, 1:40 PM' })
+      -   locator resolved to <tr class="MuiTableRow-root css-k8hj4z">…</tr>
+      -   unexpected value "KB Text Mon, Apr 13, 1:40 PMError1Apr 13, 20261:41 PMApr 13, 20261:41 PM"
+      -   locator resolved to <tr class="MuiTableRow-root css-k8hj4z">…</tr>
+      -   unexpected value "KB Text Mon, Apr 13, 1:40 PMError1Apr 13, 20261:41 PMApr 13, 20261:41 PM"
+      -   locator resolved to <tr class="MuiTableRow-root css-k8hj4z">…</tr>
+      -   unexpected value "KB Text Mon, Apr 13, 1:40 PMError1Apr 13, 20261:41 PMApr 13, 20261:41 PM"
+      -   locator resolved to <tr class="MuiTableRow-root css-k8hj4z">…</tr>
+      -   unexpected value "KB Text Mon, Apr 13, 1:40 PMError1Apr 13, 20261:41 PMApr 13, 20261:41 PM"
+      -   locator resolved to <tr class="MuiTableRow-root css-k8hj4z">…</tr>
+      -   unexpected value "KB Text Mon, Apr 13, 1:40 PMError1Apr 13, 20261:41 PMApr 13, 20261:41 PM"
+      -   locator resolved to <tr class="MuiTableRow-root css-k8hj4z">…</tr>
+      -   unexpected value "KB Text Mon, Apr 13, 1:40 PMError1Apr 13, 20261:41 PMApr 13, 20261:41 PM"
+      -   locator resolved to <tr class="MuiTableRow-root css-k8hj4z">…</tr>
+      -   unexpected value "KB Text Mon, Apr 13, 1:40 PMError1Apr 13, 20261:41 PMApr 13, 20261:41 PM"
+      -   locator resolved to <tr class="MuiTableRow-root css-k8hj4z">…</tr>
+      -   unexpected value "KB Text Mon, Apr 13, 1:40 PMError1Apr 13, 20261:41 PMApr 13, 20261:41 PM"
+      -   locator resolved to <tr class="MuiTableRow-root css-k8hj4z">…</tr>
+      -   unexpected value "KB Text Mon, Apr 13, 1:40 PMError1Apr 13, 20261:41 PMApr 13, 20261:41 PM"
+      -   locator resolved to <tr class="MuiTableRow-root css-k8hj4z">…</tr>
+      -   unexpected value "KB Text Mon, Apr 13, 1:40 PMError1Apr 13, 20261:41 PMApr 13, 20261:41 PM"
+      -   locator resolved to <tr class="MuiTableRow-root css-k8hj4z">…</tr>
+      -   unexpected value "KB Text Mon, Apr 13, 1:40 PMError1Apr 13, 20261:41 PMApr 13, 20261:41 PM"
+      -   locator resolved to <tr class="MuiTableRow-root css-k8hj4z">…</tr>
+      -   unexpected value "KB Text Mon, Apr 13, 1:40 PMError1Apr 13, 20261:41 PMApr 13, 20261:41 PM"
+      -   locator resolved to <tr class="MuiTableRow-root css-k8hj4z">…</tr>
+      -   unexpected value "KB Text Mon, Apr 13, 1:40 PMError1Apr 13, 20261:41 PMApr 13, 20261:41 PM"
+      -   locator resolved to <tr class="MuiTableRow-root css-k8hj4z">…</tr>
+      -   unexpected value "KB Text Mon, Apr 13, 1:40 PMError1Apr 13, 20261:41 PMApr 13, 20261:41 PM"
+      -   locator resolved to <tr class="MuiTableRow-root css-k8hj4z">…</tr>
+      -   unexpected value "KB Text Mon, Apr 13, 1:40 PMError1Apr 13, 20261:41 PMApr 13, 20261:41 PM"
+      -   locator resolved to <tr class="MuiTableRow-root css-k8hj4z">…</tr>
+      -   unexpected value "KB Text Mon, Apr 13, 1:40 PMError1Apr 13, 20261:41 PMApr 13, 20261:41 PM"
+      -   locator resolved to <tr class="MuiTableRow-root css-k8hj4z">…</tr>
+      -   unexpected value "KB Text Mon, Apr 13, 1:40 PMError1Apr 13, 20261:41 PMApr 13, 20261:41 PM"
+      -   locator resolved to <tr class="MuiTableRow-root css-k8hj4z">…</tr>
+      -   unexpected value "KB Text Mon, Apr 13, 1:40 PMError1Apr 13, 20261:41 PMApr 13, 20261:41 PM"
+      -   locator resolved to <tr class="MuiTableRow-root css-k8hj4z">…</tr>
+      -   unexpected value "KB Text Mon, Apr 13, 1:40 PMError1Apr 13, 20261:41 PMApr 13, 20261:41 PM"
+      -   locator resolved to <tr class="MuiTableRow-root css-k8hj4z">…</tr>
+      -   unexpected value "KB Text Mon, Apr 13, 1:40 PMError1Apr 13, 20261:41 PMApr 13, 20261:41 PM"
+      -   locator resolved to <tr class="MuiTableRow-root css-k8hj4z">…</tr>
+      -   unexpected value "KB Text Mon, Apr 13, 1:40 PMError1Apr 13, 20261:41 PMApr 13, 20261:41 PM"
+      -   locator resolved to <tr class="MuiTableRow-root css-k8hj4z">…</tr>
+      -   unexpected value "KB Text Mon, Apr 13, 1:40 PMError1Apr 13, 20261:41 PMApr 13, 20261:41 PM"
+      -   locator resolved to <tr class="MuiTableRow-root css-k8hj4z">…</tr>
+      -   unexpected value "KB Text Mon, Apr 13, 1:40 PMError1Apr 13, 20261:41 PMApr 13, 20261:41 PM"
+      -   locator resolved to <tr class="MuiTableRow-root css-k8hj4z">…</tr>
+      -   unexpected value "KB Text Mon, Apr 13, 1:40 PMError1Apr 13, 20261:41 PMApr 13, 20261:41 PM"
+      -   locator resolved to <tr class="MuiTableRow-root css-k8hj4z">…</tr>
+      -   unexpected value "KB Text Mon, Apr 13, 1:40 PMError1Apr 13, 20261:41 PMApr 13, 20261:41 PM"
+      -   locator resolved to <tr class="MuiTableRow-root css-k8hj4z">…</tr>
+      -   unexpected value "KB Text Mon, Apr 13, 1:40 PMError1Apr 13, 20261:41 PMApr 13, 20261:41 PM"
+      -   locator resolved to <tr class="MuiTableRow-root css-k8hj4z">…</tr>
+      -   unexpected value "KB Text Mon, Apr 13, 1:40 PMError1Apr 13, 20261:41 PMApr 13, 20261:41 PM"
+      -   locator resolved to <tr class="MuiTableRow-root css-k8hj4z">…</tr>
+      -   unexpected value "KB Text Mon, Apr 13, 1:40 PMError1Apr 13, 20261:41 PMApr 13, 20261:41 PM"
+      -   locator resolved to <tr class="MuiTableRow-root css-k8hj4z">…</tr>
+      -   unexpected value "KB Text Mon, Apr 13, 1:40 PMError1Apr 13, 20261:41 PMApr 13, 20261:41 PM"
+      -   locator resolved to <tr class="MuiTableRow-root css-k8hj4z">…</tr>
+      -   unexpected value "KB Text Mon, Apr 13, 1:40 PMError1Apr 13, 20261:41 PMApr 13, 20261:41 PM"
+      -   locator resolved to <tr class="MuiTableRow-root css-k8hj4z">…</tr>
+      -   unexpected value "KB Text Mon, Apr 13, 1:40 PMError1Apr 13, 20261:41 PMApr 13, 20261:41 PM"
+      -   locator resolved to <tr class="MuiTableRow-root css-k8hj4z">…</tr>
+      -   unexpected value "KB Text Mon, Apr 13, 1:40 PMError1Apr 13, 20261:41 PMApr 13, 20261:41 PM"
+      -   locator resolved to <tr class="MuiTableRow-root css-k8hj4z">…</tr>
+      -   unexpected value "KB Text Mon, Apr 13, 1:40 PMError1Apr 13, 20261:41 PMApr 13, 20261:41 PM"
+      -   locator resolved to <tr class="MuiTableRow-root css-k8hj4z">…</tr>
+      -   unexpected value "KB Text Mon, Apr 13, 1:40 PMError1Apr 13, 20261:41 PMApr 13, 20261:41 PM"
+      -   locator resolved to <tr class="MuiTableRow-root css-k8hj4z">…</tr>
+      -   unexpected value "KB Text Mon, Apr 13, 1:40 PMError1Apr 13, 20261:41 PMApr 13, 20261:41 PM"
+      -   locator resolved to <tr class="MuiTableRow-root css-k8hj4z">…</tr>
+      -   unexpected value "KB Text Mon, Apr 13, 1:40 PMError1Apr 13, 20261:41 PMApr 13, 20261:41 PM"
+      -   locator resolved to <tr class="MuiTableRow-root css-k8hj4z">…</tr>
+      -   unexpected value "KB Text Mon, Apr 13, 1:40 PMError1Apr 13, 20261:41 PMApr 13, 20261:41 PM"
+      -   locator resolved to <tr class="MuiTableRow-root css-k8hj4z">…</tr>
+      -   unexpected value "KB Text Mon, Apr 13, 1:40 PMError1Apr 13, 20261:41 PMApr 13, 20261:41 PM"
+      -   locator resolved to <tr class="MuiTableRow-root css-k8hj4z">…</tr>
+      -   unexpected value "KB Text Mon, Apr 13, 1:40 PMError1Apr 13, 20261:41 PMApr 13, 20261:41 PM"
+      -   locator resolved to <tr class="MuiTableRow-root css-k8hj4z">…</tr>
+      -   unexpected value "KB Text Mon, Apr 13, 1:40 PMError1Apr 13, 20261:41 PMApr 13, 20261:41 PM"
+      -   locator resolved to <tr class="MuiTableRow-root css-k8hj4z">…</tr>
+      -   unexpected value "KB Text Mon, Apr 13, 1:40 PMError1Apr 13, 20261:41 PMApr 13, 20261:41 PM"
+      -   locator resolved to <tr class="MuiTableRow-root css-k8hj4z">…</tr>
+      -   unexpected value "KB Text Mon, Apr 13, 1:40 PMError1Apr 13, 20261:41 PMApr 13, 20261:41 PM"
+      -   locator resolved to <tr class="MuiTableRow-root css-k8hj4z">…</tr>
+      -   unexpected value "KB Text Mon, Apr 13, 1:40 PMError1Apr 13, 20261:41 PMApr 13, 20261:41 PM"
+      -   locator resolved to <tr class="MuiTableRow-root css-k8hj4z">…</tr>
+      -   unexpected value "KB Text Mon, Apr 13, 1:40 PMError1Apr 13, 20261:41 PMApr 13, 20261:41 PM"
+      -   locator resolved to <tr class="MuiTableRow-root css-k8hj4z">…</tr>
+      -   unexpected value "KB Text Mon, Apr 13, 1:40 PMError1Apr 13, 20261:41 PMApr 13, 20261:41 PM"
+      -   locator resolved to <tr class="MuiTableRow-root css-k8hj4z">…</tr>
+      -   unexpected value "KB Text Mon, Apr 13, 1:40 PMError1Apr 13, 20261:41 PMApr 13, 20261:41 PM"
+      -   locator resolved to <tr class="MuiTableRow-root css-k8hj4z">…</tr>
+      -   unexpected value "KB Text Mon, Apr 13, 1:40 PMError1Apr 13, 20261:41 PMApr 13, 20261:41 PM"
+      -   locator resolved to <tr class="MuiTableRow-root css-k8hj4z">…</tr>
+      -   unexpected value "KB Text Mon, Apr 13, 1:40 PMError1Apr 13, 20261:41 PMApr 13, 20261:41 PM"
+      -   locator resolved to <tr class="MuiTableRow-root css-k8hj4z">…</tr>
+      -   unexpected value "KB Text Mon, Apr 13, 1:40 PMError1Apr 13, 20261:41 PMApr 13, 20261:41 PM"
+      -   locator resolved to <tr class="MuiTableRow-root css-k8hj4z">…</tr>
+      -   unexpected value "KB Text Mon, Apr 13, 1:40 PMError1Apr 13, 20261:41 PMApr 13, 20261:41 PM"
+      -   locator resolved to <tr class="MuiTableRow-root css-k8hj4z">…</tr>
+      -   unexpected value "KB Text Mon, Apr 13, 1:40 PMError1Apr 13, 20261:41 PMApr 13, 20261:41 PM"
+      -   locator resolved to <tr class="MuiTableRow-root css-k8hj4z">…</tr>
+      -   unexpected value "KB Text Mon, Apr 13, 1:40 PMError1Apr 13, 20261:41 PMApr 13, 20261:41 PM"
+      -   locator resolved to <tr class="MuiTableRow-root css-k8hj4z">…</tr>
+      -   unexpected value "KB Text Mon, Apr 13, 1:40 PMError1Apr 13, 20261:41 PMApr 13, 20261:41 PM"
+      -   locator resolved to <tr class="MuiTableRow-root css-k8hj4z">…</tr>
+      -   unexpected value "KB Text Mon, Apr 13, 1:40 PMError1Apr 13, 20261:41 PMApr 13, 20261:41 PM"
+      -   locator resolved to <tr class="MuiTableRow-root css-k8hj4z">…</tr>
+      -   unexpected value "KB Text Mon, Apr 13, 1:40 PMError1Apr 13, 20261:41 PMApr 13, 20261:41 PM"
+      -   locator resolved to <tr class="MuiTableRow-root css-k8hj4z">…</tr>
+      -   unexpected value "KB Text Mon, Apr 13, 1:40 PMError1Apr 13, 20261:41 PMApr 13, 20261:41 PM"
+      -   locator resolved to <tr class="MuiTableRow-root css-k8hj4z">…</tr>
+      -   unexpected value "KB Text Mon, Apr 13, 1:40 PMError1Apr 13, 20261:41 PMApr 13, 20261:41 PM"
+      -   locator resolved to <tr class="MuiTableRow-root css-k8hj4z">…</tr>
+      -   unexpected value "KB Text Mon, Apr 13, 1:40 PMError1Apr 13, 20261:41 PMApr 13, 20261:41 PM"
+      -   locator resolved to <tr class="MuiTableRow-root css-k8hj4z">…</tr>
+      -   unexpected value "KB Text Mon, Apr 13, 1:40 PMError1Apr 13, 20261:41 PMApr 13, 20261:41 PM"
+      -   locator resolved to <tr class="MuiTableRow-root css-k8hj4z">…</tr>
+      -   unexpected value "KB Text Mon, Apr 13, 1:40 PMError1Apr 13, 20261:41 PMApr 13, 20261:41 PM"
+      -   locator resolved to <tr class="MuiTableRow-root css-k8hj4z">…</tr>
+      -   unexpected value "KB Text Mon, Apr 13, 1:40 PMError1Apr 13, 20261:41 PMApr 13, 20261:41 PM"
+      -   locator resolved to <tr class="MuiTableRow-root css-k8hj4z">…</tr>
+      -   unexpected value "KB Text Mon, Apr 13, 1:40 PMError1Apr 13, 20261:41 PMApr 13, 20261:41 PM"
+      -   locator resolved to <tr class="MuiTableRow-root css-k8hj4z">…</tr>
+      -   unexpected value "KB Text Mon, Apr 13, 1:40 PMError1Apr 13, 20261:41 PMApr 13, 20261:41 PM"
+      -   locator resolved to <tr class="MuiTableRow-root css-k8hj4z">…</tr>
+      -   unexpected value "KB Text Mon, Apr 13, 1:40 PMError1Apr 13, 20261:41 PMApr 13, 20261:41 PM"
+      -   locator resolved to <tr class="MuiTableRow-root css-k8hj4z">…</tr>
+      -   unexpected value "KB Text Mon, Apr 13, 1:40 PMError1Apr 13, 20261:41 PMApr 13, 20261:41 PM"
+      -   locator resolved to <tr class="MuiTableRow-root css-k8hj4z">…</tr>
+      -   unexpected value "KB Text Mon, Apr 13, 1:40 PMError1Apr 13, 20261:41 PMApr 13, 20261:41 PM"
+      -   locator resolved to <tr class="MuiTableRow-root css-k8hj4z">…</tr>
+      -   unexpected value "KB Text Mon, Apr 13, 1:40 PMError1Apr 13, 20261:41 PMApr 13, 20261:41 PM"
+      -   locator resolved to <tr class="MuiTableRow-root css-k8hj4z">…</tr>
+      -   unexpected value "KB Text Mon, Apr 13, 1:40 PMError1Apr 13, 20261:41 PMApr 13, 20261:41 PM"
+      -   locator resolved to <tr class="MuiTableRow-root css-k8hj4z">…</tr>
+      -   unexpected value "KB Text Mon, Apr 13, 1:40 PMError1Apr 13, 20261:41 PMApr 13, 20261:41 PM"
+      -   locator resolved to <tr class="MuiTableRow-root css-k8hj4z">…</tr>
+      -   unexpected value "KB Text Mon, Apr 13, 1:40 PMError1Apr 13, 20261:41 PMApr 13, 20261:41 PM"
+      -   locator resolved to <tr class="MuiTableRow-root css-k8hj4z">…</tr>
+      -   unexpected value "KB Text Mon, Apr 13, 1:40 PMError1Apr 13, 20261:41 PMApr 13, 20261:41 PM"
+      -   locator resolved to <tr class="MuiTableRow-root css-k8hj4z">…</tr>
+      -   unexpected value "KB Text Mon, Apr 13, 1:40 PMError1Apr 13, 20261:41 PMApr 13, 20261:41 PM"
+      -   locator resolved to <tr class="MuiTableRow-root css-k8hj4z">…</tr>
+      -   unexpected value "KB Text Mon, Apr 13, 1:40 PMError1Apr 13, 20261:41 PMApr 13, 20261:41 PM"
+      -   locator resolved to <tr class="MuiTableRow-root css-k8hj4z">…</tr>
+      -   unexpected value "KB Text Mon, Apr 13, 1:40 PMError1Apr 13, 20261:41 PMApr 13, 20261:41 PM"
+      -   locator resolved to <tr class="MuiTableRow-root css-k8hj4z">…</tr>
+      -   unexpected value "KB Text Mon, Apr 13, 1:40 PMError1Apr 13, 20261:41 PMApr 13, 20261:41 PM"
+      -   locator resolved to <tr class="MuiTableRow-root css-k8hj4z">…</tr>
+      -   unexpected value "KB Text Mon, Apr 13, 1:40 PMError1Apr 13, 20261:41 PMApr 13, 20261:41 PM"
+      -   locator resolved to <tr class="MuiTableRow-root css-k8hj4z">…</tr>
+      -   unexpected value "KB Text Mon, Apr 13, 1:40 PMError1Apr 13, 20261:41 PMApr 13, 20261:41 PM"
+      -   locator resolved to <tr class="MuiTableRow-root css-k8hj4z">…</tr>
+      -   unexpected value "KB Text Mon, Apr 13, 1:40 PMError1Apr 13, 20261:41 PMApr 13, 20261:41 PM"
+      -   locator resolved to <tr class="MuiTableRow-root css-k8hj4z">…</tr>
+      -   unexpected value "KB Text Mon, Apr 13, 1:40 PMError1Apr 13, 20261:41 PMApr 13, 20261:41 PM"
+      -   locator resolved to <tr class="MuiTableRow-root css-k8hj4z">…</tr>
+      -   unexpected value "KB Text Mon, Apr 13, 1:40 PMError1Apr 13, 20261:41 PMApr 13, 20261:41 PM"
+      -   locator resolved to <tr class="MuiTableRow-root css-k8hj4z">…</tr>
+      -   unexpected value "KB Text Mon, Apr 13, 1:40 PMError1Apr 13, 20261:41 PMApr 13, 20261:41 PM"
+      -   locator resolved to <tr class="MuiTableRow-root css-k8hj4z">…</tr>
+      -   unexpected value "KB Text Mon, Apr 13, 1:40 PMError1Apr 13, 20261:41 PMApr 13, 20261:41 PM"
+      -   locator resolved to <tr class="MuiTableRow-root css-k8hj4z">…</tr>
+      -   unexpected value "KB Text Mon, Apr 13, 1:40 PMError1Apr 13, 20261:41 PMApr 13, 20261:41 PM"
+      -   locator resolved to <tr class="MuiTableRow-root css-k8hj4z">…</tr>
+      -   unexpected value "KB Text Mon, Apr 13, 1:40 PMError1Apr 13, 20261:41 PMApr 13, 20261:41 PM"
+      -   locator resolved to <tr class="MuiTableRow-root css-k8hj4z">…</tr>
+      -   unexpected value "KB Text Mon, Apr 13, 1:40 PMError1Apr 13, 20261:41 PMApr 13, 20261:41 PM"
+      -   locator resolved to <tr class="MuiTableRow-root css-k8hj4z">…</tr>
+      -   unexpected value "KB Text Mon, Apr 13, 1:40 PMError1Apr 13, 20261:41 PMApr 13, 20261:41 PM"
+      -   locator resolved to <tr class="MuiTableRow-root css-k8hj4z">…</tr>
+      -   unexpected value "KB Text Mon, Apr 13, 1:40 PMError1Apr 13, 20261:41 PMApr 13, 20261:41 PM"
+      -   locator resolved to <tr class="MuiTableRow-root css-k8hj4z">…</tr>
+      -   unexpected value "KB Text Mon, Apr 13, 1:40 PMError1Apr 13, 20261:41 PMApr 13, 20261:41 PM"
+      -   locator resolved to <tr class="MuiTableRow-root css-k8hj4z">…</tr>
+      -   unexpected value "KB Text Mon, Apr 13, 1:40 PMError1Apr 13, 20261:41 PMApr 13, 20261:41 PM"
+      -   locator resolved to <tr class="MuiTableRow-root css-k8hj4z">…</tr>
+      -   unexpected value "KB Text Mon, Apr 13, 1:40 PMError1Apr 13, 20261:41 PMApr 13, 20261:41 PM"
+      -   locator resolved to <tr class="MuiTableRow-root css-k8hj4z">…</tr>
+      -   unexpected value "KB Text Mon, Apr 13, 1:40 PMError1Apr 13, 20261:41 PMApr 13, 20261:41 PM"
+      -   locator resolved to <tr class="MuiTableRow-root css-k8hj4z">…</tr>
+      -   unexpected value "KB Text Mon, Apr 13, 1:40 PMError1Apr 13, 20261:41 PMApr 13, 20261:41 PM"
+      -   locator resolved to <tr class="MuiTableRow-root css-k8hj4z">…</tr>
+      -   unexpected value "KB Text Mon, Apr 13, 1:40 PMError1Apr 13, 20261:41 PMApr 13, 20261:41 PM"
+      -   locator resolved to <tr class="MuiTableRow-root css-k8hj4z">…</tr>
+      -   unexpected value "KB Text Mon, Apr 13, 1:40 PMError1Apr 13, 20261:41 PMApr 13, 20261:41 PM"
+      -   locator resolved to <tr class="MuiTableRow-root css-k8hj4z">…</tr>
+      -   unexpected value "KB Text Mon, Apr 13, 1:40 PMError1Apr 13, 20261:41 PMApr 13, 20261:41 PM"
+      -   locator resolved to <tr class="MuiTableRow-root css-k8hj4z">…</tr>
+      -   unexpected value "KB Text Mon, Apr 13, 1:40 PMError1Apr 13, 20261:41 PMApr 13, 20261:41 PM"
+      -   locator resolved to <tr class="MuiTableRow-root css-k8hj4z">…</tr>
+      -   unexpected value "KB Text Mon, Apr 13, 1:40 PMError1Apr 13, 20261:41 PMApr 13, 20261:41 PM"
+      -   locator resolved to <tr class="MuiTableRow-root css-k8hj4z">…</tr>
+      -   unexpected value "KB Text Mon, Apr 13, 1:40 PMError1Apr 13, 20261:41 PMApr 13, 20261:41 PM"
+      -   locator resolved to <tr class="MuiTableRow-root css-k8hj4z">…</tr>
+      -   unexpected value "KB Text Mon, Apr 13, 1:40 PMError1Apr 13, 20261:41 PMApr 13, 20261:41 PM"
+      -   locator resolved to <tr class="MuiTableRow-root css-k8hj4z">…</tr>
+      -   unexpected value "KB Text Mon, Apr 13, 1:40 PMError1Apr 13, 20261:41 PMApr 13, 20261:41 PM"
+      -   locator resolved to <tr class="MuiTableRow-root css-k8hj4z">…</tr>
+      -   unexpected value "KB Text Mon, Apr 13, 1:40 PMError1Apr 13, 20261:41 PMApr 13, 20261:41 PM"
+      -   locator resolved to <tr class="MuiTableRow-root css-k8hj4z">…</tr>
+      -   unexpected value "KB Text Mon, Apr 13, 1:40 PMError1Apr 13, 20261:41 PMApr 13, 20261:41 PM"
+      -   locator resolved to <tr class="MuiTableRow-root css-k8hj4z">…</tr>
+      -   unexpected value "KB Text Mon, Apr 13, 1:40 PMError1Apr 13, 20261:41 PMApr 13, 20261:41 PM"
+      -   locator resolved to <tr class="MuiTableRow-root css-k8hj4z">…</tr>
+      -   unexpected value "KB Text Mon, Apr 13, 1:40 PMError1Apr 13, 20261:41 PMApr 13, 20261:41 PM"
+      -   locator resolved to <tr class="MuiTableRow-root css-k8hj4z">…</tr>
+      -   unexpected value "KB Text Mon, Apr 13, 1:40 PMError1Apr 13, 20261:41 PMApr 13, 20261:41 PM"
+      -   locator resolved to <tr class="MuiTableRow-root css-k8hj4z">…</tr>
+      -   unexpected value "KB Text Mon, Apr 13, 1:40 PMError1Apr 13, 20261:41 PMApr 13, 20261:41 PM"
+      -   locator resolved to <tr class="MuiTableRow-root css-k8hj4z">…</tr>
+      -   unexpected value "KB Text Mon, Apr 13, 1:40 PMError1Apr 13, 20261:41 PMApr 13, 20261:41 PM"
+      -   locator resolved to <tr class="MuiTableRow-root css-k8hj4z">…</tr>
+      -   unexpected value "KB Text Mon, Apr 13, 1:40 PMError1Apr 13, 20261:41 PMApr 13, 20261:41 PM"
+      -   locator resolved to <tr class="MuiTableRow-root css-k8hj4z">…</tr>
+      -   unexpected value "KB Text Mon, Apr 13, 1:40 PMError1Apr 13, 20261:41 PMApr 13, 20261:41 PM"
+      -   locator resolved to <tr class="MuiTableRow-root css-k8hj4z">…</tr>
+      -   unexpected value "KB Text Mon, Apr 13, 1:40 PMError1Apr 13, 20261:41 PMApr 13, 20261:41 PM"
+      -   locator resolved to <tr class="MuiTableRow-root css-k8hj4z">…</tr>
+      -   unexpected value "KB Text Mon, Apr 13, 1:40 PMError1Apr 13, 20261:41 PMApr 13, 20261:41 PM"
+      -   locator resolved to <tr class="MuiTableRow-root css-k8hj4z">…</tr>
+      -   unexpected value "KB Text Mon, Apr 13, 1:40 PMError1Apr 13, 20261:41 PMApr 13, 20261:41 PM"
+      -   locator resolved to <tr class="MuiTableRow-root css-k8hj4z">…</tr>
+      -   unexpected value "KB Text Mon, Apr 13, 1:40 PMError1Apr 13, 20261:41 PMApr 13, 20261:41 PM"
+      -   locator resolved to <tr class="MuiTableRow-root css-k8hj4z">…</tr>
+      -   unexpected value "KB Text Mon, Apr 13, 1:40 PMError1Apr 13, 20261:41 PMApr 13, 20261:41 PM"
+      -   locator resolved to <tr class="MuiTableRow-root css-k8hj4z">…</tr>
+      -   unexpected value "KB Text Mon, Apr 13, 1:40 PMError1Apr 13, 20261:41 PMApr 13, 20261:41 PM"
+      -   locator resolved to <tr class="MuiTableRow-root css-k8hj4z">…</tr>
+      -   unexpected value "KB Text Mon, Apr 13, 1:40 PMError1Apr 13, 20261:41 PMApr 13, 20261:41 PM"
+
+
+       at ..\pages\settings\knowledgeBase.page.ts:205
+
+      203 |         const row = this.getKBRow(name);
+      204 |         await row.hover();
+    > 205 |         await expect(row).toContainText(selectors.readyStatus, {
+          |                           ^
+      206 |             timeout: timeouts.long,
+      207 |         });
+      208 |     }
+
+        at KnowledgeBasePage.verifyKBStatusReady (C:\SimplyAsk\automation-tests-main-main\pages\settings\knowledgeBase.page.ts:205:27)
+        at C:\SimplyAsk\automation-tests-main-main\pages\settings\knowledgeBase.page.ts:339:13
+        at KnowledgeBasePage.verifyKBStatus (C:\SimplyAsk\automation-tests-main-main\pages\settings\knowledgeBase.page.ts:338:9)
+        at C:\SimplyAsk\automation-tests-main-main\tests\knowledgeBase.test.ts:27:17
+
+    attachment #1: screenshot (image/png) ───────────────────────────────────────────────────
+    test-results\knowledgeBase-Settings---A-fc355-status-is-Ready-Up-to-Date--chromium\test-failed-1.png
+    ─────────────────────────────────────────────────────────────────────────────────────────
+
+    attachment #2: video (video/webm) ───────────────────────────────────────────────────────
+    test-results\knowledgeBase-Settings---A-fc355-status-is-Ready-Up-to-Date--chromium\video.webm
+    ─────────────────────────────────────────────────────────────────────────────────────────
+]]>
+</failure>
+<system-out>
+<![CDATA[
+[[ATTACHMENT|test-results\knowledgeBase-Settings---A-fc355-status-is-Ready-Up-to-Date--chromium\test-failed-1.png]]
+
+[[ATTACHMENT|test-results\knowledgeBase-Settings---A-fc355-status-is-Ready-Up-to-Date--chromium\video.webm]]
+]]>
+</system-out>
+</testcase>
+<testcase name="Settings - AI Knowledge Base › KB with Text Source › Delete Knowledge Base" classname="knowledgeBase.test.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Settings - AI Knowledge Base › KB with Text Source › Verify KB is removed from list after deletion" classname="knowledgeBase.test.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Settings - AI Knowledge Base › KB with File Source › Create Knowledge Base &amp; File Knowledge Source" classname="knowledgeBase.test.ts" time="9.596">
+</testcase>
+<testcase name="Settings - AI Knowledge Base › KB with File Source › Verify KB is visible in list" classname="knowledgeBase.test.ts" time="6.269">
+</testcase>
+<testcase name="Settings - AI Knowledge Base › KB with File Source › Verify KB status is Ready (Up-to-Date)" classname="knowledgeBase.test.ts" time="120.201">
+<failure message="knowledgeBase.test.ts:26:17 Verify KB status is Ready (Up-to-Date)" type="FAILURE">
+<![CDATA[  [chromium] › knowledgeBase.test.ts:26:17 › Settings - AI Knowledge Base › KB with File Source › Verify KB status is Ready (Up-to-Date) › Verify status is Ready (Up-to-Date) 
+
+    Test timeout of 120000ms exceeded.
+
+    Error: expect(locator).toContainText(expected)
+
+    Locator: getByRole('row').filter({ hasText: 'KB File Mon, Apr 13, 1:43 PM' })
+    Expected string: "Ready (Up-to-Date)"
+    Received string: "KB File Mon, Apr 13, 1:43 PMError1Apr 13, 20261:43 PMApr 13, 20261:43 PM"
+    Call log:
+      - expect.toContainText with timeout 120000ms
+      - waiting for getByRole('row').filter({ hasText: 'KB File Mon, Apr 13, 1:43 PM' })
+      -   locator resolved to <tr class="MuiTableRow-root css-k8hj4z">…</tr>
+      -   unexpected value "KB File Mon, Apr 13, 1:43 PMError1Apr 13, 20261:43 PMApr 13, 20261:43 PM"
+      -   locator resolved to <tr class="MuiTableRow-root css-k8hj4z">…</tr>
+      -   unexpected value "KB File Mon, Apr 13, 1:43 PMError1Apr 13, 20261:43 PMApr 13, 20261:43 PM"
+      -   locator resolved to <tr class="MuiTableRow-root css-k8hj4z">…</tr>
+      -   unexpected value "KB File Mon, Apr 13, 1:43 PMError1Apr 13, 20261:43 PMApr 13, 20261:43 PM"
+      -   locator resolved to <tr class="MuiTableRow-root css-k8hj4z">…</tr>
+      -   unexpected value "KB File Mon, Apr 13, 1:43 PMError1Apr 13, 20261:43 PMApr 13, 20261:43 PM"
+      -   locator resolved to <tr class="MuiTableRow-root css-k8hj4z">…</tr>
+      -   unexpected value "KB File Mon, Apr 13, 1:43 PMError1Apr 13, 20261:43 PMApr 13, 20261:43 PM"
+      -   locator resolved to <tr class="MuiTableRow-root css-k8hj4z">…</tr>
+      -   unexpected value "KB File Mon, Apr 13, 1:43 PMError1Apr 13, 20261:43 PMApr 13, 20261:43 PM"
+      -   locator resolved to <tr class="MuiTableRow-root css-k8hj4z">…</tr>
+      -   unexpected value "KB File Mon, Apr 13, 1:43 PMError1Apr 13, 20261:43 PMApr 13, 20261:43 PM"
+      -   locator resolved to <tr class="MuiTableRow-root css-k8hj4z">…</tr>
+      -   unexpected value "KB File Mon, Apr 13, 1:43 PMError1Apr 13, 20261:43 PMApr 13, 20261:43 PM"
+      -   locator resolved to <tr class="MuiTableRow-root css-k8hj4z">…</tr>
+      -   unexpected value "KB File Mon, Apr 13, 1:43 PMError1Apr 13, 20261:43 PMApr 13, 20261:43 PM"
+      -   locator resolved to <tr class="MuiTableRow-root css-k8hj4z">…</tr>
+      -   unexpected value "KB File Mon, Apr 13, 1:43 PMError1Apr 13, 20261:43 PMApr 13, 20261:43 PM"
+      -   locator resolved to <tr class="MuiTableRow-root css-k8hj4z">…</tr>
+      -   unexpected value "KB File Mon, Apr 13, 1:43 PMError1Apr 13, 20261:43 PMApr 13, 20261:43 PM"
+      -   locator resolved to <tr class="MuiTableRow-root css-k8hj4z">…</tr>
+      -   unexpected value "KB File Mon, Apr 13, 1:43 PMError1Apr 13, 20261:43 PMApr 13, 20261:43 PM"
+      -   locator resolved to <tr class="MuiTableRow-root css-k8hj4z">…</tr>
+      -   unexpected value "KB File Mon, Apr 13, 1:43 PMError1Apr 13, 20261:43 PMApr 13, 20261:43 PM"
+      -   locator resolved to <tr class="MuiTableRow-root css-k8hj4z">…</tr>
+      -   unexpected value "KB File Mon, Apr 13, 1:43 PMError1Apr 13, 20261:43 PMApr 13, 20261:43 PM"
+      -   locator resolved to <tr class="MuiTableRow-root css-k8hj4z">…</tr>
+      -   unexpected value "KB File Mon, Apr 13, 1:43 PMError1Apr 13, 20261:43 PMApr 13, 20261:43 PM"
+      -   locator resolved to <tr class="MuiTableRow-root css-k8hj4z">…</tr>
+      -   unexpected value "KB File Mon, Apr 13, 1:43 PMError1Apr 13, 20261:43 PMApr 13, 20261:43 PM"
+      -   locator resolved to <tr class="MuiTableRow-root css-k8hj4z">…</tr>
+      -   unexpected value "KB File Mon, Apr 13, 1:43 PMError1Apr 13, 20261:43 PMApr 13, 20261:43 PM"
+      -   locator resolved to <tr class="MuiTableRow-root css-k8hj4z">…</tr>
+      -   unexpected value "KB File Mon, Apr 13, 1:43 PMError1Apr 13, 20261:43 PMApr 13, 20261:43 PM"
+      -   locator resolved to <tr class="MuiTableRow-root css-k8hj4z">…</tr>
+      -   unexpected value "KB File Mon, Apr 13, 1:43 PMError1Apr 13, 20261:43 PMApr 13, 20261:43 PM"
+      -   locator resolved to <tr class="MuiTableRow-root css-k8hj4z">…</tr>
+      -   unexpected value "KB File Mon, Apr 13, 1:43 PMError1Apr 13, 20261:43 PMApr 13, 20261:43 PM"
+      -   locator resolved to <tr class="MuiTableRow-root css-k8hj4z">…</tr>
+      -   unexpected value "KB File Mon, Apr 13, 1:43 PMError1Apr 13, 20261:43 PMApr 13, 20261:43 PM"
+      -   locator resolved to <tr class="MuiTableRow-root css-k8hj4z">…</tr>
+      -   unexpected value "KB File Mon, Apr 13, 1:43 PMError1Apr 13, 20261:43 PMApr 13, 20261:43 PM"
+      -   locator resolved to <tr class="MuiTableRow-root css-k8hj4z">…</tr>
+      -   unexpected value "KB File Mon, Apr 13, 1:43 PMError1Apr 13, 20261:43 PMApr 13, 20261:43 PM"
+      -   locator resolved to <tr class="MuiTableRow-root css-k8hj4z">…</tr>
+      -   unexpected value "KB File Mon, Apr 13, 1:43 PMError1Apr 13, 20261:43 PMApr 13, 20261:43 PM"
+      -   locator resolved to <tr class="MuiTableRow-root css-k8hj4z">…</tr>
+      -   unexpected value "KB File Mon, Apr 13, 1:43 PMError1Apr 13, 20261:43 PMApr 13, 20261:43 PM"
+      -   locator resolved to <tr class="MuiTableRow-root css-k8hj4z">…</tr>
+      -   unexpected value "KB File Mon, Apr 13, 1:43 PMError1Apr 13, 20261:43 PMApr 13, 20261:43 PM"
+      -   locator resolved to <tr class="MuiTableRow-root css-k8hj4z">…</tr>
+      -   unexpected value "KB File Mon, Apr 13, 1:43 PMError1Apr 13, 20261:43 PMApr 13, 20261:43 PM"
+      -   locator resolved to <tr class="MuiTableRow-root css-k8hj4z">…</tr>
+      -   unexpected value "KB File Mon, Apr 13, 1:43 PMError1Apr 13, 20261:43 PMApr 13, 20261:43 PM"
+      -   locator resolved to <tr class="MuiTableRow-root css-k8hj4z">…</tr>
+      -   unexpected value "KB File Mon, Apr 13, 1:43 PMError1Apr 13, 20261:43 PMApr 13, 20261:43 PM"
+      -   locator resolved to <tr class="MuiTableRow-root css-k8hj4z">…</tr>
+      -   unexpected value "KB File Mon, Apr 13, 1:43 PMError1Apr 13, 20261:43 PMApr 13, 20261:43 PM"
+      -   locator resolved to <tr class="MuiTableRow-root css-k8hj4z">…</tr>
+      -   unexpected value "KB File Mon, Apr 13, 1:43 PMError1Apr 13, 20261:43 PMApr 13, 20261:43 PM"
+      -   locator resolved to <tr class="MuiTableRow-root css-k8hj4z">…</tr>
+      -   unexpected value "KB File Mon, Apr 13, 1:43 PMError1Apr 13, 20261:43 PMApr 13, 20261:43 PM"
+      -   locator resolved to <tr class="MuiTableRow-root css-k8hj4z">…</tr>
+      -   unexpected value "KB File Mon, Apr 13, 1:43 PMError1Apr 13, 20261:43 PMApr 13, 20261:43 PM"
+      -   locator resolved to <tr class="MuiTableRow-root css-k8hj4z">…</tr>
+      -   unexpected value "KB File Mon, Apr 13, 1:43 PMError1Apr 13, 20261:43 PMApr 13, 20261:43 PM"
+      -   locator resolved to <tr class="MuiTableRow-root css-k8hj4z">…</tr>
+      -   unexpected value "KB File Mon, Apr 13, 1:43 PMError1Apr 13, 20261:43 PMApr 13, 20261:43 PM"
+      -   locator resolved to <tr class="MuiTableRow-root css-k8hj4z">…</tr>
+      -   unexpected value "KB File Mon, Apr 13, 1:43 PMError1Apr 13, 20261:43 PMApr 13, 20261:43 PM"
+      -   locator resolved to <tr class="MuiTableRow-root css-k8hj4z">…</tr>
+      -   unexpected value "KB File Mon, Apr 13, 1:43 PMError1Apr 13, 20261:43 PMApr 13, 20261:43 PM"
+      -   locator resolved to <tr class="MuiTableRow-root css-k8hj4z">…</tr>
+      -   unexpected value "KB File Mon, Apr 13, 1:43 PMError1Apr 13, 20261:43 PMApr 13, 20261:43 PM"
+      -   locator resolved to <tr class="MuiTableRow-root css-k8hj4z">…</tr>
+      -   unexpected value "KB File Mon, Apr 13, 1:43 PMError1Apr 13, 20261:43 PMApr 13, 20261:43 PM"
+      -   locator resolved to <tr class="MuiTableRow-root css-k8hj4z">…</tr>
+      -   unexpected value "KB File Mon, Apr 13, 1:43 PMError1Apr 13, 20261:43 PMApr 13, 20261:43 PM"
+      -   locator resolved to <tr class="MuiTableRow-root css-k8hj4z">…</tr>
+      -   unexpected value "KB File Mon, Apr 13, 1:43 PMError1Apr 13, 20261:43 PMApr 13, 20261:43 PM"
+      -   locator resolved to <tr class="MuiTableRow-root css-k8hj4z">…</tr>
+      -   unexpected value "KB File Mon, Apr 13, 1:43 PMError1Apr 13, 20261:43 PMApr 13, 20261:43 PM"
+      -   locator resolved to <tr class="MuiTableRow-root css-k8hj4z">…</tr>
+      -   unexpected value "KB File Mon, Apr 13, 1:43 PMError1Apr 13, 20261:43 PMApr 13, 20261:43 PM"
+      -   locator resolved to <tr class="MuiTableRow-root css-k8hj4z">…</tr>
+      -   unexpected value "KB File Mon, Apr 13, 1:43 PMError1Apr 13, 20261:43 PMApr 13, 20261:43 PM"
+      -   locator resolved to <tr class="MuiTableRow-root css-k8hj4z">…</tr>
+      -   unexpected value "KB File Mon, Apr 13, 1:43 PMError1Apr 13, 20261:43 PMApr 13, 20261:43 PM"
+      -   locator resolved to <tr class="MuiTableRow-root css-k8hj4z">…</tr>
+      -   unexpected value "KB File Mon, Apr 13, 1:43 PMError1Apr 13, 20261:43 PMApr 13, 20261:43 PM"
+      -   locator resolved to <tr class="MuiTableRow-root css-k8hj4z">…</tr>
+      -   unexpected value "KB File Mon, Apr 13, 1:43 PMError1Apr 13, 20261:43 PMApr 13, 20261:43 PM"
+      -   locator resolved to <tr class="MuiTableRow-root css-k8hj4z">…</tr>
+      -   unexpected value "KB File Mon, Apr 13, 1:43 PMError1Apr 13, 20261:43 PMApr 13, 20261:43 PM"
+      -   locator resolved to <tr class="MuiTableRow-root css-k8hj4z">…</tr>
+      -   unexpected value "KB File Mon, Apr 13, 1:43 PMError1Apr 13, 20261:43 PMApr 13, 20261:43 PM"
+      -   locator resolved to <tr class="MuiTableRow-root css-k8hj4z">…</tr>
+      -   unexpected value "KB File Mon, Apr 13, 1:43 PMError1Apr 13, 20261:43 PMApr 13, 20261:43 PM"
+      -   locator resolved to <tr class="MuiTableRow-root css-k8hj4z">…</tr>
+      -   unexpected value "KB File Mon, Apr 13, 1:43 PMError1Apr 13, 20261:43 PMApr 13, 20261:43 PM"
+      -   locator resolved to <tr class="MuiTableRow-root css-k8hj4z">…</tr>
+      -   unexpected value "KB File Mon, Apr 13, 1:43 PMError1Apr 13, 20261:43 PMApr 13, 20261:43 PM"
+      -   locator resolved to <tr class="MuiTableRow-root css-k8hj4z">…</tr>
+      -   unexpected value "KB File Mon, Apr 13, 1:43 PMError1Apr 13, 20261:43 PMApr 13, 20261:43 PM"
+      -   locator resolved to <tr class="MuiTableRow-root css-k8hj4z">…</tr>
+      -   unexpected value "KB File Mon, Apr 13, 1:43 PMError1Apr 13, 20261:43 PMApr 13, 20261:43 PM"
+      -   locator resolved to <tr class="MuiTableRow-root css-k8hj4z">…</tr>
+      -   unexpected value "KB File Mon, Apr 13, 1:43 PMError1Apr 13, 20261:43 PMApr 13, 20261:43 PM"
+      -   locator resolved to <tr class="MuiTableRow-root css-k8hj4z">…</tr>
+      -   unexpected value "KB File Mon, Apr 13, 1:43 PMError1Apr 13, 20261:43 PMApr 13, 20261:43 PM"
+      -   locator resolved to <tr class="MuiTableRow-root css-k8hj4z">…</tr>
+      -   unexpected value "KB File Mon, Apr 13, 1:43 PMError1Apr 13, 20261:43 PMApr 13, 20261:43 PM"
+      -   locator resolved to <tr class="MuiTableRow-root css-k8hj4z">…</tr>
+      -   unexpected value "KB File Mon, Apr 13, 1:43 PMError1Apr 13, 20261:43 PMApr 13, 20261:43 PM"
+      -   locator resolved to <tr class="MuiTableRow-root css-k8hj4z">…</tr>
+      -   unexpected value "KB File Mon, Apr 13, 1:43 PMError1Apr 13, 20261:43 PMApr 13, 20261:43 PM"
+      -   locator resolved to <tr class="MuiTableRow-root css-k8hj4z">…</tr>
+      -   unexpected value "KB File Mon, Apr 13, 1:43 PMError1Apr 13, 20261:43 PMApr 13, 20261:43 PM"
+      -   locator resolved to <tr class="MuiTableRow-root css-k8hj4z">…</tr>
+      -   unexpected value "KB File Mon, Apr 13, 1:43 PMError1Apr 13, 20261:43 PMApr 13, 20261:43 PM"
+      -   locator resolved to <tr class="MuiTableRow-root css-k8hj4z">…</tr>
+      -   unexpected value "KB File Mon, Apr 13, 1:43 PMError1Apr 13, 20261:43 PMApr 13, 20261:43 PM"
+      -   locator resolved to <tr class="MuiTableRow-root css-k8hj4z">…</tr>
+      -   unexpected value "KB File Mon, Apr 13, 1:43 PMError1Apr 13, 20261:43 PMApr 13, 20261:43 PM"
+      -   locator resolved to <tr class="MuiTableRow-root css-k8hj4z">…</tr>
+      -   unexpected value "KB File Mon, Apr 13, 1:43 PMError1Apr 13, 20261:43 PMApr 13, 20261:43 PM"
+      -   locator resolved to <tr class="MuiTableRow-root css-k8hj4z">…</tr>
+      -   unexpected value "KB File Mon, Apr 13, 1:43 PMError1Apr 13, 20261:43 PMApr 13, 20261:43 PM"
+      -   locator resolved to <tr class="MuiTableRow-root css-k8hj4z">…</tr>
+      -   unexpected value "KB File Mon, Apr 13, 1:43 PMError1Apr 13, 20261:43 PMApr 13, 20261:43 PM"
+      -   locator resolved to <tr class="MuiTableRow-root css-k8hj4z">…</tr>
+      -   unexpected value "KB File Mon, Apr 13, 1:43 PMError1Apr 13, 20261:43 PMApr 13, 20261:43 PM"
+      -   locator resolved to <tr class="MuiTableRow-root css-k8hj4z">…</tr>
+      -   unexpected value "KB File Mon, Apr 13, 1:43 PMError1Apr 13, 20261:43 PMApr 13, 20261:43 PM"
+      -   locator resolved to <tr class="MuiTableRow-root css-k8hj4z">…</tr>
+      -   unexpected value "KB File Mon, Apr 13, 1:43 PMError1Apr 13, 20261:43 PMApr 13, 20261:43 PM"
+      -   locator resolved to <tr class="MuiTableRow-root css-k8hj4z">…</tr>
+      -   unexpected value "KB File Mon, Apr 13, 1:43 PMError1Apr 13, 20261:43 PMApr 13, 20261:43 PM"
+      -   locator resolved to <tr class="MuiTableRow-root css-k8hj4z">…</tr>
+      -   unexpected value "KB File Mon, Apr 13, 1:43 PMError1Apr 13, 20261:43 PMApr 13, 20261:43 PM"
+      -   locator resolved to <tr class="MuiTableRow-root css-k8hj4z">…</tr>
+      -   unexpected value "KB File Mon, Apr 13, 1:43 PMError1Apr 13, 20261:43 PMApr 13, 20261:43 PM"
+      -   locator resolved to <tr class="MuiTableRow-root css-k8hj4z">…</tr>
+      -   unexpected value "KB File Mon, Apr 13, 1:43 PMError1Apr 13, 20261:43 PMApr 13, 20261:43 PM"
+      -   locator resolved to <tr class="MuiTableRow-root css-k8hj4z">…</tr>
+      -   unexpected value "KB File Mon, Apr 13, 1:43 PMError1Apr 13, 20261:43 PMApr 13, 20261:43 PM"
+      -   locator resolved to <tr class="MuiTableRow-root css-k8hj4z">…</tr>
+      -   unexpected value "KB File Mon, Apr 13, 1:43 PMError1Apr 13, 20261:43 PMApr 13, 20261:43 PM"
+      -   locator resolved to <tr class="MuiTableRow-root css-k8hj4z">…</tr>
+      -   unexpected value "KB File Mon, Apr 13, 1:43 PMError1Apr 13, 20261:43 PMApr 13, 20261:43 PM"
+      -   locator resolved to <tr class="MuiTableRow-root css-k8hj4z">…</tr>
+      -   unexpected value "KB File Mon, Apr 13, 1:43 PMError1Apr 13, 20261:43 PMApr 13, 20261:43 PM"
+      -   locator resolved to <tr class="MuiTableRow-root css-k8hj4z">…</tr>
+      -   unexpected value "KB File Mon, Apr 13, 1:43 PMError1Apr 13, 20261:43 PMApr 13, 20261:43 PM"
+      -   locator resolved to <tr class="MuiTableRow-root css-k8hj4z">…</tr>
+      -   unexpected value "KB File Mon, Apr 13, 1:43 PMError1Apr 13, 20261:43 PMApr 13, 20261:43 PM"
+      -   locator resolved to <tr class="MuiTableRow-root css-k8hj4z">…</tr>
+      -   unexpected value "KB File Mon, Apr 13, 1:43 PMError1Apr 13, 20261:43 PMApr 13, 20261:43 PM"
+      -   locator resolved to <tr class="MuiTableRow-root css-k8hj4z">…</tr>
+      -   unexpected value "KB File Mon, Apr 13, 1:43 PMError1Apr 13, 20261:43 PMApr 13, 20261:43 PM"
+      -   locator resolved to <tr class="MuiTableRow-root css-k8hj4z">…</tr>
+      -   unexpected value "KB File Mon, Apr 13, 1:43 PMError1Apr 13, 20261:43 PMApr 13, 20261:43 PM"
+      -   locator resolved to <tr class="MuiTableRow-root css-k8hj4z">…</tr>
+      -   unexpected value "KB File Mon, Apr 13, 1:43 PMError1Apr 13, 20261:43 PMApr 13, 20261:43 PM"
+      -   locator resolved to <tr class="MuiTableRow-root css-k8hj4z">…</tr>
+      -   unexpected value "KB File Mon, Apr 13, 1:43 PMError1Apr 13, 20261:43 PMApr 13, 20261:43 PM"
+      -   locator resolved to <tr class="MuiTableRow-root css-k8hj4z">…</tr>
+      -   unexpected value "KB File Mon, Apr 13, 1:43 PMError1Apr 13, 20261:43 PMApr 13, 20261:43 PM"
+      -   locator resolved to <tr class="MuiTableRow-root css-k8hj4z">…</tr>
+      -   unexpected value "KB File Mon, Apr 13, 1:43 PMError1Apr 13, 20261:43 PMApr 13, 20261:43 PM"
+      -   locator resolved to <tr class="MuiTableRow-root css-k8hj4z">…</tr>
+      -   unexpected value "KB File Mon, Apr 13, 1:43 PMError1Apr 13, 20261:43 PMApr 13, 20261:43 PM"
+      -   locator resolved to <tr class="MuiTableRow-root css-k8hj4z">…</tr>
+      -   unexpected value "KB File Mon, Apr 13, 1:43 PMError1Apr 13, 20261:43 PMApr 13, 20261:43 PM"
+      -   locator resolved to <tr class="MuiTableRow-root css-k8hj4z">…</tr>
+      -   unexpected value "KB File Mon, Apr 13, 1:43 PMError1Apr 13, 20261:43 PMApr 13, 20261:43 PM"
+      -   locator resolved to <tr class="MuiTableRow-root css-k8hj4z">…</tr>
+      -   unexpected value "KB File Mon, Apr 13, 1:43 PMError1Apr 13, 20261:43 PMApr 13, 20261:43 PM"
+      -   locator resolved to <tr class="MuiTableRow-root css-k8hj4z">…</tr>
+      -   unexpected value "KB File Mon, Apr 13, 1:43 PMError1Apr 13, 20261:43 PMApr 13, 20261:43 PM"
+      -   locator resolved to <tr class="MuiTableRow-root css-k8hj4z">…</tr>
+      -   unexpected value "KB File Mon, Apr 13, 1:43 PMError1Apr 13, 20261:43 PMApr 13, 20261:43 PM"
+      -   locator resolved to <tr class="MuiTableRow-root css-k8hj4z">…</tr>
+      -   unexpected value "KB File Mon, Apr 13, 1:43 PMError1Apr 13, 20261:43 PMApr 13, 20261:43 PM"
+      -   locator resolved to <tr class="MuiTableRow-root css-k8hj4z">…</tr>
+      -   unexpected value "KB File Mon, Apr 13, 1:43 PMError1Apr 13, 20261:43 PMApr 13, 20261:43 PM"
+      -   locator resolved to <tr class="MuiTableRow-root css-k8hj4z">…</tr>
+      -   unexpected value "KB File Mon, Apr 13, 1:43 PMError1Apr 13, 20261:43 PMApr 13, 20261:43 PM"
+      -   locator resolved to <tr class="MuiTableRow-root css-k8hj4z">…</tr>
+      -   unexpected value "KB File Mon, Apr 13, 1:43 PMError1Apr 13, 20261:43 PMApr 13, 20261:43 PM"
+      -   locator resolved to <tr class="MuiTableRow-root css-k8hj4z">…</tr>
+      -   unexpected value "KB File Mon, Apr 13, 1:43 PMError1Apr 13, 20261:43 PMApr 13, 20261:43 PM"
+      -   locator resolved to <tr class="MuiTableRow-root css-k8hj4z">…</tr>
+      -   unexpected value "KB File Mon, Apr 13, 1:43 PMError1Apr 13, 20261:43 PMApr 13, 20261:43 PM"
+      -   locator resolved to <tr class="MuiTableRow-root css-k8hj4z">…</tr>
+      -   unexpected value "KB File Mon, Apr 13, 1:43 PMError1Apr 13, 20261:43 PMApr 13, 20261:43 PM"
+      -   locator resolved to <tr class="MuiTableRow-root css-k8hj4z">…</tr>
+      -   unexpected value "KB File Mon, Apr 13, 1:43 PMError1Apr 13, 20261:43 PMApr 13, 20261:43 PM"
+      -   locator resolved to <tr class="MuiTableRow-root css-k8hj4z">…</tr>
+      -   unexpected value "KB File Mon, Apr 13, 1:43 PMError1Apr 13, 20261:43 PMApr 13, 20261:43 PM"
+      -   locator resolved to <tr class="MuiTableRow-root css-k8hj4z">…</tr>
+      -   unexpected value "KB File Mon, Apr 13, 1:43 PMError1Apr 13, 20261:43 PMApr 13, 20261:43 PM"
+      -   locator resolved to <tr class="MuiTableRow-root css-k8hj4z">…</tr>
+      -   unexpected value "KB File Mon, Apr 13, 1:43 PMError1Apr 13, 20261:43 PMApr 13, 20261:43 PM"
+      -   locator resolved to <tr class="MuiTableRow-root css-k8hj4z">…</tr>
+      -   unexpected value "KB File Mon, Apr 13, 1:43 PMError1Apr 13, 20261:43 PMApr 13, 20261:43 PM"
+      -   locator resolved to <tr class="MuiTableRow-root css-k8hj4z">…</tr>
+      -   unexpected value "KB File Mon, Apr 13, 1:43 PMError1Apr 13, 20261:43 PMApr 13, 20261:43 PM"
+      -   locator resolved to <tr class="MuiTableRow-root css-k8hj4z">…</tr>
+      -   unexpected value "KB File Mon, Apr 13, 1:43 PMError1Apr 13, 20261:43 PMApr 13, 20261:43 PM"
+      -   locator resolved to <tr class="MuiTableRow-root css-k8hj4z">…</tr>
+      -   unexpected value "KB File Mon, Apr 13, 1:43 PMError1Apr 13, 20261:43 PMApr 13, 20261:43 PM"
+      -   locator resolved to <tr class="MuiTableRow-root css-k8hj4z">…</tr>
+      -   unexpected value "KB File Mon, Apr 13, 1:43 PMError1Apr 13, 20261:43 PMApr 13, 20261:43 PM"
+      -   locator resolved to <tr class="MuiTableRow-root css-k8hj4z">…</tr>
+      -   unexpected value "KB File Mon, Apr 13, 1:43 PMError1Apr 13, 20261:43 PMApr 13, 20261:43 PM"
+      -   locator resolved to <tr class="MuiTableRow-root css-k8hj4z">…</tr>
+      -   unexpected value "KB File Mon, Apr 13, 1:43 PMError1Apr 13, 20261:43 PMApr 13, 20261:43 PM"
+      -   locator resolved to <tr class="MuiTableRow-root css-k8hj4z">…</tr>
+      -   unexpected value "KB File Mon, Apr 13, 1:43 PMError1Apr 13, 20261:43 PMApr 13, 20261:43 PM"
+      -   locator resolved to <tr class="MuiTableRow-root css-k8hj4z">…</tr>
+      -   unexpected value "KB File Mon, Apr 13, 1:43 PMError1Apr 13, 20261:43 PMApr 13, 20261:43 PM"
+      -   locator resolved to <tr class="MuiTableRow-root css-k8hj4z">…</tr>
+      -   unexpected value "KB File Mon, Apr 13, 1:43 PMError1Apr 13, 20261:43 PMApr 13, 20261:43 PM"
+      -   locator resolved to <tr class="MuiTableRow-root css-k8hj4z">…</tr>
+      -   unexpected value "KB File Mon, Apr 13, 1:43 PMError1Apr 13, 20261:43 PMApr 13, 20261:43 PM"
+      -   locator resolved to <tr class="MuiTableRow-root css-k8hj4z">…</tr>
+      -   unexpected value "KB File Mon, Apr 13, 1:43 PMError1Apr 13, 20261:43 PMApr 13, 20261:43 PM"
+      -   locator resolved to <tr class="MuiTableRow-root css-k8hj4z">…</tr>
+      -   unexpected value "KB File Mon, Apr 13, 1:43 PMError1Apr 13, 20261:43 PMApr 13, 20261:43 PM"
+
+
+       at ..\pages\settings\knowledgeBase.page.ts:205
+
+      203 |         const row = this.getKBRow(name);
+      204 |         await row.hover();
+    > 205 |         await expect(row).toContainText(selectors.readyStatus, {
+          |                           ^
+      206 |             timeout: timeouts.long,
+      207 |         });
+      208 |     }
+
+        at KnowledgeBasePage.verifyKBStatusReady (C:\SimplyAsk\automation-tests-main-main\pages\settings\knowledgeBase.page.ts:205:27)
+        at C:\SimplyAsk\automation-tests-main-main\pages\settings\knowledgeBase.page.ts:339:13
+        at KnowledgeBasePage.verifyKBStatus (C:\SimplyAsk\automation-tests-main-main\pages\settings\knowledgeBase.page.ts:338:9)
+        at C:\SimplyAsk\automation-tests-main-main\tests\knowledgeBase.test.ts:27:17
+
+    attachment #1: screenshot (image/png) ───────────────────────────────────────────────────
+    test-results\knowledgeBase-Settings---A-c8a2e-status-is-Ready-Up-to-Date--chromium\test-failed-1.png
+    ─────────────────────────────────────────────────────────────────────────────────────────
+
+    attachment #2: video (video/webm) ───────────────────────────────────────────────────────
+    test-results\knowledgeBase-Settings---A-c8a2e-status-is-Ready-Up-to-Date--chromium\video.webm
+    ─────────────────────────────────────────────────────────────────────────────────────────
+]]>
+</failure>
+<system-out>
+<![CDATA[
+[[ATTACHMENT|test-results\knowledgeBase-Settings---A-c8a2e-status-is-Ready-Up-to-Date--chromium\test-failed-1.png]]
+
+[[ATTACHMENT|test-results\knowledgeBase-Settings---A-c8a2e-status-is-Ready-Up-to-Date--chromium\video.webm]]
+]]>
+</system-out>
+</testcase>
+<testcase name="Settings - AI Knowledge Base › KB with File Source › Delete Knowledge Base" classname="knowledgeBase.test.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Settings - AI Knowledge Base › KB with File Source › Verify KB is removed from list after deletion" classname="knowledgeBase.test.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Settings - AI Knowledge Base › KB with API Source › Create Knowledge Base &amp; API Knowledge Source" classname="knowledgeBase.test.ts" time="9.428">
+</testcase>
+<testcase name="Settings - AI Knowledge Base › KB with API Source › Verify KB is visible in list" classname="knowledgeBase.test.ts" time="5.694">
+</testcase>
+<testcase name="Settings - AI Knowledge Base › KB with API Source › Verify KB status is Ready (Up-to-Date)" classname="knowledgeBase.test.ts" time="120.145">
+<failure message="knowledgeBase.test.ts:26:17 Verify KB status is Ready (Up-to-Date)" type="FAILURE">
+<![CDATA[  [chromium] › knowledgeBase.test.ts:26:17 › Settings - AI Knowledge Base › KB with API Source › Verify KB status is Ready (Up-to-Date) › Verify status is Ready (Up-to-Date) 
+
+    Test timeout of 120000ms exceeded.
+
+    Error: expect(locator).toContainText(expected)
+
+    Locator: getByRole('row').filter({ hasText: 'KB API Mon, Apr 13, 1:45 PM' })
+    Expected string: "Ready (Up-to-Date)"
+    Received string: "KB API Mon, Apr 13, 1:45 PMError1Apr 13, 20261:45 PMApr 13, 20261:45 PM"
+    Call log:
+      - expect.toContainText with timeout 120000ms
+      - waiting for getByRole('row').filter({ hasText: 'KB API Mon, Apr 13, 1:45 PM' })
+      -   locator resolved to <tr class="MuiTableRow-root css-k8hj4z">…</tr>
+      -   unexpected value "KB API Mon, Apr 13, 1:45 PMError1Apr 13, 20261:45 PMApr 13, 20261:45 PM"
+      -   locator resolved to <tr class="MuiTableRow-root css-k8hj4z">…</tr>
+      -   unexpected value "KB API Mon, Apr 13, 1:45 PMError1Apr 13, 20261:45 PMApr 13, 20261:45 PM"
+      -   locator resolved to <tr class="MuiTableRow-root css-k8hj4z">…</tr>
+      -   unexpected value "KB API Mon, Apr 13, 1:45 PMError1Apr 13, 20261:45 PMApr 13, 20261:45 PM"
+      -   locator resolved to <tr class="MuiTableRow-root css-k8hj4z">…</tr>
+      -   unexpected value "KB API Mon, Apr 13, 1:45 PMError1Apr 13, 20261:45 PMApr 13, 20261:45 PM"
+      -   locator resolved to <tr class="MuiTableRow-root css-k8hj4z">…</tr>
+      -   unexpected value "KB API Mon, Apr 13, 1:45 PMError1Apr 13, 20261:45 PMApr 13, 20261:45 PM"
+      -   locator resolved to <tr class="MuiTableRow-root css-k8hj4z">…</tr>
+      -   unexpected value "KB API Mon, Apr 13, 1:45 PMError1Apr 13, 20261:45 PMApr 13, 20261:45 PM"
+      -   locator resolved to <tr class="MuiTableRow-root css-k8hj4z">…</tr>
+      -   unexpected value "KB API Mon, Apr 13, 1:45 PMError1Apr 13, 20261:45 PMApr 13, 20261:45 PM"
+      -   locator resolved to <tr class="MuiTableRow-root css-k8hj4z">…</tr>
+      -   unexpected value "KB API Mon, Apr 13, 1:45 PMError1Apr 13, 20261:45 PMApr 13, 20261:45 PM"
+      -   locator resolved to <tr class="MuiTableRow-root css-k8hj4z">…</tr>
+      -   unexpected value "KB API Mon, Apr 13, 1:45 PMError1Apr 13, 20261:45 PMApr 13, 20261:45 PM"
+      -   locator resolved to <tr class="MuiTableRow-root css-k8hj4z">…</tr>
+      -   unexpected value "KB API Mon, Apr 13, 1:45 PMError1Apr 13, 20261:45 PMApr 13, 20261:45 PM"
+      -   locator resolved to <tr class="MuiTableRow-root css-k8hj4z">…</tr>
+      -   unexpected value "KB API Mon, Apr 13, 1:45 PMError1Apr 13, 20261:45 PMApr 13, 20261:45 PM"
+      -   locator resolved to <tr class="MuiTableRow-root css-k8hj4z">…</tr>
+      -   unexpected value "KB API Mon, Apr 13, 1:45 PMError1Apr 13, 20261:45 PMApr 13, 20261:45 PM"
+      -   locator resolved to <tr class="MuiTableRow-root css-k8hj4z">…</tr>
+      -   unexpected value "KB API Mon, Apr 13, 1:45 PMError1Apr 13, 20261:45 PMApr 13, 20261:45 PM"
+      -   locator resolved to <tr class="MuiTableRow-root css-k8hj4z">…</tr>
+      -   unexpected value "KB API Mon, Apr 13, 1:45 PMError1Apr 13, 20261:45 PMApr 13, 20261:45 PM"
+      -   locator resolved to <tr class="MuiTableRow-root css-k8hj4z">…</tr>
+      -   unexpected value "KB API Mon, Apr 13, 1:45 PMError1Apr 13, 20261:45 PMApr 13, 20261:45 PM"
+      -   locator resolved to <tr class="MuiTableRow-root css-k8hj4z">…</tr>
+      -   unexpected value "KB API Mon, Apr 13, 1:45 PMError1Apr 13, 20261:45 PMApr 13, 20261:45 PM"
+      -   locator resolved to <tr class="MuiTableRow-root css-k8hj4z">…</tr>
+      -   unexpected value "KB API Mon, Apr 13, 1:45 PMError1Apr 13, 20261:45 PMApr 13, 20261:45 PM"
+      -   locator resolved to <tr class="MuiTableRow-root css-k8hj4z">…</tr>
+      -   unexpected value "KB API Mon, Apr 13, 1:45 PMError1Apr 13, 20261:45 PMApr 13, 20261:45 PM"
+      -   locator resolved to <tr class="MuiTableRow-root css-k8hj4z">…</tr>
+      -   unexpected value "KB API Mon, Apr 13, 1:45 PMError1Apr 13, 20261:45 PMApr 13, 20261:45 PM"
+      -   locator resolved to <tr class="MuiTableRow-root css-k8hj4z">…</tr>
+      -   unexpected value "KB API Mon, Apr 13, 1:45 PMError1Apr 13, 20261:45 PMApr 13, 20261:45 PM"
+      -   locator resolved to <tr class="MuiTableRow-root css-k8hj4z">…</tr>
+      -   unexpected value "KB API Mon, Apr 13, 1:45 PMError1Apr 13, 20261:45 PMApr 13, 20261:45 PM"
+      -   locator resolved to <tr class="MuiTableRow-root css-k8hj4z">…</tr>
+      -   unexpected value "KB API Mon, Apr 13, 1:45 PMError1Apr 13, 20261:45 PMApr 13, 20261:45 PM"
+      -   locator resolved to <tr class="MuiTableRow-root css-k8hj4z">…</tr>
+      -   unexpected value "KB API Mon, Apr 13, 1:45 PMError1Apr 13, 20261:45 PMApr 13, 20261:45 PM"
+      -   locator resolved to <tr class="MuiTableRow-root css-k8hj4z">…</tr>
+      -   unexpected value "KB API Mon, Apr 13, 1:45 PMError1Apr 13, 20261:45 PMApr 13, 20261:45 PM"
+      -   locator resolved to <tr class="MuiTableRow-root css-k8hj4z">…</tr>
+      -   unexpected value "KB API Mon, Apr 13, 1:45 PMError1Apr 13, 20261:45 PMApr 13, 20261:45 PM"
+      -   locator resolved to <tr class="MuiTableRow-root css-k8hj4z">…</tr>
+      -   unexpected value "KB API Mon, Apr 13, 1:45 PMError1Apr 13, 20261:45 PMApr 13, 20261:45 PM"
+      -   locator resolved to <tr class="MuiTableRow-root css-k8hj4z">…</tr>
+      -   unexpected value "KB API Mon, Apr 13, 1:45 PMError1Apr 13, 20261:45 PMApr 13, 20261:45 PM"
+      -   locator resolved to <tr class="MuiTableRow-root css-k8hj4z">…</tr>
+      -   unexpected value "KB API Mon, Apr 13, 1:45 PMError1Apr 13, 20261:45 PMApr 13, 20261:45 PM"
+      -   locator resolved to <tr class="MuiTableRow-root css-k8hj4z">…</tr>
+      -   unexpected value "KB API Mon, Apr 13, 1:45 PMError1Apr 13, 20261:45 PMApr 13, 20261:45 PM"
+      -   locator resolved to <tr class="MuiTableRow-root css-k8hj4z">…</tr>
+      -   unexpected value "KB API Mon, Apr 13, 1:45 PMError1Apr 13, 20261:45 PMApr 13, 20261:45 PM"
+      -   locator resolved to <tr class="MuiTableRow-root css-k8hj4z">…</tr>
+      -   unexpected value "KB API Mon, Apr 13, 1:45 PMError1Apr 13, 20261:45 PMApr 13, 20261:45 PM"
+      -   locator resolved to <tr class="MuiTableRow-root css-k8hj4z">…</tr>
+      -   unexpected value "KB API Mon, Apr 13, 1:45 PMError1Apr 13, 20261:45 PMApr 13, 20261:45 PM"
+      -   locator resolved to <tr class="MuiTableRow-root css-k8hj4z">…</tr>
+      -   unexpected value "KB API Mon, Apr 13, 1:45 PMError1Apr 13, 20261:45 PMApr 13, 20261:45 PM"
+      -   locator resolved to <tr class="MuiTableRow-root css-k8hj4z">…</tr>
+      -   unexpected value "KB API Mon, Apr 13, 1:45 PMError1Apr 13, 20261:45 PMApr 13, 20261:45 PM"
+      -   locator resolved to <tr class="MuiTableRow-root css-k8hj4z">…</tr>
+      -   unexpected value "KB API Mon, Apr 13, 1:45 PMError1Apr 13, 20261:45 PMApr 13, 20261:45 PM"
+      -   locator resolved to <tr class="MuiTableRow-root css-k8hj4z">…</tr>
+      -   unexpected value "KB API Mon, Apr 13, 1:45 PMError1Apr 13, 20261:45 PMApr 13, 20261:45 PM"
+      -   locator resolved to <tr class="MuiTableRow-root css-k8hj4z">…</tr>
+      -   unexpected value "KB API Mon, Apr 13, 1:45 PMError1Apr 13, 20261:45 PMApr 13, 20261:45 PM"
+      -   locator resolved to <tr class="MuiTableRow-root css-k8hj4z">…</tr>
+      -   unexpected value "KB API Mon, Apr 13, 1:45 PMError1Apr 13, 20261:45 PMApr 13, 20261:45 PM"
+      -   locator resolved to <tr class="MuiTableRow-root css-k8hj4z">…</tr>
+      -   unexpected value "KB API Mon, Apr 13, 1:45 PMError1Apr 13, 20261:45 PMApr 13, 20261:45 PM"
+      -   locator resolved to <tr class="MuiTableRow-root css-k8hj4z">…</tr>
+      -   unexpected value "KB API Mon, Apr 13, 1:45 PMError1Apr 13, 20261:45 PMApr 13, 20261:45 PM"
+      -   locator resolved to <tr class="MuiTableRow-root css-k8hj4z">…</tr>
+      -   unexpected value "KB API Mon, Apr 13, 1:45 PMError1Apr 13, 20261:45 PMApr 13, 20261:45 PM"
+      -   locator resolved to <tr class="MuiTableRow-root css-k8hj4z">…</tr>
+      -   unexpected value "KB API Mon, Apr 13, 1:45 PMError1Apr 13, 20261:45 PMApr 13, 20261:45 PM"
+      -   locator resolved to <tr class="MuiTableRow-root css-k8hj4z">…</tr>
+      -   unexpected value "KB API Mon, Apr 13, 1:45 PMError1Apr 13, 20261:45 PMApr 13, 20261:45 PM"
+      -   locator resolved to <tr class="MuiTableRow-root css-k8hj4z">…</tr>
+      -   unexpected value "KB API Mon, Apr 13, 1:45 PMError1Apr 13, 20261:45 PMApr 13, 20261:45 PM"
+      -   locator resolved to <tr class="MuiTableRow-root css-k8hj4z">…</tr>
+      -   unexpected value "KB API Mon, Apr 13, 1:45 PMError1Apr 13, 20261:45 PMApr 13, 20261:45 PM"
+      -   locator resolved to <tr class="MuiTableRow-root css-k8hj4z">…</tr>
+      -   unexpected value "KB API Mon, Apr 13, 1:45 PMError1Apr 13, 20261:45 PMApr 13, 20261:45 PM"
+      -   locator resolved to <tr class="MuiTableRow-root css-k8hj4z">…</tr>
+      -   unexpected value "KB API Mon, Apr 13, 1:45 PMError1Apr 13, 20261:45 PMApr 13, 20261:45 PM"
+      -   locator resolved to <tr class="MuiTableRow-root css-k8hj4z">…</tr>
+      -   unexpected value "KB API Mon, Apr 13, 1:45 PMError1Apr 13, 20261:45 PMApr 13, 20261:45 PM"
+      -   locator resolved to <tr class="MuiTableRow-root css-k8hj4z">…</tr>
+      -   unexpected value "KB API Mon, Apr 13, 1:45 PMError1Apr 13, 20261:45 PMApr 13, 20261:45 PM"
+      -   locator resolved to <tr class="MuiTableRow-root css-k8hj4z">…</tr>
+      -   unexpected value "KB API Mon, Apr 13, 1:45 PMError1Apr 13, 20261:45 PMApr 13, 20261:45 PM"
+      -   locator resolved to <tr class="MuiTableRow-root css-k8hj4z">…</tr>
+      -   unexpected value "KB API Mon, Apr 13, 1:45 PMError1Apr 13, 20261:45 PMApr 13, 20261:45 PM"
+      -   locator resolved to <tr class="MuiTableRow-root css-k8hj4z">…</tr>
+      -   unexpected value "KB API Mon, Apr 13, 1:45 PMError1Apr 13, 20261:45 PMApr 13, 20261:45 PM"
+      -   locator resolved to <tr class="MuiTableRow-root css-k8hj4z">…</tr>
+      -   unexpected value "KB API Mon, Apr 13, 1:45 PMError1Apr 13, 20261:45 PMApr 13, 20261:45 PM"
+      -   locator resolved to <tr class="MuiTableRow-root css-k8hj4z">…</tr>
+      -   unexpected value "KB API Mon, Apr 13, 1:45 PMError1Apr 13, 20261:45 PMApr 13, 20261:45 PM"
+      -   locator resolved to <tr class="MuiTableRow-root css-k8hj4z">…</tr>
+      -   unexpected value "KB API Mon, Apr 13, 1:45 PMError1Apr 13, 20261:45 PMApr 13, 20261:45 PM"
+      -   locator resolved to <tr class="MuiTableRow-root css-k8hj4z">…</tr>
+      -   unexpected value "KB API Mon, Apr 13, 1:45 PMError1Apr 13, 20261:45 PMApr 13, 20261:45 PM"
+      -   locator resolved to <tr class="MuiTableRow-root css-k8hj4z">…</tr>
+      -   unexpected value "KB API Mon, Apr 13, 1:45 PMError1Apr 13, 20261:45 PMApr 13, 20261:45 PM"
+      -   locator resolved to <tr class="MuiTableRow-root css-k8hj4z">…</tr>
+      -   unexpected value "KB API Mon, Apr 13, 1:45 PMError1Apr 13, 20261:45 PMApr 13, 20261:45 PM"
+      -   locator resolved to <tr class="MuiTableRow-root css-k8hj4z">…</tr>
+      -   unexpected value "KB API Mon, Apr 13, 1:45 PMError1Apr 13, 20261:45 PMApr 13, 20261:45 PM"
+      -   locator resolved to <tr class="MuiTableRow-root css-k8hj4z">…</tr>
+      -   unexpected value "KB API Mon, Apr 13, 1:45 PMError1Apr 13, 20261:45 PMApr 13, 20261:45 PM"
+      -   locator resolved to <tr class="MuiTableRow-root css-k8hj4z">…</tr>
+      -   unexpected value "KB API Mon, Apr 13, 1:45 PMError1Apr 13, 20261:45 PMApr 13, 20261:45 PM"
+      -   locator resolved to <tr class="MuiTableRow-root css-k8hj4z">…</tr>
+      -   unexpected value "KB API Mon, Apr 13, 1:45 PMError1Apr 13, 20261:45 PMApr 13, 20261:45 PM"
+      -   locator resolved to <tr class="MuiTableRow-root css-k8hj4z">…</tr>
+      -   unexpected value "KB API Mon, Apr 13, 1:45 PMError1Apr 13, 20261:45 PMApr 13, 20261:45 PM"
+      -   locator resolved to <tr class="MuiTableRow-root css-k8hj4z">…</tr>
+      -   unexpected value "KB API Mon, Apr 13, 1:45 PMError1Apr 13, 20261:45 PMApr 13, 20261:45 PM"
+      -   locator resolved to <tr class="MuiTableRow-root css-k8hj4z">…</tr>
+      -   unexpected value "KB API Mon, Apr 13, 1:45 PMError1Apr 13, 20261:45 PMApr 13, 20261:45 PM"
+      -   locator resolved to <tr class="MuiTableRow-root css-k8hj4z">…</tr>
+      -   unexpected value "KB API Mon, Apr 13, 1:45 PMError1Apr 13, 20261:45 PMApr 13, 20261:45 PM"
+      -   locator resolved to <tr class="MuiTableRow-root css-k8hj4z">…</tr>
+      -   unexpected value "KB API Mon, Apr 13, 1:45 PMError1Apr 13, 20261:45 PMApr 13, 20261:45 PM"
+      -   locator resolved to <tr class="MuiTableRow-root css-k8hj4z">…</tr>
+      -   unexpected value "KB API Mon, Apr 13, 1:45 PMError1Apr 13, 20261:45 PMApr 13, 20261:45 PM"
+      -   locator resolved to <tr class="MuiTableRow-root css-k8hj4z">…</tr>
+      -   unexpected value "KB API Mon, Apr 13, 1:45 PMError1Apr 13, 20261:45 PMApr 13, 20261:45 PM"
+      -   locator resolved to <tr class="MuiTableRow-root css-k8hj4z">…</tr>
+      -   unexpected value "KB API Mon, Apr 13, 1:45 PMError1Apr 13, 20261:45 PMApr 13, 20261:45 PM"
+      -   locator resolved to <tr class="MuiTableRow-root css-k8hj4z">…</tr>
+      -   unexpected value "KB API Mon, Apr 13, 1:45 PMError1Apr 13, 20261:45 PMApr 13, 20261:45 PM"
+      -   locator resolved to <tr class="MuiTableRow-root css-k8hj4z">…</tr>
+      -   unexpected value "KB API Mon, Apr 13, 1:45 PMError1Apr 13, 20261:45 PMApr 13, 20261:45 PM"
+      -   locator resolved to <tr class="MuiTableRow-root css-k8hj4z">…</tr>
+      -   unexpected value "KB API Mon, Apr 13, 1:45 PMError1Apr 13, 20261:45 PMApr 13, 20261:45 PM"
+      -   locator resolved to <tr class="MuiTableRow-root css-k8hj4z">…</tr>
+      -   unexpected value "KB API Mon, Apr 13, 1:45 PMError1Apr 13, 20261:45 PMApr 13, 20261:45 PM"
+      -   locator resolved to <tr class="MuiTableRow-root css-k8hj4z">…</tr>
+      -   unexpected value "KB API Mon, Apr 13, 1:45 PMError1Apr 13, 20261:45 PMApr 13, 20261:45 PM"
+      -   locator resolved to <tr class="MuiTableRow-root css-k8hj4z">…</tr>
+      -   unexpected value "KB API Mon, Apr 13, 1:45 PMError1Apr 13, 20261:45 PMApr 13, 20261:45 PM"
+      -   locator resolved to <tr class="MuiTableRow-root css-k8hj4z">…</tr>
+      -   unexpected value "KB API Mon, Apr 13, 1:45 PMError1Apr 13, 20261:45 PMApr 13, 20261:45 PM"
+      -   locator resolved to <tr class="MuiTableRow-root css-k8hj4z">…</tr>
+      -   unexpected value "KB API Mon, Apr 13, 1:45 PMError1Apr 13, 20261:45 PMApr 13, 20261:45 PM"
+      -   locator resolved to <tr class="MuiTableRow-root css-k8hj4z">…</tr>
+      -   unexpected value "KB API Mon, Apr 13, 1:45 PMError1Apr 13, 20261:45 PMApr 13, 20261:45 PM"
+      -   locator resolved to <tr class="MuiTableRow-root css-k8hj4z">…</tr>
+      -   unexpected value "KB API Mon, Apr 13, 1:45 PMError1Apr 13, 20261:45 PMApr 13, 20261:45 PM"
+      -   locator resolved to <tr class="MuiTableRow-root css-k8hj4z">…</tr>
+      -   unexpected value "KB API Mon, Apr 13, 1:45 PMError1Apr 13, 20261:45 PMApr 13, 20261:45 PM"
+      -   locator resolved to <tr class="MuiTableRow-root css-k8hj4z">…</tr>
+      -   unexpected value "KB API Mon, Apr 13, 1:45 PMError1Apr 13, 20261:45 PMApr 13, 20261:45 PM"
+      -   locator resolved to <tr class="MuiTableRow-root css-k8hj4z">…</tr>
+      -   unexpected value "KB API Mon, Apr 13, 1:45 PMError1Apr 13, 20261:45 PMApr 13, 20261:45 PM"
+      -   locator resolved to <tr class="MuiTableRow-root css-k8hj4z">…</tr>
+      -   unexpected value "KB API Mon, Apr 13, 1:45 PMError1Apr 13, 20261:45 PMApr 13, 20261:45 PM"
+      -   locator resolved to <tr class="MuiTableRow-root css-k8hj4z">…</tr>
+      -   unexpected value "KB API Mon, Apr 13, 1:45 PMError1Apr 13, 20261:45 PMApr 13, 20261:45 PM"
+      -   locator resolved to <tr class="MuiTableRow-root css-k8hj4z">…</tr>
+      -   unexpected value "KB API Mon, Apr 13, 1:45 PMError1Apr 13, 20261:45 PMApr 13, 20261:45 PM"
+      -   locator resolved to <tr class="MuiTableRow-root css-k8hj4z">…</tr>
+      -   unexpected value "KB API Mon, Apr 13, 1:45 PMError1Apr 13, 20261:45 PMApr 13, 20261:45 PM"
+      -   locator resolved to <tr class="MuiTableRow-root css-k8hj4z">…</tr>
+      -   unexpected value "KB API Mon, Apr 13, 1:45 PMError1Apr 13, 20261:45 PMApr 13, 20261:45 PM"
+      -   locator resolved to <tr class="MuiTableRow-root css-k8hj4z">…</tr>
+      -   unexpected value "KB API Mon, Apr 13, 1:45 PMError1Apr 13, 20261:45 PMApr 13, 20261:45 PM"
+      -   locator resolved to <tr class="MuiTableRow-root css-k8hj4z">…</tr>
+      -   unexpected value "KB API Mon, Apr 13, 1:45 PMError1Apr 13, 20261:45 PMApr 13, 20261:45 PM"
+      -   locator resolved to <tr class="MuiTableRow-root css-k8hj4z">…</tr>
+      -   unexpected value "KB API Mon, Apr 13, 1:45 PMError1Apr 13, 20261:45 PMApr 13, 20261:45 PM"
+      -   locator resolved to <tr class="MuiTableRow-root css-k8hj4z">…</tr>
+      -   unexpected value "KB API Mon, Apr 13, 1:45 PMError1Apr 13, 20261:45 PMApr 13, 20261:45 PM"
+      -   locator resolved to <tr class="MuiTableRow-root css-k8hj4z">…</tr>
+      -   unexpected value "KB API Mon, Apr 13, 1:45 PMError1Apr 13, 20261:45 PMApr 13, 20261:45 PM"
+      -   locator resolved to <tr class="MuiTableRow-root css-k8hj4z">…</tr>
+      -   unexpected value "KB API Mon, Apr 13, 1:45 PMError1Apr 13, 20261:45 PMApr 13, 20261:45 PM"
+      -   locator resolved to <tr class="MuiTableRow-root css-k8hj4z">…</tr>
+      -   unexpected value "KB API Mon, Apr 13, 1:45 PMError1Apr 13, 20261:45 PMApr 13, 20261:45 PM"
+      -   locator resolved to <tr class="MuiTableRow-root css-k8hj4z">…</tr>
+      -   unexpected value "KB API Mon, Apr 13, 1:45 PMError1Apr 13, 20261:45 PMApr 13, 20261:45 PM"
+      -   locator resolved to <tr class="MuiTableRow-root css-k8hj4z">…</tr>
+      -   unexpected value "KB API Mon, Apr 13, 1:45 PMError1Apr 13, 20261:45 PMApr 13, 20261:45 PM"
+      -   locator resolved to <tr class="MuiTableRow-root css-k8hj4z">…</tr>
+      -   unexpected value "KB API Mon, Apr 13, 1:45 PMError1Apr 13, 20261:45 PMApr 13, 20261:45 PM"
+      -   locator resolved to <tr class="MuiTableRow-root css-k8hj4z">…</tr>
+      -   unexpected value "KB API Mon, Apr 13, 1:45 PMError1Apr 13, 20261:45 PMApr 13, 20261:45 PM"
+      -   locator resolved to <tr class="MuiTableRow-root css-k8hj4z">…</tr>
+      -   unexpected value "KB API Mon, Apr 13, 1:45 PMError1Apr 13, 20261:45 PMApr 13, 20261:45 PM"
+      -   locator resolved to <tr class="MuiTableRow-root css-k8hj4z">…</tr>
+      -   unexpected value "KB API Mon, Apr 13, 1:45 PMError1Apr 13, 20261:45 PMApr 13, 20261:45 PM"
+      -   locator resolved to <tr class="MuiTableRow-root css-k8hj4z">…</tr>
+      -   unexpected value "KB API Mon, Apr 13, 1:45 PMError1Apr 13, 20261:45 PMApr 13, 20261:45 PM"
+      -   locator resolved to <tr class="MuiTableRow-root css-k8hj4z">…</tr>
+      -   unexpected value "KB API Mon, Apr 13, 1:45 PMError1Apr 13, 20261:45 PMApr 13, 20261:45 PM"
+      -   locator resolved to <tr class="MuiTableRow-root css-k8hj4z">…</tr>
+      -   unexpected value "KB API Mon, Apr 13, 1:45 PMError1Apr 13, 20261:45 PMApr 13, 20261:45 PM"
+      -   locator resolved to <tr class="MuiTableRow-root css-k8hj4z">…</tr>
+      -   unexpected value "KB API Mon, Apr 13, 1:45 PMError1Apr 13, 20261:45 PMApr 13, 20261:45 PM"
+      -   locator resolved to <tr class="MuiTableRow-root css-k8hj4z">…</tr>
+      -   unexpected value "KB API Mon, Apr 13, 1:45 PMError1Apr 13, 20261:45 PMApr 13, 20261:45 PM"
+      -   locator resolved to <tr class="MuiTableRow-root css-k8hj4z">…</tr>
+      -   unexpected value "KB API Mon, Apr 13, 1:45 PMError1Apr 13, 20261:45 PMApr 13, 20261:45 PM"
+      -   locator resolved to <tr class="MuiTableRow-root css-k8hj4z">…</tr>
+      -   unexpected value "KB API Mon, Apr 13, 1:45 PMError1Apr 13, 20261:45 PMApr 13, 20261:45 PM"
+      -   locator resolved to <tr class="MuiTableRow-root css-k8hj4z">…</tr>
+      -   unexpected value "KB API Mon, Apr 13, 1:45 PMError1Apr 13, 20261:45 PMApr 13, 20261:45 PM"
+      -   locator resolved to <tr class="MuiTableRow-root css-k8hj4z">…</tr>
+      -   unexpected value "KB API Mon, Apr 13, 1:45 PMError1Apr 13, 20261:45 PMApr 13, 20261:45 PM"
+      -   locator resolved to <tr class="MuiTableRow-root css-k8hj4z">…</tr>
+      -   unexpected value "KB API Mon, Apr 13, 1:45 PMError1Apr 13, 20261:45 PMApr 13, 20261:45 PM"
+      -   locator resolved to <tr class="MuiTableRow-root css-k8hj4z">…</tr>
+      -   unexpected value "KB API Mon, Apr 13, 1:45 PMError1Apr 13, 20261:45 PMApr 13, 20261:45 PM"
+      -   locator resolved to <tr class="MuiTableRow-root css-k8hj4z">…</tr>
+      -   unexpected value "KB API Mon, Apr 13, 1:45 PMError1Apr 13, 20261:45 PMApr 13, 20261:45 PM"
+      -   locator resolved to <tr class="MuiTableRow-root css-k8hj4z">…</tr>
+      -   unexpected value "KB API Mon, Apr 13, 1:45 PMError1Apr 13, 20261:45 PMApr 13, 20261:45 PM"
+      -   locator resolved to <tr class="MuiTableRow-root css-k8hj4z">…</tr>
+      -   unexpected value "KB API Mon, Apr 13, 1:45 PMError1Apr 13, 20261:45 PMApr 13, 20261:45 PM"
+      -   locator resolved to <tr class="MuiTableRow-root css-k8hj4z">…</tr>
+      -   unexpected value "KB API Mon, Apr 13, 1:45 PMError1Apr 13, 20261:45 PMApr 13, 20261:45 PM"
+      -   locator resolved to <tr class="MuiTableRow-root css-k8hj4z">…</tr>
+      -   unexpected value "KB API Mon, Apr 13, 1:45 PMError1Apr 13, 20261:45 PMApr 13, 20261:45 PM"
+
+
+       at ..\pages\settings\knowledgeBase.page.ts:205
+
+      203 |         const row = this.getKBRow(name);
+      204 |         await row.hover();
+    > 205 |         await expect(row).toContainText(selectors.readyStatus, {
+          |                           ^
+      206 |             timeout: timeouts.long,
+      207 |         });
+      208 |     }
+
+        at KnowledgeBasePage.verifyKBStatusReady (C:\SimplyAsk\automation-tests-main-main\pages\settings\knowledgeBase.page.ts:205:27)
+        at C:\SimplyAsk\automation-tests-main-main\pages\settings\knowledgeBase.page.ts:339:13
+        at KnowledgeBasePage.verifyKBStatus (C:\SimplyAsk\automation-tests-main-main\pages\settings\knowledgeBase.page.ts:338:9)
+        at C:\SimplyAsk\automation-tests-main-main\tests\knowledgeBase.test.ts:27:17
+
+    attachment #1: screenshot (image/png) ───────────────────────────────────────────────────
+    test-results\knowledgeBase-Settings---A-2f8ea-status-is-Ready-Up-to-Date--chromium\test-failed-1.png
+    ─────────────────────────────────────────────────────────────────────────────────────────
+
+    attachment #2: video (video/webm) ───────────────────────────────────────────────────────
+    test-results\knowledgeBase-Settings---A-2f8ea-status-is-Ready-Up-to-Date--chromium\video.webm
+    ─────────────────────────────────────────────────────────────────────────────────────────
+]]>
+</failure>
+<system-out>
+<![CDATA[
+[[ATTACHMENT|test-results\knowledgeBase-Settings---A-2f8ea-status-is-Ready-Up-to-Date--chromium\test-failed-1.png]]
+
+[[ATTACHMENT|test-results\knowledgeBase-Settings---A-2f8ea-status-is-Ready-Up-to-Date--chromium\video.webm]]
+]]>
+</system-out>
+</testcase>
+<testcase name="Settings - AI Knowledge Base › KB with API Source › Delete Knowledge Base" classname="knowledgeBase.test.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Settings - AI Knowledge Base › KB with API Source › Verify KB is removed from list after deletion" classname="knowledgeBase.test.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Settings - AI Knowledge Base › KB with Website Source › Create Knowledge Base &amp; Website Knowledge Source" classname="knowledgeBase.test.ts" time="9.431">
+</testcase>
+<testcase name="Settings - AI Knowledge Base › KB with Website Source › Verify KB is visible in list" classname="knowledgeBase.test.ts" time="5.072">
+</testcase>
+<testcase name="Settings - AI Knowledge Base › KB with Website Source › Verify KB status is Ready (Up-to-Date)" classname="knowledgeBase.test.ts" time="120.193">
+<failure message="knowledgeBase.test.ts:26:17 Verify KB status is Ready (Up-to-Date)" type="FAILURE">
+<![CDATA[  [chromium] › knowledgeBase.test.ts:26:17 › Settings - AI Knowledge Base › KB with Website Source › Verify KB status is Ready (Up-to-Date) › Verify status is Ready (Up-to-Date) 
+
+    Test timeout of 120000ms exceeded.
+
+    Error: expect(locator).toContainText(expected)
+
+    Locator: getByRole('row').filter({ hasText: 'KB Website Mon, Apr 13, 1:47 PM' })
+    Expected string: "Ready (Up-to-Date)"
+    Received string: "KB Website Mon, Apr 13, 1:47 PMError1Apr 13, 20261:47 PMApr 13, 20261:47 PM"
+    Call log:
+      - expect.toContainText with timeout 120000ms
+      - waiting for getByRole('row').filter({ hasText: 'KB Website Mon, Apr 13, 1:47 PM' })
+      -   locator resolved to <tr class="MuiTableRow-root css-k8hj4z">…</tr>
+      -   unexpected value "KB Website Mon, Apr 13, 1:47 PMError1Apr 13, 20261:47 PMApr 13, 20261:47 PM"
+      -   locator resolved to <tr class="MuiTableRow-root css-k8hj4z">…</tr>
+      -   unexpected value "KB Website Mon, Apr 13, 1:47 PMError1Apr 13, 20261:47 PMApr 13, 20261:47 PM"
+      -   locator resolved to <tr class="MuiTableRow-root css-k8hj4z">…</tr>
+      -   unexpected value "KB Website Mon, Apr 13, 1:47 PMError1Apr 13, 20261:47 PMApr 13, 20261:47 PM"
+      -   locator resolved to <tr class="MuiTableRow-root css-k8hj4z">…</tr>
+      -   unexpected value "KB Website Mon, Apr 13, 1:47 PMError1Apr 13, 20261:47 PMApr 13, 20261:47 PM"
+      -   locator resolved to <tr class="MuiTableRow-root css-k8hj4z">…</tr>
+      -   unexpected value "KB Website Mon, Apr 13, 1:47 PMError1Apr 13, 20261:47 PMApr 13, 20261:47 PM"
+      -   locator resolved to <tr class="MuiTableRow-root css-k8hj4z">…</tr>
+      -   unexpected value "KB Website Mon, Apr 13, 1:47 PMError1Apr 13, 20261:47 PMApr 13, 20261:47 PM"
+      -   locator resolved to <tr class="MuiTableRow-root css-k8hj4z">…</tr>
+      -   unexpected value "KB Website Mon, Apr 13, 1:47 PMError1Apr 13, 20261:47 PMApr 13, 20261:47 PM"
+      -   locator resolved to <tr class="MuiTableRow-root css-k8hj4z">…</tr>
+      -   unexpected value "KB Website Mon, Apr 13, 1:47 PMError1Apr 13, 20261:47 PMApr 13, 20261:47 PM"
+      -   locator resolved to <tr class="MuiTableRow-root css-k8hj4z">…</tr>
+      -   unexpected value "KB Website Mon, Apr 13, 1:47 PMError1Apr 13, 20261:47 PMApr 13, 20261:47 PM"
+      -   locator resolved to <tr class="MuiTableRow-root css-k8hj4z">…</tr>
+      -   unexpected value "KB Website Mon, Apr 13, 1:47 PMError1Apr 13, 20261:47 PMApr 13, 20261:47 PM"
+      -   locator resolved to <tr class="MuiTableRow-root css-k8hj4z">…</tr>
+      -   unexpected value "KB Website Mon, Apr 13, 1:47 PMError1Apr 13, 20261:47 PMApr 13, 20261:47 PM"
+      -   locator resolved to <tr class="MuiTableRow-root css-k8hj4z">…</tr>
+      -   unexpected value "KB Website Mon, Apr 13, 1:47 PMError1Apr 13, 20261:47 PMApr 13, 20261:47 PM"
+      -   locator resolved to <tr class="MuiTableRow-root css-k8hj4z">…</tr>
+      -   unexpected value "KB Website Mon, Apr 13, 1:47 PMError1Apr 13, 20261:47 PMApr 13, 20261:47 PM"
+      -   locator resolved to <tr class="MuiTableRow-root css-k8hj4z">…</tr>
+      -   unexpected value "KB Website Mon, Apr 13, 1:47 PMError1Apr 13, 20261:47 PMApr 13, 20261:47 PM"
+      -   locator resolved to <tr class="MuiTableRow-root css-k8hj4z">…</tr>
+      -   unexpected value "KB Website Mon, Apr 13, 1:47 PMError1Apr 13, 20261:47 PMApr 13, 20261:47 PM"
+      -   locator resolved to <tr class="MuiTableRow-root css-k8hj4z">…</tr>
+      -   unexpected value "KB Website Mon, Apr 13, 1:47 PMError1Apr 13, 20261:47 PMApr 13, 20261:47 PM"
+      -   locator resolved to <tr class="MuiTableRow-root css-k8hj4z">…</tr>
+      -   unexpected value "KB Website Mon, Apr 13, 1:47 PMError1Apr 13, 20261:47 PMApr 13, 20261:47 PM"
+      -   locator resolved to <tr class="MuiTableRow-root css-k8hj4z">…</tr>
+      -   unexpected value "KB Website Mon, Apr 13, 1:47 PMError1Apr 13, 20261:47 PMApr 13, 20261:47 PM"
+      -   locator resolved to <tr class="MuiTableRow-root css-k8hj4z">…</tr>
+      -   unexpected value "KB Website Mon, Apr 13, 1:47 PMError1Apr 13, 20261:47 PMApr 13, 20261:47 PM"
+      -   locator resolved to <tr class="MuiTableRow-root css-k8hj4z">…</tr>
+      -   unexpected value "KB Website Mon, Apr 13, 1:47 PMError1Apr 13, 20261:47 PMApr 13, 20261:47 PM"
+      -   locator resolved to <tr class="MuiTableRow-root css-k8hj4z">…</tr>
+      -   unexpected value "KB Website Mon, Apr 13, 1:47 PMError1Apr 13, 20261:47 PMApr 13, 20261:47 PM"
+      -   locator resolved to <tr class="MuiTableRow-root css-k8hj4z">…</tr>
+      -   unexpected value "KB Website Mon, Apr 13, 1:47 PMError1Apr 13, 20261:47 PMApr 13, 20261:47 PM"
+      -   locator resolved to <tr class="MuiTableRow-root css-k8hj4z">…</tr>
+      -   unexpected value "KB Website Mon, Apr 13, 1:47 PMError1Apr 13, 20261:47 PMApr 13, 20261:47 PM"
+      -   locator resolved to <tr class="MuiTableRow-root css-k8hj4z">…</tr>
+      -   unexpected value "KB Website Mon, Apr 13, 1:47 PMError1Apr 13, 20261:47 PMApr 13, 20261:47 PM"
+      -   locator resolved to <tr class="MuiTableRow-root css-k8hj4z">…</tr>
+      -   unexpected value "KB Website Mon, Apr 13, 1:47 PMError1Apr 13, 20261:47 PMApr 13, 20261:47 PM"
+      -   locator resolved to <tr class="MuiTableRow-root css-k8hj4z">…</tr>
+      -   unexpected value "KB Website Mon, Apr 13, 1:47 PMError1Apr 13, 20261:47 PMApr 13, 20261:47 PM"
+      -   locator resolved to <tr class="MuiTableRow-root css-k8hj4z">…</tr>
+      -   unexpected value "KB Website Mon, Apr 13, 1:47 PMError1Apr 13, 20261:47 PMApr 13, 20261:47 PM"
+      -   locator resolved to <tr class="MuiTableRow-root css-k8hj4z">…</tr>
+      -   unexpected value "KB Website Mon, Apr 13, 1:47 PMError1Apr 13, 20261:47 PMApr 13, 20261:47 PM"
+      -   locator resolved to <tr class="MuiTableRow-root css-k8hj4z">…</tr>
+      -   unexpected value "KB Website Mon, Apr 13, 1:47 PMError1Apr 13, 20261:47 PMApr 13, 20261:47 PM"
+      -   locator resolved to <tr class="MuiTableRow-root css-k8hj4z">…</tr>
+      -   unexpected value "KB Website Mon, Apr 13, 1:47 PMError1Apr 13, 20261:47 PMApr 13, 20261:47 PM"
+      -   locator resolved to <tr class="MuiTableRow-root css-k8hj4z">…</tr>
+      -   unexpected value "KB Website Mon, Apr 13, 1:47 PMError1Apr 13, 20261:47 PMApr 13, 20261:47 PM"
+      -   locator resolved to <tr class="MuiTableRow-root css-k8hj4z">…</tr>
+      -   unexpected value "KB Website Mon, Apr 13, 1:47 PMError1Apr 13, 20261:47 PMApr 13, 20261:47 PM"
+      -   locator resolved to <tr class="MuiTableRow-root css-k8hj4z">…</tr>
+      -   unexpected value "KB Website Mon, Apr 13, 1:47 PMError1Apr 13, 20261:47 PMApr 13, 20261:47 PM"
+      -   locator resolved to <tr class="MuiTableRow-root css-k8hj4z">…</tr>
+      -   unexpected value "KB Website Mon, Apr 13, 1:47 PMError1Apr 13, 20261:47 PMApr 13, 20261:47 PM"
+      -   locator resolved to <tr class="MuiTableRow-root css-k8hj4z">…</tr>
+      -   unexpected value "KB Website Mon, Apr 13, 1:47 PMError1Apr 13, 20261:47 PMApr 13, 20261:47 PM"
+      -   locator resolved to <tr class="MuiTableRow-root css-k8hj4z">…</tr>
+      -   unexpected value "KB Website Mon, Apr 13, 1:47 PMError1Apr 13, 20261:47 PMApr 13, 20261:47 PM"
+      -   locator resolved to <tr class="MuiTableRow-root css-k8hj4z">…</tr>
+      -   unexpected value "KB Website Mon, Apr 13, 1:47 PMError1Apr 13, 20261:47 PMApr 13, 20261:47 PM"
+      -   locator resolved to <tr class="MuiTableRow-root css-k8hj4z">…</tr>
+      -   unexpected value "KB Website Mon, Apr 13, 1:47 PMError1Apr 13, 20261:47 PMApr 13, 20261:47 PM"
+      -   locator resolved to <tr class="MuiTableRow-root css-k8hj4z">…</tr>
+      -   unexpected value "KB Website Mon, Apr 13, 1:47 PMError1Apr 13, 20261:47 PMApr 13, 20261:47 PM"
+      -   locator resolved to <tr class="MuiTableRow-root css-k8hj4z">…</tr>
+      -   unexpected value "KB Website Mon, Apr 13, 1:47 PMError1Apr 13, 20261:47 PMApr 13, 20261:47 PM"
+      -   locator resolved to <tr class="MuiTableRow-root css-k8hj4z">…</tr>
+      -   unexpected value "KB Website Mon, Apr 13, 1:47 PMError1Apr 13, 20261:47 PMApr 13, 20261:47 PM"
+      -   locator resolved to <tr class="MuiTableRow-root css-k8hj4z">…</tr>
+      -   unexpected value "KB Website Mon, Apr 13, 1:47 PMError1Apr 13, 20261:47 PMApr 13, 20261:47 PM"
+      -   locator resolved to <tr class="MuiTableRow-root css-k8hj4z">…</tr>
+      -   unexpected value "KB Website Mon, Apr 13, 1:47 PMError1Apr 13, 20261:47 PMApr 13, 20261:47 PM"
+      -   locator resolved to <tr class="MuiTableRow-root css-k8hj4z">…</tr>
+      -   unexpected value "KB Website Mon, Apr 13, 1:47 PMError1Apr 13, 20261:47 PMApr 13, 20261:47 PM"
+      -   locator resolved to <tr class="MuiTableRow-root css-k8hj4z">…</tr>
+      -   unexpected value "KB Website Mon, Apr 13, 1:47 PMError1Apr 13, 20261:47 PMApr 13, 20261:47 PM"
+      -   locator resolved to <tr class="MuiTableRow-root css-k8hj4z">…</tr>
+      -   unexpected value "KB Website Mon, Apr 13, 1:47 PMError1Apr 13, 20261:47 PMApr 13, 20261:47 PM"
+      -   locator resolved to <tr class="MuiTableRow-root css-k8hj4z">…</tr>
+      -   unexpected value "KB Website Mon, Apr 13, 1:47 PMError1Apr 13, 20261:47 PMApr 13, 20261:47 PM"
+      -   locator resolved to <tr class="MuiTableRow-root css-k8hj4z">…</tr>
+      -   unexpected value "KB Website Mon, Apr 13, 1:47 PMError1Apr 13, 20261:47 PMApr 13, 20261:47 PM"
+      -   locator resolved to <tr class="MuiTableRow-root css-k8hj4z">…</tr>
+      -   unexpected value "KB Website Mon, Apr 13, 1:47 PMError1Apr 13, 20261:47 PMApr 13, 20261:47 PM"
+      -   locator resolved to <tr class="MuiTableRow-root css-k8hj4z">…</tr>
+      -   unexpected value "KB Website Mon, Apr 13, 1:47 PMError1Apr 13, 20261:47 PMApr 13, 20261:47 PM"
+      -   locator resolved to <tr class="MuiTableRow-root css-k8hj4z">…</tr>
+      -   unexpected value "KB Website Mon, Apr 13, 1:47 PMError1Apr 13, 20261:47 PMApr 13, 20261:47 PM"
+      -   locator resolved to <tr class="MuiTableRow-root css-k8hj4z">…</tr>
+      -   unexpected value "KB Website Mon, Apr 13, 1:47 PMError1Apr 13, 20261:47 PMApr 13, 20261:47 PM"
+      -   locator resolved to <tr class="MuiTableRow-root css-k8hj4z">…</tr>
+      -   unexpected value "KB Website Mon, Apr 13, 1:47 PMError1Apr 13, 20261:47 PMApr 13, 20261:47 PM"
+      -   locator resolved to <tr class="MuiTableRow-root css-k8hj4z">…</tr>
+      -   unexpected value "KB Website Mon, Apr 13, 1:47 PMError1Apr 13, 20261:47 PMApr 13, 20261:47 PM"
+      -   locator resolved to <tr class="MuiTableRow-root css-k8hj4z">…</tr>
+      -   unexpected value "KB Website Mon, Apr 13, 1:47 PMError1Apr 13, 20261:47 PMApr 13, 20261:47 PM"
+      -   locator resolved to <tr class="MuiTableRow-root css-k8hj4z">…</tr>
+      -   unexpected value "KB Website Mon, Apr 13, 1:47 PMError1Apr 13, 20261:47 PMApr 13, 20261:47 PM"
+      -   locator resolved to <tr class="MuiTableRow-root css-k8hj4z">…</tr>
+      -   unexpected value "KB Website Mon, Apr 13, 1:47 PMError1Apr 13, 20261:47 PMApr 13, 20261:47 PM"
+      -   locator resolved to <tr class="MuiTableRow-root css-k8hj4z">…</tr>
+      -   unexpected value "KB Website Mon, Apr 13, 1:47 PMError1Apr 13, 20261:47 PMApr 13, 20261:47 PM"
+      -   locator resolved to <tr class="MuiTableRow-root css-k8hj4z">…</tr>
+      -   unexpected value "KB Website Mon, Apr 13, 1:47 PMError1Apr 13, 20261:47 PMApr 13, 20261:47 PM"
+      -   locator resolved to <tr class="MuiTableRow-root css-k8hj4z">…</tr>
+      -   unexpected value "KB Website Mon, Apr 13, 1:47 PMError1Apr 13, 20261:47 PMApr 13, 20261:47 PM"
+      -   locator resolved to <tr class="MuiTableRow-root css-k8hj4z">…</tr>
+      -   unexpected value "KB Website Mon, Apr 13, 1:47 PMError1Apr 13, 20261:47 PMApr 13, 20261:47 PM"
+      -   locator resolved to <tr class="MuiTableRow-root css-k8hj4z">…</tr>
+      -   unexpected value "KB Website Mon, Apr 13, 1:47 PMError1Apr 13, 20261:47 PMApr 13, 20261:47 PM"
+      -   locator resolved to <tr class="MuiTableRow-root css-k8hj4z">…</tr>
+      -   unexpected value "KB Website Mon, Apr 13, 1:47 PMError1Apr 13, 20261:47 PMApr 13, 20261:47 PM"
+      -   locator resolved to <tr class="MuiTableRow-root css-k8hj4z">…</tr>
+      -   unexpected value "KB Website Mon, Apr 13, 1:47 PMError1Apr 13, 20261:47 PMApr 13, 20261:47 PM"
+      -   locator resolved to <tr class="MuiTableRow-root css-k8hj4z">…</tr>
+      -   unexpected value "KB Website Mon, Apr 13, 1:47 PMError1Apr 13, 20261:47 PMApr 13, 20261:47 PM"
+      -   locator resolved to <tr class="MuiTableRow-root css-k8hj4z">…</tr>
+      -   unexpected value "KB Website Mon, Apr 13, 1:47 PMError1Apr 13, 20261:47 PMApr 13, 20261:47 PM"
+      -   locator resolved to <tr class="MuiTableRow-root css-k8hj4z">…</tr>
+      -   unexpected value "KB Website Mon, Apr 13, 1:47 PMError1Apr 13, 20261:47 PMApr 13, 20261:47 PM"
+      -   locator resolved to <tr class="MuiTableRow-root css-k8hj4z">…</tr>
+      -   unexpected value "KB Website Mon, Apr 13, 1:47 PMError1Apr 13, 20261:47 PMApr 13, 20261:47 PM"
+      -   locator resolved to <tr class="MuiTableRow-root css-k8hj4z">…</tr>
+      -   unexpected value "KB Website Mon, Apr 13, 1:47 PMError1Apr 13, 20261:47 PMApr 13, 20261:47 PM"
+      -   locator resolved to <tr class="MuiTableRow-root css-k8hj4z">…</tr>
+      -   unexpected value "KB Website Mon, Apr 13, 1:47 PMError1Apr 13, 20261:47 PMApr 13, 20261:47 PM"
+      -   locator resolved to <tr class="MuiTableRow-root css-k8hj4z">…</tr>
+      -   unexpected value "KB Website Mon, Apr 13, 1:47 PMError1Apr 13, 20261:47 PMApr 13, 20261:47 PM"
+      -   locator resolved to <tr class="MuiTableRow-root css-k8hj4z">…</tr>
+      -   unexpected value "KB Website Mon, Apr 13, 1:47 PMError1Apr 13, 20261:47 PMApr 13, 20261:47 PM"
+      -   locator resolved to <tr class="MuiTableRow-root css-k8hj4z">…</tr>
+      -   unexpected value "KB Website Mon, Apr 13, 1:47 PMError1Apr 13, 20261:47 PMApr 13, 20261:47 PM"
+      -   locator resolved to <tr class="MuiTableRow-root css-k8hj4z">…</tr>
+      -   unexpected value "KB Website Mon, Apr 13, 1:47 PMError1Apr 13, 20261:47 PMApr 13, 20261:47 PM"
+      -   locator resolved to <tr class="MuiTableRow-root css-k8hj4z">…</tr>
+      -   unexpected value "KB Website Mon, Apr 13, 1:47 PMError1Apr 13, 20261:47 PMApr 13, 20261:47 PM"
+      -   locator resolved to <tr class="MuiTableRow-root css-k8hj4z">…</tr>
+      -   unexpected value "KB Website Mon, Apr 13, 1:47 PMError1Apr 13, 20261:47 PMApr 13, 20261:47 PM"
+      -   locator resolved to <tr class="MuiTableRow-root css-k8hj4z">…</tr>
+      -   unexpected value "KB Website Mon, Apr 13, 1:47 PMError1Apr 13, 20261:47 PMApr 13, 20261:47 PM"
+      -   locator resolved to <tr class="MuiTableRow-root css-k8hj4z">…</tr>
+      -   unexpected value "KB Website Mon, Apr 13, 1:47 PMError1Apr 13, 20261:47 PMApr 13, 20261:47 PM"
+      -   locator resolved to <tr class="MuiTableRow-root css-k8hj4z">…</tr>
+      -   unexpected value "KB Website Mon, Apr 13, 1:47 PMError1Apr 13, 20261:47 PMApr 13, 20261:47 PM"
+      -   locator resolved to <tr class="MuiTableRow-root css-k8hj4z">…</tr>
+      -   unexpected value "KB Website Mon, Apr 13, 1:47 PMError1Apr 13, 20261:47 PMApr 13, 20261:47 PM"
+      -   locator resolved to <tr class="MuiTableRow-root css-k8hj4z">…</tr>
+      -   unexpected value "KB Website Mon, Apr 13, 1:47 PMError1Apr 13, 20261:47 PMApr 13, 20261:47 PM"
+      -   locator resolved to <tr class="MuiTableRow-root css-k8hj4z">…</tr>
+      -   unexpected value "KB Website Mon, Apr 13, 1:47 PMError1Apr 13, 20261:47 PMApr 13, 20261:47 PM"
+      -   locator resolved to <tr class="MuiTableRow-root css-k8hj4z">…</tr>
+      -   unexpected value "KB Website Mon, Apr 13, 1:47 PMError1Apr 13, 20261:47 PMApr 13, 20261:47 PM"
+      -   locator resolved to <tr class="MuiTableRow-root css-k8hj4z">…</tr>
+      -   unexpected value "KB Website Mon, Apr 13, 1:47 PMError1Apr 13, 20261:47 PMApr 13, 20261:47 PM"
+      -   locator resolved to <tr class="MuiTableRow-root css-k8hj4z">…</tr>
+      -   unexpected value "KB Website Mon, Apr 13, 1:47 PMError1Apr 13, 20261:47 PMApr 13, 20261:47 PM"
+      -   locator resolved to <tr class="MuiTableRow-root css-k8hj4z">…</tr>
+      -   unexpected value "KB Website Mon, Apr 13, 1:47 PMError1Apr 13, 20261:47 PMApr 13, 20261:47 PM"
+      -   locator resolved to <tr class="MuiTableRow-root css-k8hj4z">…</tr>
+      -   unexpected value "KB Website Mon, Apr 13, 1:47 PMError1Apr 13, 20261:47 PMApr 13, 20261:47 PM"
+      -   locator resolved to <tr class="MuiTableRow-root css-k8hj4z">…</tr>
+      -   unexpected value "KB Website Mon, Apr 13, 1:47 PMError1Apr 13, 20261:47 PMApr 13, 20261:47 PM"
+      -   locator resolved to <tr class="MuiTableRow-root css-k8hj4z">…</tr>
+      -   unexpected value "KB Website Mon, Apr 13, 1:47 PMError1Apr 13, 20261:47 PMApr 13, 20261:47 PM"
+      -   locator resolved to <tr class="MuiTableRow-root css-k8hj4z">…</tr>
+      -   unexpected value "KB Website Mon, Apr 13, 1:47 PMError1Apr 13, 20261:47 PMApr 13, 20261:47 PM"
+      -   locator resolved to <tr class="MuiTableRow-root css-k8hj4z">…</tr>
+      -   unexpected value "KB Website Mon, Apr 13, 1:47 PMError1Apr 13, 20261:47 PMApr 13, 20261:47 PM"
+      -   locator resolved to <tr class="MuiTableRow-root css-k8hj4z">…</tr>
+      -   unexpected value "KB Website Mon, Apr 13, 1:47 PMError1Apr 13, 20261:47 PMApr 13, 20261:47 PM"
+      -   locator resolved to <tr class="MuiTableRow-root css-k8hj4z">…</tr>
+      -   unexpected value "KB Website Mon, Apr 13, 1:47 PMError1Apr 13, 20261:47 PMApr 13, 20261:47 PM"
+      -   locator resolved to <tr class="MuiTableRow-root css-k8hj4z">…</tr>
+      -   unexpected value "KB Website Mon, Apr 13, 1:47 PMError1Apr 13, 20261:47 PMApr 13, 20261:47 PM"
+      -   locator resolved to <tr class="MuiTableRow-root css-k8hj4z">…</tr>
+      -   unexpected value "KB Website Mon, Apr 13, 1:47 PMError1Apr 13, 20261:47 PMApr 13, 20261:47 PM"
+      -   locator resolved to <tr class="MuiTableRow-root css-k8hj4z">…</tr>
+      -   unexpected value "KB Website Mon, Apr 13, 1:47 PMError1Apr 13, 20261:47 PMApr 13, 20261:47 PM"
+      -   locator resolved to <tr class="MuiTableRow-root css-k8hj4z">…</tr>
+      -   unexpected value "KB Website Mon, Apr 13, 1:47 PMError1Apr 13, 20261:47 PMApr 13, 20261:47 PM"
+      -   locator resolved to <tr class="MuiTableRow-root css-k8hj4z">…</tr>
+      -   unexpected value "KB Website Mon, Apr 13, 1:47 PMError1Apr 13, 20261:47 PMApr 13, 20261:47 PM"
+      -   locator resolved to <tr class="MuiTableRow-root css-k8hj4z">…</tr>
+      -   unexpected value "KB Website Mon, Apr 13, 1:47 PMError1Apr 13, 20261:47 PMApr 13, 20261:47 PM"
+      -   locator resolved to <tr class="MuiTableRow-root css-k8hj4z">…</tr>
+      -   unexpected value "KB Website Mon, Apr 13, 1:47 PMError1Apr 13, 20261:47 PMApr 13, 20261:47 PM"
+      -   locator resolved to <tr class="MuiTableRow-root css-k8hj4z">…</tr>
+      -   unexpected value "KB Website Mon, Apr 13, 1:47 PMError1Apr 13, 20261:47 PMApr 13, 20261:47 PM"
+      -   locator resolved to <tr class="MuiTableRow-root css-k8hj4z">…</tr>
+      -   unexpected value "KB Website Mon, Apr 13, 1:47 PMError1Apr 13, 20261:47 PMApr 13, 20261:47 PM"
+      -   locator resolved to <tr class="MuiTableRow-root css-k8hj4z">…</tr>
+      -   unexpected value "KB Website Mon, Apr 13, 1:47 PMError1Apr 13, 20261:47 PMApr 13, 20261:47 PM"
+      -   locator resolved to <tr class="MuiTableRow-root css-k8hj4z">…</tr>
+      -   unexpected value "KB Website Mon, Apr 13, 1:47 PMError1Apr 13, 20261:47 PMApr 13, 20261:47 PM"
+      -   locator resolved to <tr class="MuiTableRow-root css-k8hj4z">…</tr>
+      -   unexpected value "KB Website Mon, Apr 13, 1:47 PMError1Apr 13, 20261:47 PMApr 13, 20261:47 PM"
+      -   locator resolved to <tr class="MuiTableRow-root css-k8hj4z">…</tr>
+      -   unexpected value "KB Website Mon, Apr 13, 1:47 PMError1Apr 13, 20261:47 PMApr 13, 20261:47 PM"
+      -   locator resolved to <tr class="MuiTableRow-root css-k8hj4z">…</tr>
+      -   unexpected value "KB Website Mon, Apr 13, 1:47 PMError1Apr 13, 20261:47 PMApr 13, 20261:47 PM"
+      -   locator resolved to <tr class="MuiTableRow-root css-k8hj4z">…</tr>
+      -   unexpected value "KB Website Mon, Apr 13, 1:47 PMError1Apr 13, 20261:47 PMApr 13, 20261:47 PM"
+      -   locator resolved to <tr class="MuiTableRow-root css-k8hj4z">…</tr>
+      -   unexpected value "KB Website Mon, Apr 13, 1:47 PMError1Apr 13, 20261:47 PMApr 13, 20261:47 PM"
+      -   locator resolved to <tr class="MuiTableRow-root css-k8hj4z">…</tr>
+      -   unexpected value "KB Website Mon, Apr 13, 1:47 PMError1Apr 13, 20261:47 PMApr 13, 20261:47 PM"
+      -   locator resolved to <tr class="MuiTableRow-root css-k8hj4z">…</tr>
+      -   unexpected value "KB Website Mon, Apr 13, 1:47 PMError1Apr 13, 20261:47 PMApr 13, 20261:47 PM"
+      -   locator resolved to <tr class="MuiTableRow-root css-k8hj4z">…</tr>
+      -   unexpected value "KB Website Mon, Apr 13, 1:47 PMError1Apr 13, 20261:47 PMApr 13, 20261:47 PM"
+      -   locator resolved to <tr class="MuiTableRow-root css-k8hj4z">…</tr>
+      -   unexpected value "KB Website Mon, Apr 13, 1:47 PMError1Apr 13, 20261:47 PMApr 13, 20261:47 PM"
+      -   locator resolved to <tr class="MuiTableRow-root css-k8hj4z">…</tr>
+      -   unexpected value "KB Website Mon, Apr 13, 1:47 PMError1Apr 13, 20261:47 PMApr 13, 20261:47 PM"
+      -   locator resolved to <tr class="MuiTableRow-root css-k8hj4z">…</tr>
+      -   unexpected value "KB Website Mon, Apr 13, 1:47 PMError1Apr 13, 20261:47 PMApr 13, 20261:47 PM"
+      -   locator resolved to <tr class="MuiTableRow-root css-k8hj4z">…</tr>
+      -   unexpected value "KB Website Mon, Apr 13, 1:47 PMError1Apr 13, 20261:47 PMApr 13, 20261:47 PM"
+      -   locator resolved to <tr class="MuiTableRow-root css-k8hj4z">…</tr>
+      -   unexpected value "KB Website Mon, Apr 13, 1:47 PMError1Apr 13, 20261:47 PMApr 13, 20261:47 PM"
+
+
+       at ..\pages\settings\knowledgeBase.page.ts:205
+
+      203 |         const row = this.getKBRow(name);
+      204 |         await row.hover();
+    > 205 |         await expect(row).toContainText(selectors.readyStatus, {
+          |                           ^
+      206 |             timeout: timeouts.long,
+      207 |         });
+      208 |     }
+
+        at KnowledgeBasePage.verifyKBStatusReady (C:\SimplyAsk\automation-tests-main-main\pages\settings\knowledgeBase.page.ts:205:27)
+        at C:\SimplyAsk\automation-tests-main-main\pages\settings\knowledgeBase.page.ts:339:13
+        at KnowledgeBasePage.verifyKBStatus (C:\SimplyAsk\automation-tests-main-main\pages\settings\knowledgeBase.page.ts:338:9)
+        at C:\SimplyAsk\automation-tests-main-main\tests\knowledgeBase.test.ts:27:17
+
+    attachment #1: screenshot (image/png) ───────────────────────────────────────────────────
+    test-results\knowledgeBase-Settings---A-e3294-status-is-Ready-Up-to-Date--chromium\test-failed-1.png
+    ─────────────────────────────────────────────────────────────────────────────────────────
+
+    attachment #2: video (video/webm) ───────────────────────────────────────────────────────
+    test-results\knowledgeBase-Settings---A-e3294-status-is-Ready-Up-to-Date--chromium\video.webm
+    ─────────────────────────────────────────────────────────────────────────────────────────
+]]>
+</failure>
+<system-out>
+<![CDATA[
+[[ATTACHMENT|test-results\knowledgeBase-Settings---A-e3294-status-is-Ready-Up-to-Date--chromium\test-failed-1.png]]
+
+[[ATTACHMENT|test-results\knowledgeBase-Settings---A-e3294-status-is-Ready-Up-to-Date--chromium\video.webm]]
+]]>
+</system-out>
+</testcase>
+<testcase name="Settings - AI Knowledge Base › KB with Website Source › Delete Knowledge Base" classname="knowledgeBase.test.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Settings - AI Knowledge Base › KB with Website Source › Verify KB is removed from list after deletion" classname="knowledgeBase.test.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+</testsuite>
+<testsuite name="processManager.test.ts" timestamp="2026-04-13T20:39:37.430Z" hostname="chromium" tests="12" failures="1" skipped="2" time="112.838" errors="0">
+<testcase name="Flow - Process Manager › Create Service Ticket › Create Service Ticket Process" classname="processManager.test.ts" time="8.37">
+</testcase>
+<testcase name="Flow - Process Manager › Create Service Ticket › Edit Process - Add and Configure Delegate Step" classname="processManager.test.ts" time="12.314">
+</testcase>
+<testcase name="Flow - Process Manager › Create Service Ticket › Deploy Service Ticket Process" classname="processManager.test.ts" time="10.392">
+</testcase>
+<testcase name="Flow - Process Manager › Create Service Ticket › Trigger Service Ticket Process" classname="processManager.test.ts" time="13.476">
+</testcase>
+<testcase name="Flow - Process Manager › Create Service Ticket › Create Trigger Process" classname="processManager.test.ts" time="8.233">
+</testcase>
+<testcase name="Flow - Process Manager › Create Service Ticket › Edit Trigger Process - Add Initial Parameter, Trigger Step and Deploy" classname="processManager.test.ts" time="23.872">
+<failure message="processManager.test.ts:58:13 Edit Trigger Process - Add Initial Parameter, Trigger Step and Deploy" type="FAILURE">
+<![CDATA[  [chromium] › processManager.test.ts:58:13 › Flow - Process Manager › Create Service Ticket › Edit Trigger Process - Add Initial Parameter, Trigger Step and Deploy 
+
+    Error: Timed out 10000ms waiting for expect(locator).toBeVisible()
+
+    Locator: locator('#step-id-2')
+    Expected: visible
+    Received: <element(s) not found>
+    Call log:
+      - expect.toBeVisible with timeout 10000ms
+      - waiting for locator('#step-id-2')
+
+
+       at ..\pages\flow\processManager.page.ts:433
+
+      431 |
+      432 |     async verifyStepOnCanvas(stepId: number): Promise<void> {
+    > 433 |         await expect(this.getStepLocator(stepId)).toBeVisible({
+          |                                                   ^
+      434 |             timeout: COMMON_TIMEOUTS.short,
+      435 |         });
+      436 |     }
+
+        at ProcessManagerPage.verifyStepOnCanvas (C:\SimplyAsk\automation-tests-main-main\pages\flow\processManager.page.ts:433:51)
+        at ProcessManagerPage.addDelegateStepAndOpenConfig (C:\SimplyAsk\automation-tests-main-main\pages\flow\processManager.page.ts:445:20)
+        at C:\SimplyAsk\automation-tests-main-main\tests\processManager.test.ts:68:13
+
+    attachment #1: screenshot (image/png) ───────────────────────────────────────────────────
+    test-results\processManager-Flow---Proc-68018-ter-Trigger-Step-and-Deploy-chromium\test-failed-1.png
+    ─────────────────────────────────────────────────────────────────────────────────────────
+
+    attachment #2: video (video/webm) ───────────────────────────────────────────────────────
+    test-results\processManager-Flow---Proc-68018-ter-Trigger-Step-and-Deploy-chromium\video.webm
+    ─────────────────────────────────────────────────────────────────────────────────────────
+
+    attachment #3: screenshot (image/png) ───────────────────────────────────────────────────
+    test-results\processManager-Flow---Proc-68018-ter-Trigger-Step-and-Deploy-chromium\test-failed-2.png
+    ─────────────────────────────────────────────────────────────────────────────────────────
+]]>
+</failure>
+<system-out>
+<![CDATA[
+[[ATTACHMENT|test-results\processManager-Flow---Proc-68018-ter-Trigger-Step-and-Deploy-chromium\test-failed-1.png]]
+
+[[ATTACHMENT|test-results\processManager-Flow---Proc-68018-ter-Trigger-Step-and-Deploy-chromium\video.webm]]
+
+[[ATTACHMENT|test-results\processManager-Flow---Proc-68018-ter-Trigger-Step-and-Deploy-chromium\test-failed-2.png]]
+]]>
+</system-out>
+<system-err>
+<![CDATA[[Cleanup] Failed to delete process "Sense 2026-04-13 13-41-01" — it may have already been removed.
+[Cleanup] Failed to delete process "Trigonometry 2026-04-13 13-41-01" — it may have already been removed.
+]]>
+</system-err>
+</testcase>
+<testcase name="Flow - Process Manager › Create Service Ticket › Trigger Process with Trigger Process Step" classname="processManager.test.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Flow - Process Manager › Export/Import › Export process" classname="processManager.test.ts" time="6.856">
+</testcase>
+<testcase name="Flow - Process Manager › Export/Import › Import process" classname="processManager.test.ts" time="0">
+<properties>
+<property name="skip" value="">
+</property>
+</properties>
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Flow - Process Manager › Rename and Schedule › Rename process" classname="processManager.test.ts" time="12.596">
+</testcase>
+<testcase name="Flow - Process Manager › Rename and Schedule › Deploy renamed process" classname="processManager.test.ts" time="8.302">
+</testcase>
+<testcase name="Flow - Process Manager › Rename and Schedule › Schedule process" classname="processManager.test.ts" time="8.427">
+<system-err>
+<![CDATA[[Cleanup] Failed to delete process "Ox 2026-04-13 13-42-54" — it may have already been removed.
+[Cleanup] Failed to delete process "Vineyard 2026-04-13 13-42-54" — it may have already been removed.
+[Cleanup] Failed to delete process "Archives 2026-04-13 13-42-55" — it may have already been removed.
+[Cleanup] Failed to delete process "Blinker 2026-04-13 13-43-16" — it may have already been removed.
+]]>
+</system-err>
+</testcase>
+</testsuite>
+<testsuite name="registration.test.ts" timestamp="2026-04-13T20:39:37.430Z" hostname="chromium" tests="12" failures="2" skipped="0" time="178.871" errors="0">
+<testcase name="Organization Registration - Validation › Registration page displays all required elements" classname="registration.test.ts" time="4.153">
+</testcase>
+<testcase name="Organization Registration - Validation › Create Account button is disabled when all fields are empty" classname="registration.test.ts" time="3.434">
+</testcase>
+<testcase name="Organization Registration - Validation › Create Account button is disabled without first name" classname="registration.test.ts" time="4.963">
+</testcase>
+<testcase name="Organization Registration - Validation › Create Account button is disabled without last name" classname="registration.test.ts" time="5.786">
+</testcase>
+<testcase name="Organization Registration - Validation › Create Account button is disabled without email" classname="registration.test.ts" time="5.746">
+</testcase>
+<testcase name="Organization Registration - Validation › Create Account button is disabled without company name" classname="registration.test.ts" time="5.736">
+</testcase>
+<testcase name="Organization Registration - Validation › Create Account button is disabled without accepting terms" classname="registration.test.ts" time="5.181">
+</testcase>
+<testcase name="Organization Registration - Validation › Create Account button is enabled when all required fields are filled" classname="registration.test.ts" time="7.338">
+</testcase>
+<testcase name="Organization Registration - E2E › Register, extract password from email, and verify login" classname="registration.test.ts" time="40.494">
+</testcase>
+<testcase name="Login - Negative Scenarios › Login with valid email and wrong password shows error message" classname="registration.test.ts" time="14.924">
+<failure message="registration.test.ts:118:9 Login with valid email and wrong password shows error message" type="FAILURE">
+<![CDATA[  [chromium] › registration.test.ts:118:9 › Login - Negative Scenarios › Login with valid email and wrong password shows error message 
+
+    Error: Timed out 10000ms waiting for expect(locator).toBeVisible()
+
+    Locator: locator('section').filter({ has: locator('[data-testid="WarningAmberRoundedIcon"]') })
+    Expected: visible
+    Received: <element(s) not found>
+    Call log:
+      - expect.toBeVisible with timeout 10000ms
+      - waiting for locator('section').filter({ has: locator('[data-testid="WarningAmberRoundedIcon"]') })
+
+
+       at ..\pages\login.page.ts:106
+
+      104 |     async attemptLoginAndExpectError(params: { username: string; password: string }): Promise<void> {
+      105 |         await this.loginToApp(params);
+    > 106 |         await expect(this.loginErrorSection).toBeVisible({ timeout: timeouts.short });
+          |                                              ^
+      107 |         await expect(this.loginErrorHeader).toBeVisible();
+      108 |         await expect(this.loginErrorMessage).toBeVisible();
+      109 |     }
+
+        at LoginPage.attemptLoginAndExpectError (C:\SimplyAsk\automation-tests-main-main\pages\login.page.ts:106:46)
+        at C:\SimplyAsk\automation-tests-main-main\tests\registration.test.ts:119:9
+
+    Error: IMAP connection error: Timed out while authenticating with server
+
+       at ..\utils\gmail.service.ts:468
+
+      466 |
+      467 |             imap.once('error', (err: Error) => {
+    > 468 |                 reject(new Error(`IMAP connection error: ${err.message}`));
+          |                        ^
+      469 |             });
+      470 |
+      471 |             imap.connect();
+
+        at Connection.<anonymous> (C:\SimplyAsk\automation-tests-main-main\utils\gmail.service.ts:468:24)
+        at Timeout._onTimeout (C:\SimplyAsk\automation-tests-main-main\node_modules\imap\lib\Connection.js:141:12)
+
+    attachment #1: screenshot (image/png) ───────────────────────────────────────────────────
+    test-results\registration-Login---Negat-ff127-assword-shows-error-message-chromium\test-failed-1.png
+    ─────────────────────────────────────────────────────────────────────────────────────────
+
+    attachment #2: video (video/webm) ───────────────────────────────────────────────────────
+    test-results\registration-Login---Negat-ff127-assword-shows-error-message-chromium\video.webm
+    ─────────────────────────────────────────────────────────────────────────────────────────
+]]>
+</failure>
+<system-out>
+<![CDATA[
+[[ATTACHMENT|test-results\registration-Login---Negat-ff127-assword-shows-error-message-chromium\test-failed-1.png]]
+
+[[ATTACHMENT|test-results\registration-Login---Negat-ff127-assword-shows-error-message-chromium\video.webm]]
+]]>
+</system-out>
+</testcase>
+<testcase name="Forgot Password Functionality › Forgot password page shows error for invalid email format" classname="registration.test.ts" time="3.667">
+</testcase>
+<testcase name="Forgot Password Functionality › Forgot password - reset password via email link" classname="registration.test.ts" time="77.449">
+<failure message="registration.test.ts:143:9 Forgot password - reset password via email link" type="FAILURE">
+<![CDATA[  [chromium] › registration.test.ts:143:9 › Forgot Password Functionality › Forgot password - reset password via email link › Navigate to Create New Password page and verify it loads › Verify Create New Password page is displayed 
+
+    Error: Timed out 45000ms waiting for expect(locator).toBeVisible()
+
+    Locator: locator('input[name="password"]')
+    Expected: visible
+    Received: <element(s) not found>
+    Call log:
+      - expect.toBeVisible with timeout 45000ms
+      - waiting for locator('input[name="password"]')
+
+
+       at ..\pages\login.page.ts:239
+
+      237 |     async verifyCreateNewPasswordPageDisplayed(): Promise<void> {
+      238 |         await test.step('Verify Create New Password page is displayed', async () => {
+    > 239 |             await expect(this.newPasswordInput).toBeVisible({ timeout: timeouts.standard });
+          |                                                 ^
+      240 |             await expect(this.changePasswordBtn).toBeVisible({ timeout: timeouts.short });
+      241 |         });
+      242 |     }
+
+        at C:\SimplyAsk\automation-tests-main-main\pages\login.page.ts:239:49
+        at LoginPage.verifyCreateNewPasswordPageDisplayed (C:\SimplyAsk\automation-tests-main-main\pages\login.page.ts:238:20)
+        at C:\SimplyAsk\automation-tests-main-main\tests\registration.test.ts:174:36
+        at C:\SimplyAsk\automation-tests-main-main\tests\registration.test.ts:172:9
+
+    attachment #1: screenshot (image/png) ───────────────────────────────────────────────────
+    test-results\registration-Forgot-Passwo-60ecd-set-password-via-email-link-chromium\test-failed-1.png
+    ─────────────────────────────────────────────────────────────────────────────────────────
+
+    attachment #2: video (video/webm) ───────────────────────────────────────────────────────
+    test-results\registration-Forgot-Passwo-60ecd-set-password-via-email-link-chromium\video.webm
+    ─────────────────────────────────────────────────────────────────────────────────────────
+]]>
+</failure>
+<system-out>
+<![CDATA[Teardown: Cleaned up 1 test email(s) from mailbox
+
+[[ATTACHMENT|test-results\registration-Forgot-Passwo-60ecd-set-password-via-email-link-chromium\test-failed-1.png]]
+
+[[ATTACHMENT|test-results\registration-Forgot-Passwo-60ecd-set-password-via-email-link-chromium\video.webm]]
+]]>
+</system-out>
+</testcase>
+</testsuite>
+<testsuite name="serviceTicket.test.ts" timestamp="2026-04-13T20:39:37.430Z" hostname="chromium" tests="4" failures="1" skipped="3" time="15.033" errors="0">
+<testcase name="Serve - Service Tickets › Service Ticket Lifecycle › Create Service Ticket Type" classname="serviceTicket.test.ts" time="15.033">
+<failure message="serviceTicket.test.ts:23:13 Create Service Ticket Type" type="FAILURE">
+<![CDATA[  [chromium] › serviceTicket.test.ts:23:13 › Serve - Service Tickets › Service Ticket Lifecycle › Create Service Ticket Type › Click "+ Add Action" button 
+
+    TimeoutError: locator.waitFor: Timeout 10000ms exceeded.
+    Call log:
+      - waiting for getByRole('button', { name: 'Add Action' }) to be visible
+
+
+       at ..\pages\serve\serviceTicket.page.ts:118
+
+      116 |
+      117 |     private async waitAndClick(locator: Locator): Promise<void> {
+    > 118 |         await locator.waitFor({ state: 'visible', timeout: COMMON_TIMEOUTS.short });
+          |                       ^
+      119 |         await locator.click();
+      120 |     }
+      121 |
+
+        at ServiceTicketPage.waitAndClick (C:\SimplyAsk\automation-tests-main-main\pages\serve\serviceTicket.page.ts:118:23)
+        at ServiceTicketPage.clickAddAction (C:\SimplyAsk\automation-tests-main-main\pages\serve\serviceTicket.page.ts:188:20)
+        at C:\SimplyAsk\automation-tests-main-main\pages\serve\serviceTicket.page.ts:390:24
+        at ServiceTicketPage.createServiceTicketType (C:\SimplyAsk\automation-tests-main-main\pages\serve\serviceTicket.page.ts:389:20)
+        at C:\SimplyAsk\automation-tests-main-main\tests\serviceTicket.test.ts:24:13
+
+    attachment #1: screenshot (image/png) ───────────────────────────────────────────────────
+    test-results\serviceTicket-Serve---Serv-be749--Create-Service-Ticket-Type-chromium\test-failed-1.png
+    ─────────────────────────────────────────────────────────────────────────────────────────
+
+    attachment #2: video (video/webm) ───────────────────────────────────────────────────────
+    test-results\serviceTicket-Serve---Serv-be749--Create-Service-Ticket-Type-chromium\video.webm
+    ─────────────────────────────────────────────────────────────────────────────────────────
+
+    attachment #3: screenshot (image/png) ───────────────────────────────────────────────────
+    test-results\serviceTicket-Serve---Serv-be749--Create-Service-Ticket-Type-chromium\test-failed-2.png
+    ─────────────────────────────────────────────────────────────────────────────────────────
+]]>
+</failure>
+<system-out>
+<![CDATA[
+[[ATTACHMENT|test-results\serviceTicket-Serve---Serv-be749--Create-Service-Ticket-Type-chromium\test-failed-1.png]]
+
+[[ATTACHMENT|test-results\serviceTicket-Serve---Serv-be749--Create-Service-Ticket-Type-chromium\video.webm]]
+
+[[ATTACHMENT|test-results\serviceTicket-Serve---Serv-be749--Create-Service-Ticket-Type-chromium\test-failed-2.png]]
+]]>
+</system-out>
+<system-err>
+<![CDATA[[Cleanup] Failed to delete process "Acquisition 2026-04-13 13-44-48" — it may have already been removed.
+]]>
+</system-err>
+</testcase>
+<testcase name="Serve - Service Tickets › Service Ticket Lifecycle › Create Service Ticket" classname="serviceTicket.test.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Serve - Service Tickets › Service Ticket Lifecycle › Execute Action on Service Ticket" classname="serviceTicket.test.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Serve - Service Tickets › Service Ticket Lifecycle › Delete Service Ticket" classname="serviceTicket.test.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+</testsuite>
+</testsuites>
