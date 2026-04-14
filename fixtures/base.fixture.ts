@@ -10,6 +10,7 @@ import { ServiceTicketPage } from '../pages/serve/serviceTicket.page';
 import { KnowledgeBasePage } from '../pages/settings/knowledgeBase.page';
 import { AgentManagerPage } from '../pages/converse/agentManager.page';
 import { AgentTesterPage } from '../pages/converse/agentTester.page';
+import { CpqPage } from '../pages/cpq/cpq.page';
 
 type BaseFixture = {
     loginPage: LoginPage
@@ -22,6 +23,7 @@ type BaseFixture = {
     knowledgeBasePage: KnowledgeBasePage
     agentManagerPage: AgentManagerPage
     agentTesterPage: AgentTesterPage
+    cpqPage: CpqPage
 }
 
 
@@ -78,5 +80,10 @@ export const test = base.extend<BaseFixture>({
     agentTesterPage: async ({ page }, use) => {
         const agentTesterPage = new AgentTesterPage(page);
         await use(agentTesterPage);
+    },
+
+    cpqPage: async ({ page }, use) => {
+        const cpqPage = new CpqPage(page);
+        await use(cpqPage);
     },
 })
