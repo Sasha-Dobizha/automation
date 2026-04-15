@@ -11,6 +11,7 @@ import { KnowledgeBasePage } from '../pages/settings/knowledgeBase.page';
 import { AgentManagerPage } from '../pages/converse/agentManager.page';
 import { AgentTesterPage } from '../pages/converse/agentTester.page';
 import { CpqPage } from '../pages/cpq/cpq.page';
+import { PerformanceTracker } from '../utils/performance-tracker';
 
 type BaseFixture = {
     loginPage: LoginPage
@@ -24,6 +25,7 @@ type BaseFixture = {
     agentManagerPage: AgentManagerPage
     agentTesterPage: AgentTesterPage
     cpqPage: CpqPage
+    performanceTracker: PerformanceTracker
 }
 
 
@@ -82,8 +84,18 @@ export const test = base.extend<BaseFixture>({
         await use(agentTesterPage);
     },
 
-    cpqPage: async ({ page }, use) => {
-        const cpqPage = new CpqPage(page);
+    performanceTracker: async ({}, use) => {
+        await use(new PerformanceTracker());
+    },
+
+    cpqPage: async ({ page, performanceTracker }, use, testInfo) => {
+        const cpqPage = new CpqPage(page, performanceTracker);
         await use(cpqPage);
+        if (performanceTracker.entries.length > 0) {
+            await testInfo.attach('perf-timings', {
+                body: JSON.stringify(performanceTracker.toJSON()),
+                contentType: 'application/json',
+            });
+        }
     },
 })

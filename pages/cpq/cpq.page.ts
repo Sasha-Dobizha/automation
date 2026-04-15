@@ -1,36 +1,104 @@
-import { expect, type Page, type Locator } from '@playwright/test';
-import { ADDRESS_CONFIG } from '../../data/cpq/address.data';
+import { expect, type Page, type Locator } from "@playwright/test";
+import { ADDRESS_CONFIG } from "../../data/cpq/address.data";
+import { PerformanceTracker } from "../../utils/performance-tracker";
+
+export interface ProductSelectionConfig {
+    internet: {
+        plan: string;
+        equipment: string;
+        addons: string[];
+    };
+    tv: {
+        plan: string;
+        equipment: string;
+        packageAddons: string[];
+        individualChannels: string[];
+    };
+    phone: {
+        addons: string[];
+    };
+}
 
 export class CpqPage {
     readonly addressInput: Locator;
     readonly checkAvailabilityButton: Locator;
     readonly availabilityConfirmation: Locator;
+    readonly confirmEquipmentButton: Locator;
+    readonly addToPlanButton: Locator;
+    readonly individualChannelsTab: Locator;
+    readonly toastAlert: Locator;
+    readonly cartItemSection: Locator;
+    readonly phoneSectionButton: Locator;
+    readonly tracker: PerformanceTracker;
+
+    private readonly equipmentRadio: Locator;
+    private readonly addonCheckbox: Locator;
+    private readonly selectPlanButton: Locator;
+    private readonly cartItemCount: Locator;
+
     private readonly cpqBaseUrl: string;
     private readonly standardTimeout: number;
     private readonly shortTimeout: number;
-
     private readonly page: Page;
 
-    constructor(page: Page) {
+    constructor(page: Page, tracker?: PerformanceTracker) {
         const { urls, timeouts } = ADDRESS_CONFIG;
-        const selectors = {
-            addressInputPlaceholder: 'Enter address..',
-            checkAvailabilityButton: 'Check Availability',
-            availabilityConfirmationText: 'Novus Is Available in Your Building',
-        } as const;
 
         this.page = page;
+        this.tracker = tracker ?? new PerformanceTracker();
         this.cpqBaseUrl = urls.cpqBaseUrl;
         this.standardTimeout = timeouts.standard;
         this.shortTimeout = timeouts.short;
-        this.addressInput = page.getByPlaceholder(selectors.addressInputPlaceholder);
-        this.checkAvailabilityButton = page.getByRole('button', { name: selectors.checkAvailabilityButton });
-        this.availabilityConfirmation = page.getByText(selectors.availabilityConfirmationText);
+
+        this.addressInput = page.getByPlaceholder("Enter address..");
+        this.checkAvailabilityButton = page.getByRole("button", {
+            name: "Check Availability",
+        });
+        this.availabilityConfirmation = page.getByText(
+            "Novus Is Available in Your Building",
+        );
+        this.confirmEquipmentButton = page.getByRole("button", {
+            name: "Confirm Equipment",
+        });
+        this.addToPlanButton = page.getByRole("button", {
+            name: "Add to Plan",
+        });
+        this.individualChannelsTab = page.getByRole("tab", {
+            name: "Individual Channels",
+        });
+        this.toastAlert = page.getByRole("alert");
+        this.cartItemSection = page.getByText("Item in a Cart:").locator("..");
+        this.phoneSectionButton = page
+            .getByText("Want Phone Too?")
+            .locator("..")
+            .getByRole("button", { name: /select plan/i });
+
+        this.equipmentRadio = page.locator('[role="radio"]');
+        this.addonCheckbox = page.locator('[role="checkbox"]');
+        this.selectPlanButton = page.getByRole("button", {
+            name: /select plan/i,
+        });
+        this.cartItemCount = this.cartItemSection.locator("span");
+    }
+
+    private async clickWhenReady(
+        locator: Locator,
+        label: string,
+        timeout = this.standardTimeout,
+    ): Promise<void> {
+        await this.tracker.measure(`Wait: ${label}`, () =>
+            locator.waitFor({ timeout }),
+        );
+        await locator.click();
     }
 
     async navigateToCpq(): Promise<void> {
-        await this.page.goto(this.cpqBaseUrl);
-        await expect(this.addressInput).toBeVisible({ timeout: this.standardTimeout });
+        await this.tracker.measure("Navigate: CPQ page load", async () => {
+            await this.page.goto(this.cpqBaseUrl);
+            await expect(this.addressInput).toBeVisible({
+                timeout: this.standardTimeout,
+            });
+        });
     }
 
     async enterAddress(address: string): Promise<void> {
@@ -38,10 +106,12 @@ export class CpqPage {
         await this.addressInput.fill(address);
     }
 
-    async selectAddressOption(address: string): Promise<void> {
-        const option = this.page.getByRole('option', { name: address });
-        await option.waitFor({ timeout: this.shortTimeout });
-        await option.click();
+    async selectAddressFromSuggestions(): Promise<void> {
+        const firstOption = this.page.getByRole('option').first();
+        await this.tracker.measure('Wait: address autocomplete options', () =>
+            firstOption.waitFor({ timeout: this.shortTimeout }),
+        );
+        await firstOption.click();
     }
 
     async clickCheckAvailability(): Promise<void> {
@@ -49,143 +119,136 @@ export class CpqPage {
     }
 
     async verifyProductOfferingPageLoaded(): Promise<void> {
-        await expect(this.availabilityConfirmation).toBeVisible({ timeout: this.standardTimeout });
-    }
-
-    async dismissCheckAvailabilityDialog(): Promise<void> {
-        const closeIcon = this.page.locator('[data-testid="CloseIcon"]');
-        const dialogCloseButton = closeIcon.first();
-        if (await dialogCloseButton.isVisible({ timeout: 3000 }).catch(() => false)) {
-            await dialogCloseButton.click();
-            await dialogCloseButton.waitFor({ state: 'hidden', timeout: this.shortTimeout }).catch(() => {});
-        }
-    }
-
-    async waitForInternetPlansSection(): Promise<void> {
-        const sectionHeading = this.page.getByText('Select Your Perfect Internet Plan');
-        await expect(sectionHeading).toBeVisible({ timeout: this.standardTimeout });
-    }
-
-    // --- Product Offerings (Select Offers And Products) ---
-
-    async selectInternetPlan(planName: string): Promise<void> {
-        const selectButton = this.page.locator(
-            `xpath=//span[normalize-space()="${planName}"]/ancestor::div[.//button[.//span[normalize-space()="SELECT PLAN"]]][1]//button[.//span[normalize-space()="SELECT PLAN"]]`
+        await this.tracker.measure("Wait: availability confirmation", () =>
+            expect(this.availabilityConfirmation).toBeVisible({
+                timeout: this.standardTimeout,
+            }),
         );
-        await selectButton.waitFor({ timeout: this.standardTimeout });
-        await selectButton.click();
+    }
+
+    async selectPlan(planName: string): Promise<void> {
+        const planCard = this.page
+            .locator("div")
+            .filter({ has: this.page.getByText(planName, { exact: true }) })
+            .filter({ has: this.selectPlanButton })
+            .last();
+        await this.clickWhenReady(
+            planCard.locator(this.selectPlanButton),
+            `Select Plan: ${planName}`,
+        );
+    }
+
+    async selectPhonePlan(): Promise<void> {
+        await this.clickWhenReady(
+            this.phoneSectionButton,
+            "Phone section button",
+        );
     }
 
     async selectEquipmentOption(equipmentName: string): Promise<void> {
-        const equipmentOption = this.page.locator('[role="radio"]')
-            .filter({ hasText: equipmentName });
-        await equipmentOption.waitFor({ timeout: this.standardTimeout });
-        await equipmentOption.click();
-    }
-
-    async clickConfirmEquipment(): Promise<void> {
-        const confirmButton = this.page.getByRole('button', { name: 'Confirm Equipment' });
-        await confirmButton.waitFor({ timeout: this.standardTimeout });
-        await confirmButton.click();
+        await this.clickWhenReady(
+            this.equipmentRadio.filter({ hasText: equipmentName }),
+            `Equipment: ${equipmentName}`,
+        );
     }
 
     async selectAddonCheckbox(addonName: string): Promise<void> {
-        const addonOption = this.page.locator('[role="checkbox"]')
-            .filter({ hasText: addonName });
-        await addonOption.waitFor({ timeout: this.standardTimeout });
-        const isChecked = await addonOption.getAttribute('aria-checked');
-        if (isChecked !== 'true') {
+        const addonOption = this.addonCheckbox.filter({ hasText: addonName });
+        await this.tracker.measure(`Wait: Addon "${addonName}" ready`, () =>
+            addonOption.waitFor({ timeout: this.standardTimeout }),
+        );
+        const isChecked = await addonOption.getAttribute("aria-checked");
+        if (isChecked !== "true") {
             await addonOption.click();
         }
     }
 
-    async clickAddToPlan(): Promise<void> {
-        const addButton = this.page.getByRole('button', { name: 'Add to Plan' });
-        await addButton.waitFor({ timeout: this.standardTimeout });
-        await addButton.click();
-    }
-
     async verifyToastMessage(message: string): Promise<void> {
-        const toast = this.page.locator('.Toastify__toast--success').filter({ hasText: message });
-        await expect(toast).toBeVisible({ timeout: this.standardTimeout });
-    }
-
-    async selectTvPlan(planName: string): Promise<void> {
-        const selectButton = this.page.locator(
-            `xpath=//span[normalize-space()="Choose Your TV Plan"]/ancestor::div[1]//span[normalize-space()="${planName}"]/ancestor::div[.//button[.//span[normalize-space()="SELECT PLAN"]]][1]//button[.//span[normalize-space()="SELECT PLAN"]]`
+        await this.tracker.measure(`Wait: toast "${message}"`, () =>
+            expect(this.toastAlert.filter({ hasText: message })).toBeVisible({
+                timeout: this.standardTimeout,
+            }),
         );
-        await selectButton.waitFor({ timeout: this.standardTimeout });
-        await selectButton.click();
-    }
-
-    async clickIndividualChannelsTab(): Promise<void> {
-        const tab = this.page.getByRole('tab', { name: 'Individual Channels' });
-        await tab.waitFor({ timeout: this.standardTimeout });
-        await tab.click();
-    }
-
-    async selectPhonePlan(): Promise<void> {
-        const selectButton = this.page.locator(
-            `xpath=//span[normalize-space()="Want Phone Too?"]/ancestor::div[1]//button[.//span[normalize-space()="SELECT PLAN"]]`
-        );
-        await selectButton.waitFor({ timeout: this.standardTimeout });
-        await selectButton.click();
-    }
-
-    async clickSkipAddons(): Promise<void> {
-        const skipButton = this.page.getByRole('button', { name: 'skip add-ons' });
-        await skipButton.waitFor({ timeout: this.standardTimeout });
-        await skipButton.click();
     }
 
     async verifyCartItemCount(expectedCount: number): Promise<void> {
-        const cartText = this.page.getByText('Item in a Cart:').locator('..');
-        const countValue = cartText.locator('span').filter({ hasText: new RegExp(`^${expectedCount}$`) });
-        await expect(countValue).toBeVisible({ timeout: this.standardTimeout });
+        const countValue = this.cartItemCount.filter({
+            hasText: new RegExp(`^${expectedCount}$`),
+        });
+        await this.tracker.measure(`Wait: cart count = ${expectedCount}`, () =>
+            expect(countValue).toBeVisible({ timeout: this.standardTimeout }),
+        );
     }
+
+    // --- Composite Flows ---
 
     async runCheckAvailabilityFlow(address: string): Promise<void> {
         await this.navigateToCpq();
         await this.enterAddress(address);
-        await this.selectAddressOption(address);
+        await this.selectAddressFromSuggestions();
         await this.clickCheckAvailability();
+
+        const addressError = this.page.getByText('Please select an address from the suggestions to continue.');
+        const isAddressError = await addressError.isVisible({ timeout: 3000 }).catch(() => false);
+        if (isAddressError) {
+            await this.addressInput.clear();
+            await this.addressInput.fill(address);
+            await this.selectAddressFromSuggestions();
+            await this.clickCheckAvailability();
+        }
+
         await this.verifyProductOfferingPageLoaded();
     }
 
-    async selectOffersAndProductsForInternetTvAndPhone(): Promise<void> {
-        await this.selectInternetPlan('Internet 1000');
-        await this.selectEquipmentOption('Router Rental WiFi 7 - Upgrade');
-        await this.clickConfirmEquipment();
-        await this.selectAddonCheckbox('Mesh Rental');
-        await this.clickAddToPlan();
-        await this.verifyToastMessage('The add-ons were successfully added to the plan in your cart');
+    private async selectEquipmentWithAddons(
+        equipment: string,
+        addons: string[],
+    ): Promise<void> {
+        await this.selectEquipmentOption(equipment);
+        await this.clickWhenReady(
+            this.confirmEquipmentButton,
+            "Confirm Equipment button",
+        );
+        for (const addon of addons) {
+            await this.selectAddonCheckbox(addon);
+        }
+    }
 
-        await this.selectTvPlan('TV Intro');
-        await this.selectEquipmentOption('IPTV PVR Rental');
-        await this.clickConfirmEquipment();
-        await this.selectAddonCheckbox('Adventure');
-        await this.selectAddonCheckbox('Canadian Time Shift');
-        await this.clickIndividualChannelsTab();
-        await this.selectAddonCheckbox('AXS TV HD');
-        await this.selectAddonCheckbox('BBC Earth');
-        await this.clickAddToPlan();
-        await this.verifyToastMessage('The add-ons were successfully added to the plan in your cart');
+    private async addToPlanAndVerify(successToast: string): Promise<void> {
+        await this.clickWhenReady(this.addToPlanButton, "Add to Plan button");
+        await this.verifyToastMessage(successToast);
+    }
 
+    async selectOffersAndProducts(
+        config: ProductSelectionConfig,
+        successToast: string,
+    ): Promise<void> {
+        await this.selectPlan(config.internet.plan);
+        await this.selectEquipmentWithAddons(
+            config.internet.equipment,
+            config.internet.addons,
+        );
+        await this.addToPlanAndVerify(successToast);
+
+        await this.selectPlan(config.tv.plan);
+        await this.selectEquipmentWithAddons(
+            config.tv.equipment,
+            config.tv.packageAddons,
+        );
+        await this.clickWhenReady(
+            this.individualChannelsTab,
+            "Individual Channels tab",
+        );
+        for (const channel of config.tv.individualChannels) {
+            await this.selectAddonCheckbox(channel);
+        }
+        await this.addToPlanAndVerify(successToast);
         await this.selectPhonePlan();
-        await this.selectAddonCheckbox('North America 500');
-        await this.selectAddonCheckbox('Unlimited India');
-        await this.selectAddonCheckbox('Unlimited Asia');
-        await this.selectAddonCheckbox('Unlimited North America');
-        await this.clickAddToPlan();
-        await this.verifyToastMessage('The add-ons were successfully added to the plan in your cart');
-        await this.verifyCartItemCount(3);
+        for (const addon of config.phone.addons) {
+            await this.selectAddonCheckbox(addon);
+        }
+        await this.addToPlanAndVerify(successToast);
     }
 }
 
-export const runCheckAvailabilityFlow = async (cpqPage: CpqPage, address: string): Promise<void> => {
-    await cpqPage.runCheckAvailabilityFlow(address);
-};
 
-export const selectOffersAndProductsForInternetTvAndPhone = async (cpqPage: CpqPage): Promise<void> => {
-    await cpqPage.selectOffersAndProductsForInternetTvAndPhone();
-};

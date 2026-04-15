@@ -212,6 +212,7 @@ yarn.lock
 /blob-report/
 /playwright/.cache/
 /test-downloads/
+/performance-report/
 .auth/
 *State.json
 
