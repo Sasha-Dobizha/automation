@@ -14,6 +14,7 @@ export default defineConfig({
     reporter: [
         ['junit', {outputFile: 'test_results.xml'}],
         ['html'],
+        ['./reporters/performance-reporter.ts', { outputDir: 'performance-report' }],
     ],
     /* Shared settings for all the projects below. See https://playwright.dev/docs/api/class-testoptions. */
     use: {
@@ -43,6 +44,7 @@ export default defineConfig({
                 ...devices['Desktop Chrome'],
                 storageState: '.auth/adminState.json',
                 launchOptions: {
+                    slowMo: 500,
                     args: [
                         '--disable-blink-features=AutomationControlled',
                         '--disable-features=IsolateOrigins,site-per-process',

@@ -21,7 +21,8 @@
     "utils/**/*.ts",
     "factories/**/*.ts",
     "fragments/**/*.ts",
-    "data/**/*.ts"
+    "data/**/*.ts",
+    "reporters/**/*.ts"
   ],
   "exclude": ["node_modules"]
 }
