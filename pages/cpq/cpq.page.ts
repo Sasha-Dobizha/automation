@@ -53,6 +53,24 @@ export class CpqPage {
     private readonly installationDialog: Locator;
     private readonly installationConfirmButton: Locator;
 
+    // Address flow locators
+    private readonly addressSuggestionOption: Locator;
+    private readonly addressErrorText: Locator;
+
+    // Installation scheduling locators
+    private readonly nextWeekButton: Locator;
+    private readonly timeSlots: Locator;
+
+    // Dialog locators
+    private readonly individualChannelsDialog: Locator;
+    private readonly installationInfoText: Locator;
+
+    // Terms and Conditions locators
+    private readonly tcLabel: Locator;
+    private readonly tcDialog: Locator;
+    private readonly pdfContainer: Locator;
+    private readonly tcAcceptButton: Locator;
+
     private readonly cpqBaseUrl: string;
     private readonly standardTimeout: number;
     private readonly shortTimeout: number;
@@ -126,6 +144,38 @@ export class CpqPage {
         this.installationConfirmButton = page
             .getByRole("dialog")
             .getByRole("button", { name: "Confirm" });
+
+        this.addressSuggestionOption = page.getByRole("option").first();
+        this.addressErrorText = page.getByText(
+            "Please select an address from the suggestions to continue.",
+        );
+
+        this.individualChannelsDialog = page
+            .getByRole("dialog")
+            .filter({ has: this.saveChangesButton })
+            .first();
+        this.installationInfoText = this.installationDialog.getByText(
+            "Installation Information",
+        );
+
+        this.nextWeekButton = page.getByRole("button", { name: "Next week" });
+        this.timeSlots = page.locator('div[role="button"][aria-pressed]');
+
+        this.tcLabel = page.locator("label").filter({
+            hasText: "I have read and agree to the Terms and Conditions",
+        });
+        this.tcDialog = page.getByRole("dialog").filter({
+            hasText: "Terms and Conditions",
+        });
+        this.pdfContainer = page.locator('[data-testid="core__inner-pages"]');
+        this.tcAcceptButton = this.tcDialog
+            .locator("button")
+            .filter({ hasText: "Accept" });
+    }
+
+    private async fillField(locator: Locator, value: string): Promise<void> {
+        await locator.click();
+        await locator.fill(value);
     }
 
     private async clickWhenReady(
@@ -156,16 +206,14 @@ export class CpqPage {
     }
 
     async enterAddress(address: string): Promise<void> {
-        await this.addressInput.click();
-        await this.addressInput.fill(address);
+        await this.fillField(this.addressInput, address);
     }
 
     async selectAddressFromSuggestions(): Promise<void> {
-        const firstOption = this.page.getByRole('option').first();
         await this.tracker.measure('Wait: address autocomplete options', () =>
-            firstOption.waitFor({ timeout: this.shortTimeout }),
+            this.addressSuggestionOption.waitFor({ timeout: this.shortTimeout }),
         );
-        await firstOption.click();
+        await this.addressSuggestionOption.click();
     }
 
     async clickCheckAvailability(): Promise<void> {
@@ -245,8 +293,7 @@ export class CpqPage {
         await this.selectAddressFromSuggestions();
         await this.clickCheckAvailability();
 
-        const addressError = this.page.getByText('Please select an address from the suggestions to continue.');
-        const isAddressError = await addressError.isVisible({ timeout: 3000 }).catch(() => false);
+        const isAddressError = await this.addressErrorText.isVisible({ timeout: 3000 }).catch(() => false);
         if (isAddressError) {
             await this.addressInput.clear();
             await this.addressInput.fill(address);
@@ -281,15 +328,11 @@ export class CpqPage {
             "Wait: Save Changes button",
             () => this.saveChangesButton.waitFor({ timeout: this.standardTimeout }),
         );
-        const individualChannelsDialog = this.page
-            .getByRole("dialog")
-            .filter({ has: this.saveChangesButton })
-            .first();
         await this.tracker.measure(
             "Dialog Close: Individual Channels (Save Changes click)",
             async () => {
                 await this.saveChangesButton.click();
-                await expect(individualChannelsDialog).toBeHidden({
+                await expect(this.individualChannelsDialog).toBeHidden({
                     timeout: this.standardTimeout,
                 });
             },
@@ -366,40 +409,18 @@ export class CpqPage {
     async fillCustomerInformation(
         config: CheckoutFormData,
     ): Promise<void> {
-        // Title
         await this.selectAutocompleteByIndex(this.titleDropdown, 0, "Title");
-
-        // First name
-        await this.firstNameInput.click();
-        await this.firstNameInput.fill(config.firstName);
-
-        // Last name
-        await this.lastNameInput.click();
-        await this.lastNameInput.fill(config.lastName);
-
-        // Date of birth
+        await this.fillField(this.firstNameInput, config.firstName);
+        await this.fillField(this.lastNameInput, config.lastName);
         await this.dateOfBirthInput.fill(config.dateOfBirth);
-
-        // Phone number
-        await this.phoneInput.click();
-        await this.phoneInput.fill(config.phoneNumber);
-
-        // Select option dropdown
+        await this.fillField(this.phoneInput, config.phoneNumber);
         await this.selectAutocompleteByIndex(
             this.selectOptionDropdown,
             0,
             "Select Option",
         );
-
-        // Email
-        await this.emailInput.click();
-        await this.emailInput.fill(config.email);
-
-        // Confirm email
-        await this.confirmEmailInput.click();
-        await this.confirmEmailInput.fill(config.email);
-
-        // Generate password
+        await this.fillField(this.emailInput, config.email);
+        await this.fillField(this.confirmEmailInput, config.email);
         await this.tracker.measure("Click: Generate password", async () => {
             await this.generatePasswordButton.waitFor({
                 timeout: this.standardTimeout,
@@ -419,11 +440,9 @@ export class CpqPage {
         await this.tracker.measure(
             "Wait: Installation Information dialog",
             () =>
-                expect(
-                    this.installationDialog.getByText(
-                        "Installation Information",
-                    ),
-                ).toBeVisible({ timeout: this.standardTimeout }),
+                expect(this.installationInfoText).toBeVisible({
+                    timeout: this.standardTimeout,
+                }),
         );
     }
 
@@ -451,10 +470,6 @@ export class CpqPage {
         const dayAbbrev = days[targetDate.getDay()];
         const dayOfMonth = targetDate.getDate();
 
-        const nextWeekButton = this.page.getByRole("button", {
-            name: "Next week",
-        });
-
         for (let attempt = 0; attempt < 4; attempt++) {
             const dateButton = this.page.locator(
                 `div[role="button"][aria-label^="${dayAbbrev} ${dayOfMonth},"][aria-disabled="false"]`,
@@ -470,7 +485,7 @@ export class CpqPage {
                 );
                 return;
             } catch {
-                await nextWeekButton.click();
+                await this.nextWeekButton.click();
             }
         }
 
@@ -480,15 +495,12 @@ export class CpqPage {
     }
 
     async selectRandomTimeSlot(): Promise<void> {
-        const timeSlots = this.page.locator(
-            'div[role="button"][aria-pressed]',
-        );
         await this.tracker.measure("Wait: Time slots available", () =>
-            timeSlots.first().waitFor({ timeout: this.standardTimeout }),
+            this.timeSlots.first().waitFor({ timeout: this.standardTimeout }),
         );
-        const count = await timeSlots.count();
+        const count = await this.timeSlots.count();
         const randomIndex = Math.floor(Math.random() * count);
-        const selectedSlot = timeSlots.nth(randomIndex);
+        const selectedSlot = this.timeSlots.nth(randomIndex);
         const slotLabel =
             (await selectedSlot.getAttribute("aria-label")) ?? "unknown";
         await this.tracker.measure(`Click: Time slot "${slotLabel}"`, () =>
@@ -499,25 +511,15 @@ export class CpqPage {
     // --- Terms and Conditions ---
 
     async acceptTermsAndConditions(): Promise<void> {
-        const tcLabel = this.page.locator("label").filter({
-            hasText: "I have read and agree to the Terms and Conditions",
-        });
-        await this.clickWhenReady(tcLabel, "Terms and Conditions checkbox");
-
-        const tcDialog = this.page.getByRole("dialog").filter({
-            hasText: "Terms and Conditions",
-        });
+        await this.clickWhenReady(this.tcLabel, "Terms and Conditions checkbox");
         await this.tracker.measure("Wait: Terms and Conditions loaded", () =>
-            expect(tcDialog).toBeVisible({ timeout: this.standardTimeout }),
+            expect(this.tcDialog).toBeVisible({ timeout: this.standardTimeout }),
         );
 
-        const pdfContainer = this.page.locator(
-            '[data-testid="core__inner-pages"]',
-        );
         await this.tracker.measure(
             "Scroll: Terms and Conditions PDF",
             async () => {
-                await pdfContainer.evaluate(async (el) => {
+                await this.pdfContainer.evaluate(async (el) => {
                     const step = 500;
                     const maxAttempts = 30;
                     for (let i = 0; i < maxAttempts; i++) {
@@ -534,18 +536,14 @@ export class CpqPage {
             },
         );
 
-        // aria-label="" on the button overrides accessible name, so use text filter
-        const acceptButton = tcDialog
-            .locator("button")
-            .filter({ hasText: "Accept" });
         await this.tracker.measure("Wait: Accept button enabled", () =>
-            expect(acceptButton).toBeEnabled({ timeout: this.standardTimeout }),
+            expect(this.tcAcceptButton).toBeEnabled({ timeout: this.standardTimeout }),
         );
-        await acceptButton.click();
+        await this.tcAcceptButton.click();
         await this.tracker.measure(
             "Dialog Close: Terms and Conditions (Accept click)",
             () =>
-                expect(tcDialog).toBeHidden({
+                expect(this.tcDialog).toBeHidden({
                     timeout: this.standardTimeout,
                 }),
             'dialog-close',
@@ -555,26 +553,20 @@ export class CpqPage {
     // --- Complete Checkout ---
 
     async completeCheckoutFlow(config: CheckoutFormData): Promise<void> {
-        // Step 1: Customer Information
         await this.clickCheckout();
         await this.fillCustomerInformation(config);
         await this.clickSaveAndContinue();
 
-        // Step 2: Installation Info popup
         await this.verifyInstallationPopup();
         await this.confirmInstallation();
 
-        // Step 3: Installation Scheduling
         await this.selectInstallationDate();
         await this.selectRandomTimeSlot();
         await this.clickSaveAndContinue();
 
-        // Step 4: Phone Number (defaults are pre-selected)
+        // Phone Number step uses pre-selected defaults
         await this.clickSaveAndContinue();
 
-        // Step 5: Product Review - Terms and Conditions
         await this.acceptTermsAndConditions();
     }
 }
-
-
