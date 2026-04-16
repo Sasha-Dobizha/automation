@@ -10,7 +10,7 @@ export const PRODUCT_SELECTIONS: ProductSelectionConfig = {
         plan: 'TV Intro',
         equipment: 'IPTV PVR Rental',
         packageAddons: ['Adventure', 'Canadian Time Shift'],
-        individualChannels: ['AXS TV HD', 'H2 HD'],
+        individualChannels: ['AXS TV HD', 'H2 HD', 'Zee TV Canada'],
     },
     phone: {
         addons: [
