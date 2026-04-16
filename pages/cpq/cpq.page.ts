@@ -1,6 +1,7 @@
 import { expect, type Page, type Locator } from "@playwright/test";
 import { ADDRESS_CONFIG } from "../../data/cpq/address.data";
-import { PerformanceTracker } from "../../utils/performance-tracker";
+import { PerformanceTracker, type TimingCategory } from "../../utils/performance-tracker";
+import type { CheckoutFormData } from "../../data/cpq/checkout.data";
 
 export interface ProductSelectionConfig {
     internet: {
@@ -34,7 +35,23 @@ export class CpqPage {
     private readonly equipmentRadio: Locator;
     private readonly addonCheckbox: Locator;
     private readonly selectPlanButton: Locator;
+    private readonly saveChangesButton: Locator;
     private readonly cartItemCount: Locator;
+
+    // Checkout locators
+    private readonly checkoutButton: Locator;
+    private readonly titleDropdown: Locator;
+    private readonly firstNameInput: Locator;
+    private readonly lastNameInput: Locator;
+    private readonly dateOfBirthInput: Locator;
+    private readonly phoneInput: Locator;
+    private readonly selectOptionDropdown: Locator;
+    private readonly emailInput: Locator;
+    private readonly confirmEmailInput: Locator;
+    private readonly generatePasswordButton: Locator;
+    private readonly saveAndContinueButton: Locator;
+    private readonly installationDialog: Locator;
+    private readonly installationConfirmButton: Locator;
 
     private readonly cpqBaseUrl: string;
     private readonly standardTimeout: number;
@@ -78,27 +95,64 @@ export class CpqPage {
         this.selectPlanButton = page.getByRole("button", {
             name: /select plan/i,
         });
+        this.saveChangesButton = page.getByRole("button", {
+            name: /save changes/i,
+        });
         this.cartItemCount = this.cartItemSection.locator("span");
+
+        // Checkout locators
+        this.checkoutButton = page.getByRole("button", { name: "Checkout" });
+        const autocompleteInputs = page.locator(
+            'input[role="combobox"][placeholder="Select Option"]',
+        );
+        this.titleDropdown = autocompleteInputs.nth(0);
+        this.firstNameInput = page.getByPlaceholder("Enter your first name...");
+        this.lastNameInput = page.getByPlaceholder("Enter your last name...");
+        this.dateOfBirthInput = page.locator('input[name="dateOfBirth"]');
+        this.phoneInput = page.getByPlaceholder("(123) 456-7890");
+        this.selectOptionDropdown = autocompleteInputs.nth(1);
+        this.emailInput = page.getByPlaceholder("Enter your email...");
+        this.confirmEmailInput = page.getByPlaceholder(
+            "Confirm your email...",
+        );
+        this.generatePasswordButton = page
+            .locator("svg")
+            .filter({ has: page.locator('circle[cx="12"][cy="12"][r="1.5"]') })
+            .first();
+        this.saveAndContinueButton = page.getByRole("button", {
+            name: /Save and Continue/i,
+        });
+        this.installationDialog = page.getByRole("dialog");
+        this.installationConfirmButton = page
+            .getByRole("dialog")
+            .getByRole("button", { name: "Confirm" });
     }
 
     private async clickWhenReady(
         locator: Locator,
         label: string,
         timeout = this.standardTimeout,
+        category: TimingCategory = 'element-visible',
     ): Promise<void> {
-        await this.tracker.measure(`Wait: ${label}`, () =>
-            locator.waitFor({ timeout }),
+        await this.tracker.measure(
+            `Wait: ${label}`,
+            () => locator.waitFor({ timeout }),
+            category,
         );
         await locator.click();
     }
 
     async navigateToCpq(): Promise<void> {
-        await this.tracker.measure("Navigate: CPQ page load", async () => {
-            await this.page.goto(this.cpqBaseUrl);
-            await expect(this.addressInput).toBeVisible({
-                timeout: this.standardTimeout,
-            });
-        });
+        await this.tracker.measure(
+            "Navigate: CPQ page load",
+            async () => {
+                await this.page.goto(this.cpqBaseUrl);
+                await expect(this.addressInput).toBeVisible({
+                    timeout: this.standardTimeout,
+                });
+            },
+            'page-load',
+        );
     }
 
     async enterAddress(address: string): Promise<void> {
@@ -119,10 +173,13 @@ export class CpqPage {
     }
 
     async verifyProductOfferingPageLoaded(): Promise<void> {
-        await this.tracker.measure("Wait: availability confirmation", () =>
-            expect(this.availabilityConfirmation).toBeVisible({
-                timeout: this.standardTimeout,
-            }),
+        await this.tracker.measure(
+            "Page Load: Product Offerings",
+            () =>
+                expect(this.availabilityConfirmation).toBeVisible({
+                    timeout: this.standardTimeout,
+                }),
+            'page-load',
         );
     }
 
@@ -219,6 +276,27 @@ export class CpqPage {
         await this.verifyToastMessage(successToast);
     }
 
+    private async saveChangesAndWaitForDialogToClose(): Promise<void> {
+        await this.tracker.measure(
+            "Wait: Save Changes button",
+            () => this.saveChangesButton.waitFor({ timeout: this.standardTimeout }),
+        );
+        const individualChannelsDialog = this.page
+            .getByRole("dialog")
+            .filter({ has: this.saveChangesButton })
+            .first();
+        await this.tracker.measure(
+            "Dialog Close: Individual Channels (Save Changes click)",
+            async () => {
+                await this.saveChangesButton.click();
+                await expect(individualChannelsDialog).toBeHidden({
+                    timeout: this.standardTimeout,
+                });
+            },
+            'dialog-close',
+        );
+    }
+
     async selectOffersAndProducts(
         config: ProductSelectionConfig,
         successToast: string,
@@ -242,12 +320,260 @@ export class CpqPage {
         for (const channel of config.tv.individualChannels) {
             await this.selectAddonCheckbox(channel);
         }
-        await this.addToPlanAndVerify(successToast);
+        const hasSaveChangesButton = await this.saveChangesButton
+            .isVisible({ timeout: this.shortTimeout })
+            .catch(() => false);
+        if (hasSaveChangesButton) {
+            await this.saveChangesAndWaitForDialogToClose();
+            await this.verifyToastMessage(successToast);
+        } else {
+            await this.addToPlanAndVerify(successToast);
+        }
         await this.selectPhonePlan();
         for (const addon of config.phone.addons) {
             await this.selectAddonCheckbox(addon);
         }
         await this.addToPlanAndVerify(successToast);
+    }
+
+    // --- Checkout Flow ---
+
+    async clickCheckout(): Promise<void> {
+        await this.clickWhenReady(this.checkoutButton, "Checkout button");
+        await this.tracker.measure(
+            "Page Load: Checkout (Customer Information)",
+            () =>
+                expect(this.firstNameInput).toBeVisible({
+                    timeout: this.standardTimeout,
+                }),
+            'page-load',
+        );
+    }
+
+    private async selectAutocompleteByIndex(
+        combobox: Locator,
+        optionIndex: number,
+        label: string,
+    ): Promise<void> {
+        await this.clickWhenReady(combobox, `Open dropdown: ${label}`);
+        const option = this.page.getByRole("option").nth(optionIndex);
+        await this.tracker.measure(`Wait: ${label} option`, () =>
+            option.waitFor({ timeout: this.standardTimeout }),
+        );
+        await option.click();
+    }
+
+    async fillCustomerInformation(
+        config: CheckoutFormData,
+    ): Promise<void> {
+        // Title
+        await this.selectAutocompleteByIndex(this.titleDropdown, 0, "Title");
+
+        // First name
+        await this.firstNameInput.click();
+        await this.firstNameInput.fill(config.firstName);
+
+        // Last name
+        await this.lastNameInput.click();
+        await this.lastNameInput.fill(config.lastName);
+
+        // Date of birth
+        await this.dateOfBirthInput.fill(config.dateOfBirth);
+
+        // Phone number
+        await this.phoneInput.click();
+        await this.phoneInput.fill(config.phoneNumber);
+
+        // Select option dropdown
+        await this.selectAutocompleteByIndex(
+            this.selectOptionDropdown,
+            0,
+            "Select Option",
+        );
+
+        // Email
+        await this.emailInput.click();
+        await this.emailInput.fill(config.email);
+
+        // Confirm email
+        await this.confirmEmailInput.click();
+        await this.confirmEmailInput.fill(config.email);
+
+        // Generate password
+        await this.tracker.measure("Click: Generate password", async () => {
+            await this.generatePasswordButton.waitFor({
+                timeout: this.standardTimeout,
+            });
+            await this.generatePasswordButton.click();
+        });
+    }
+
+    async clickSaveAndContinue(): Promise<void> {
+        await this.clickWhenReady(
+            this.saveAndContinueButton,
+            "Save and Continue button",
+        );
+    }
+
+    async verifyInstallationPopup(): Promise<void> {
+        await this.tracker.measure(
+            "Wait: Installation Information dialog",
+            () =>
+                expect(
+                    this.installationDialog.getByText(
+                        "Installation Information",
+                    ),
+                ).toBeVisible({ timeout: this.standardTimeout }),
+        );
+    }
+
+    async confirmInstallation(): Promise<void> {
+        await this.clickWhenReady(
+            this.installationConfirmButton,
+            "Installation Confirm button",
+        );
+        await this.tracker.measure(
+            "Dialog Close: Installation Information (Confirm click)",
+            () =>
+                expect(this.installationDialog).toBeHidden({
+                    timeout: this.standardTimeout,
+                }),
+            'dialog-close',
+        );
+    }
+
+    // --- Installation Scheduling ---
+
+    async selectInstallationDate(): Promise<void> {
+        const days = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
+        const targetDate = new Date();
+        targetDate.setDate(targetDate.getDate() + 3);
+        const dayAbbrev = days[targetDate.getDay()];
+        const dayOfMonth = targetDate.getDate();
+
+        const nextWeekButton = this.page.getByRole("button", {
+            name: "Next week",
+        });
+
+        for (let attempt = 0; attempt < 4; attempt++) {
+            const dateButton = this.page.locator(
+                `div[role="button"][aria-label^="${dayAbbrev} ${dayOfMonth},"][aria-disabled="false"]`,
+            );
+            try {
+                await dateButton.waitFor({
+                    state: "visible",
+                    timeout: 3000,
+                });
+                await this.tracker.measure(
+                    `Click: Installation date ${dayAbbrev} ${dayOfMonth}`,
+                    () => dateButton.click(),
+                );
+                return;
+            } catch {
+                await nextWeekButton.click();
+            }
+        }
+
+        throw new Error(
+            `Could not find available installation date: ${dayAbbrev} ${dayOfMonth}`,
+        );
+    }
+
+    async selectRandomTimeSlot(): Promise<void> {
+        const timeSlots = this.page.locator(
+            'div[role="button"][aria-pressed]',
+        );
+        await this.tracker.measure("Wait: Time slots available", () =>
+            timeSlots.first().waitFor({ timeout: this.standardTimeout }),
+        );
+        const count = await timeSlots.count();
+        const randomIndex = Math.floor(Math.random() * count);
+        const selectedSlot = timeSlots.nth(randomIndex);
+        const slotLabel =
+            (await selectedSlot.getAttribute("aria-label")) ?? "unknown";
+        await this.tracker.measure(`Click: Time slot "${slotLabel}"`, () =>
+            selectedSlot.click(),
+        );
+    }
+
+    // --- Terms and Conditions ---
+
+    async acceptTermsAndConditions(): Promise<void> {
+        const tcLabel = this.page.locator("label").filter({
+            hasText: "I have read and agree to the Terms and Conditions",
+        });
+        await this.clickWhenReady(tcLabel, "Terms and Conditions checkbox");
+
+        const tcDialog = this.page.getByRole("dialog").filter({
+            hasText: "Terms and Conditions",
+        });
+        await this.tracker.measure("Wait: Terms and Conditions loaded", () =>
+            expect(tcDialog).toBeVisible({ timeout: this.standardTimeout }),
+        );
+
+        const pdfContainer = this.page.locator(
+            '[data-testid="core__inner-pages"]',
+        );
+        await this.tracker.measure(
+            "Scroll: Terms and Conditions PDF",
+            async () => {
+                await pdfContainer.evaluate(async (el) => {
+                    const step = 500;
+                    const maxAttempts = 30;
+                    for (let i = 0; i < maxAttempts; i++) {
+                        el.scrollBy(0, step);
+                        await new Promise((r) => setTimeout(r, 200));
+                        if (
+                            el.scrollTop + el.clientHeight >=
+                            el.scrollHeight - 10
+                        ) {
+                            break;
+                        }
+                    }
+                });
+            },
+        );
+
+        // aria-label="" on the button overrides accessible name, so use text filter
+        const acceptButton = tcDialog
+            .locator("button")
+            .filter({ hasText: "Accept" });
+        await this.tracker.measure("Wait: Accept button enabled", () =>
+            expect(acceptButton).toBeEnabled({ timeout: this.standardTimeout }),
+        );
+        await acceptButton.click();
+        await this.tracker.measure(
+            "Dialog Close: Terms and Conditions (Accept click)",
+            () =>
+                expect(tcDialog).toBeHidden({
+                    timeout: this.standardTimeout,
+                }),
+            'dialog-close',
+        );
+    }
+
+    // --- Complete Checkout ---
+
+    async completeCheckoutFlow(config: CheckoutFormData): Promise<void> {
+        // Step 1: Customer Information
+        await this.clickCheckout();
+        await this.fillCustomerInformation(config);
+        await this.clickSaveAndContinue();
+
+        // Step 2: Installation Info popup
+        await this.verifyInstallationPopup();
+        await this.confirmInstallation();
+
+        // Step 3: Installation Scheduling
+        await this.selectInstallationDate();
+        await this.selectRandomTimeSlot();
+        await this.clickSaveAndContinue();
+
+        // Step 4: Phone Number (defaults are pre-selected)
+        await this.clickSaveAndContinue();
+
+        // Step 5: Product Review - Terms and Conditions
+        await this.acceptTermsAndConditions();
     }
 }
 
