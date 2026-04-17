@@ -1,5 +1,6 @@
 import { expect, type Page, type Locator } from "@playwright/test";
 import { ADDRESS_CONFIG } from "../../data/cpq/address.data";
+import { COMMON_URLS } from "../../data/common.data";
 import { PerformanceTracker, type TimingCategory } from "../../utils/performance-tracker";
 import type { CheckoutFormData } from "../../data/cpq/checkout.data";
 
@@ -70,6 +71,15 @@ export class CpqPage {
     private readonly tcDialog: Locator;
     private readonly pdfContainer: Locator;
     private readonly tcAcceptButton: Locator;
+
+    // Order submission locators
+    private readonly placeOrderButton: Locator;
+    private readonly orderConfirmationHeading: Locator;
+    private readonly confirmationNumberText: Locator;
+    private readonly downloadConfirmationButton: Locator;
+
+    // Service ticket verification locators
+    private readonly ticketsSearchInput: Locator;
 
     private readonly cpqBaseUrl: string;
     private readonly standardTimeout: number;
@@ -171,6 +181,15 @@ export class CpqPage {
         this.tcAcceptButton = this.tcDialog
             .locator("button")
             .filter({ hasText: "Accept" });
+
+        // Order submission locators
+        this.placeOrderButton = page.getByRole('button', { name: 'PLACE MY ORDER' });
+        this.orderConfirmationHeading = page.getByText('Thank You For Your Order!');
+        this.confirmationNumberText = page.getByText(/Confirmation Number.*:\s*\d+/);
+        this.downloadConfirmationButton = page.getByRole('button', { name: 'DOWNLOAD ORDER CONFIRMATION' });
+
+        // Service ticket verification locators
+        this.ticketsSearchInput = page.getByPlaceholder('Search');
     }
 
     private async fillField(locator: Locator, value: string): Promise<void> {
@@ -466,7 +485,10 @@ export class CpqPage {
     async selectInstallationDate(): Promise<void> {
         const days = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
         const targetDate = new Date();
-        targetDate.setDate(targetDate.getDate() + 3);
+        targetDate.setDate(targetDate.getDate() + 2);
+        if (targetDate.getDay() === 0) {
+            targetDate.setDate(targetDate.getDate() + 1);
+        }
         const dayAbbrev = days[targetDate.getDay()];
         const dayOfMonth = targetDate.getDate();
 
@@ -550,6 +572,84 @@ export class CpqPage {
         );
     }
 
+    // --- Order Submission ---
+
+    async clickPlaceOrder(): Promise<void> {
+        await this.tracker.measure(
+            'Order Submit: Place My Order',
+            async () => {
+                await this.placeOrderButton.click();
+                await expect(this.orderConfirmationHeading).toBeVisible({
+                    timeout: this.standardTimeout,
+                });
+            },
+            'page-load',
+        );
+    }
+
+    async getConfirmationNumber(): Promise<string> {
+        const text = await this.confirmationNumberText.textContent();
+        const match = text?.match(/Confirmation Number\s*:\s*(\S+)/);
+        return match?.[1] ?? '';
+    }
+
+    async downloadOrderConfirmation(): Promise<void> {
+        // The "Download" button calls window.print() which opens a native print dialog.
+        // We use exposeFunction to detect the call in Node.js (survives page navigation),
+        // and addInitScript + evaluate to stub window.print on current and future pages.
+        let resolvePrint: () => void;
+        const printTriggered = new Promise<void>((resolve) => {
+            resolvePrint = resolve;
+        });
+
+        await this.page.exposeFunction('__onPrintRequested', () => {
+            resolvePrint();
+        });
+        await this.page.evaluate(() => {
+            window.print = () => (window as any).__onPrintRequested();
+        });
+        await this.page.addInitScript(() => {
+            window.print = () => (window as any).__onPrintRequested();
+        });
+
+        await this.tracker.measure(
+            'Order Submit: Download Order Confirmation PDF',
+            async () => {
+                await this.downloadConfirmationButton.click();
+                await printTriggered;
+            },
+        );
+    }
+
+    // --- Service Ticket Verification ---
+
+    async verifyServiceTicket(confirmationNumber: string): Promise<string> {
+        await this.tracker.measure(
+            'Navigate: Service Tickets page',
+            async () => {
+                await this.page.goto(`${COMMON_URLS.baseUrl}/serve/tickets`);
+                await this.ticketsSearchInput.waitFor({ timeout: this.standardTimeout });
+            },
+            'page-load',
+        );
+
+        await this.ticketsSearchInput.fill(confirmationNumber);
+
+        const ticketRow = this.page.locator('tr').filter({ hasText: confirmationNumber });
+        await this.tracker.measure(
+            'Wait: Service ticket row visible',
+            () => expect(ticketRow).toBeVisible({ timeout: this.standardTimeout }),
+            'element-visible',
+        );
+
+        await expect(ticketRow.getByText('Assigned')).toBeVisible({ timeout: this.standardTimeout });
+
+        const ticketLink = ticketRow.locator('a[href*="/serve/tickets/"]');
+        const href = await ticketLink.getAttribute('href');
+        const match = href?.match(/\/serve\/tickets\/(.+)/);
+        return match?.[1] ?? '';
+    }
+
     // --- Complete Checkout ---
 
     async completeCheckoutFlow(config: CheckoutFormData): Promise<void> {
@@ -568,5 +668,12 @@ export class CpqPage {
         await this.clickSaveAndContinue();
 
         await this.acceptTermsAndConditions();
+    }
+
+    async submitOrderFlow(): Promise<string> {
+        await this.clickPlaceOrder();
+        const confirmationNumber = await this.getConfirmationNumber();
+        await this.downloadOrderConfirmation();
+        return confirmationNumber;
     }
 }
