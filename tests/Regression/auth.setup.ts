@@ -1,7 +1,7 @@
-import {test as setup} from '../fixtures/base.fixture'
+import {test as setup} from '../../fixtures/base.fixture'
 import * as fs from 'fs'
-import { AUTH_PATHS, AUTH_ROLES } from '../config/auth.config'
-import { SELECTORS } from '../pages/registration.page'
+import { AUTH_PATHS, AUTH_ROLES } from '../../config/auth.config'
+import { SELECTORS } from '../../pages/registration.page'
 
 // ============ AUTH SETUP ============
 

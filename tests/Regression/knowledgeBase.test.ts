@@ -1,7 +1,7 @@
-import { test } from '../fixtures/base.fixture';
-import { AUTH_PATHS } from '../config/auth.config';
-import { newKnowledgeBase, type KnowledgeBaseData } from '../data/knowledgeBase/knowledgeBase.factory';
-import { KnowledgeBasePage } from '../pages/settings/knowledgeBase.page';
+import { test } from '../../fixtures/base.fixture';
+import { AUTH_PATHS } from '../../config/auth.config';
+import { newKnowledgeBase, type KnowledgeBaseData } from '../../data/knowledgeBase/knowledgeBase.factory';
+import { KnowledgeBasePage } from '../../pages/settings/knowledgeBase.page';
 
 test.describe('Settings - AI Knowledge Base', () => {
     test.use({ storageState: AUTH_PATHS.adminState });

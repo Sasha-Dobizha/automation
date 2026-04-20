@@ -1,8 +1,8 @@
-import { test } from '../fixtures/base.fixture';
-import { AUTH_PATHS } from '../config/auth.config';
-import { newAgent, type AgentData } from '../factories/agentManager.factory';
-import { AGENT_TESTER_CONFIG } from '../data/converse/agentTester.data';
-import { AGENT_MANAGER_CONFIG } from '../data/converse/agentManager.data';
+import { test } from '../../fixtures/base.fixture';
+import { AUTH_PATHS } from '../../config/auth.config';
+import { newAgent, type AgentData } from '../../factories/agentManager.factory';
+import { AGENT_TESTER_CONFIG } from '../../data/converse/agentTester.data';
+import { AGENT_MANAGER_CONFIG } from '../../data/converse/agentManager.data';
 
 const { messages: chatMessages, chatPrompts } = AGENT_TESTER_CONFIG;
 

@@ -1,6 +1,6 @@
-import { test } from '../fixtures/base.fixture';
-import { AUTH_PATHS } from '../config/auth.config';
-import { GENERAL_SETTINGS_CONFIG, generateRandomPhoneNumber } from '../data/settings/general.data';
+import { test } from '../../fixtures/base.fixture';
+import { AUTH_PATHS } from '../../config/auth.config';
+import { GENERAL_SETTINGS_CONFIG, generateRandomPhoneNumber } from '../../data/settings/general.data';
 
 const { testData } = GENERAL_SETTINGS_CONFIG;
 

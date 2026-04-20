@@ -25,7 +25,6 @@ export class FlowHistoryPage {
     readonly leafFailedStepName: Locator;
     readonly leafFailedStepErrorEditor: Locator;
     readonly workOrderIdValue: Locator;
-    readonly amsPortIdValue: Locator;
     readonly statusValue: Locator;
 
     constructor(page: Page) {
@@ -63,8 +62,6 @@ export class FlowHistoryPage {
             .first();
 
         this.workOrderIdValue = this.buildParameterValueLocator('workOrderID');
-        // TODO: replace 'portReservationId' with the exact label shown in the process output panel
-        this.amsPortIdValue = this.buildParameterValueLocator('portReservationId');
         this.statusValue = this.buildParameterValueLocator('Status');
     }
 
@@ -120,21 +117,6 @@ export class FlowHistoryPage {
         } catch {
             return false;
         }
-    }
-
-    async getAmsPortId(): Promise<string> {
-        try {
-            await this.amsPortIdValue.first().waitFor({
-                state: 'visible',
-                timeout: COMMON_TIMEOUTS.short,
-            });
-        } catch {
-            return 'Not Created';
-        }
-
-        await this.amsPortIdValue.scrollIntoViewIfNeeded();
-        const value = ((await this.amsPortIdValue.textContent()) ?? '').trim();
-        return value.length > 0 ? value : 'Not Created';
     }
 
     async cancelAmsPortWorkOrder(amsPortId: string): Promise<boolean> {

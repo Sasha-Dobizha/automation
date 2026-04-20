@@ -1,9 +1,9 @@
-import { test } from '../fixtures/base.fixture';
+import { test } from '../../fixtures/base.fixture';
 import { expect } from '@playwright/test';
-import { newRegistrationWithEmailVerification, type RegistrationData } from '../factories/registration.factory';
-import { GmailService } from '../utils/gmail.service';
-import { REGISTRATION_CONFIG } from '../data/registration.data';
-import { AUTH_PATHS } from '../config/auth.config';
+import { newRegistrationWithEmailVerification, type RegistrationData } from '../../factories/registration.factory';
+import { GmailService } from '../../utils/gmail.service';
+import { REGISTRATION_CONFIG } from '../../data/registration.data';
+import { AUTH_PATHS } from '../../config/auth.config';
 
 const { timeouts, loginPage, invalidCredentials, forgotPassword, urls, assertions } = REGISTRATION_CONFIG;
 const { platformInvitationValidation, passwordResetValidation, createNewPassword, passwordChangeNotificationValidation } = forgotPassword;

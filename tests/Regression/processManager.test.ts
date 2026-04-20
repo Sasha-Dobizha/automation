@@ -1,10 +1,10 @@
 import { faker } from "@faker-js/faker";
 import { expect } from "@playwright/test";
-import { test } from "../fixtures/base.fixture";
-import { AUTH_PATHS } from "../config/auth.config";
-import { PROCESS_MANAGER_CONFIG } from "../data/flow/processManager.data";
-import { newProcess, ProcessData } from "../factories/processManager.factory";
-import { ProcessManagerPage } from "../pages/flow/processManager.page";
+import { test } from "../../fixtures/base.fixture";
+import { AUTH_PATHS } from "../../config/auth.config";
+import { PROCESS_MANAGER_CONFIG } from "../../data/flow/processManager.data";
+import { newProcess, ProcessData } from "../../factories/processManager.factory";
+import { ProcessManagerPage } from "../../pages/flow/processManager.page";
 
 const { selectors } = PROCESS_MANAGER_CONFIG;
 

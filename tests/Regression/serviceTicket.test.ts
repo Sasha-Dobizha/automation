@@ -1,12 +1,12 @@
-import { test } from '../fixtures/base.fixture';
-import { AUTH_PATHS } from '../config/auth.config';
-import { ProcessManagerPage } from '../pages/flow/processManager.page';
+import { test } from '../../fixtures/base.fixture';
+import { AUTH_PATHS } from '../../config/auth.config';
+import { ProcessManagerPage } from '../../pages/flow/processManager.page';
 import {
     newServiceTicketType,
     ServiceTicketTypeData,
     newServiceTicket,
     ServiceTicketData,
-} from '../factories/serviceTicket.factory';
+} from '../../factories/serviceTicket.factory';
 
 test.describe('Serve - Service Tickets', () => {
     test.use({ storageState: AUTH_PATHS.adminState });

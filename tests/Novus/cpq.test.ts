@@ -1,9 +1,9 @@
 import { expect } from '@playwright/test';
-import { test } from '../fixtures/base.fixture';
-import { AUTH_PATHS } from '../config/auth.config';
-import { ADDRESSES } from '../data/cpq/address.data';
-import { PRODUCT_SELECTIONS, SUCCESS_TOAST, EXPECTED_CART_COUNT } from '../data/cpq/products.data';
-import { createCheckoutForm } from '../data/cpq/checkout.data';
+import { test } from '../../fixtures/base.fixture';
+import { AUTH_PATHS } from '../../config/auth.config';
+import { ADDRESSES } from '../../data/cpq/address.data';
+import { PRODUCT_SELECTIONS, SUCCESS_TOAST, EXPECTED_CART_COUNT } from '../../data/cpq/products.data';
+import { createCheckoutForm } from '../../data/cpq/checkout.data';
 
 const confirmationNumbers: Record<number, { confirmationNumber: string; phoneNumber: string }> = {};
 const serviceTicketRefs: Record<number, { serviceTicketId: string; fulfilmentProcessId: string }> = {};
@@ -12,7 +12,7 @@ test.describe('CPQ - Check Availability', () => {
     test.describe.configure({ mode: 'serial' });
     test.use({ storageState: AUTH_PATHS.adminState });
 
-    ADDRESSES.forEach((address, index) => {
+    ADDRESSES.forEach(({ address, amsId }, index) => {
         test(`[${index}] Select offers and products for address: ${address}`, async ({ cpqPage }, testInfo) => {
             await cpqPage.runCheckAvailabilityFlow(address);
             await cpqPage.selectOffersAndProducts(PRODUCT_SELECTIONS, SUCCESS_TOAST);
@@ -59,11 +59,10 @@ test.describe('CPQ - Check Availability', () => {
             await flowHistoryPage.openFirstProcess();
 
             const workOrderId = await flowHistoryPage.getWorkOrderId();
-            const amsPortId = await flowHistoryPage.getAmsPortId();
             const status = await flowHistoryPage.getStatus();
 
             const gldsOrderCancelled = await flowHistoryPage.cancelGldsWorkOrder(workOrderId);
-            const amsPortCancelled = await flowHistoryPage.cancelAmsPortWorkOrder(amsPortId);
+            const amsPortCancelled = await flowHistoryPage.cancelAmsPortWorkOrder(amsId);
             const duration = await flowHistoryPage.getDuration(fulfilmentProcessId);
 
             testInfo.annotations.push(

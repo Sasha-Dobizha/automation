@@ -1,8 +1,8 @@
-import { test } from '../fixtures/base.fixture';
+import { test } from '../../fixtures/base.fixture';
 import { expect } from '@playwright/test';
-import { AUTH_PATHS } from '../config/auth.config';
-import { newInviteUser, type InviteUserData } from '../factories/accessManagement.factory';
-import { newUserGroup, type UserGroupData } from '../factories/userGroups.factory';
+import { AUTH_PATHS } from '../../config/auth.config';
+import { newInviteUser, type InviteUserData } from '../../factories/accessManagement.factory';
+import { newUserGroup, type UserGroupData } from '../../factories/userGroups.factory';
 
 test.describe('Settings - Access Management', () => {
     test.use({ storageState: AUTH_PATHS.adminState });
