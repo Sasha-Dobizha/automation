@@ -48,25 +48,31 @@ test.describe('CPQ - Check Availability', () => {
         });
 
         test(`[${index}] Verify Fulfilment Sequence Process status for address: ${address}`, async ({ flowHistoryPage }, testInfo) => {
+            test.setTimeout(0);
             const { serviceTicketId, fulfilmentProcessId } = serviceTicketRefs[index];
 
             await flowHistoryPage.navigateToHistory();
             await flowHistoryPage.searchForProcess(fulfilmentProcessId);
 
-            await flowHistoryPage.waitForTerminalStatus();
-
-            const duration = await flowHistoryPage.getDuration();
+            await flowHistoryPage.waitForTerminalStatus({ timeoutMs: 0 });
 
             await flowHistoryPage.openFirstProcess();
 
             const workOrderId = await flowHistoryPage.getWorkOrderId();
+            const amsPortId = await flowHistoryPage.getAmsPortId();
             const status = await flowHistoryPage.getStatus();
+
+            const gldsOrderCancelled = await flowHistoryPage.cancelGldsWorkOrder(workOrderId);
+            const amsPortCancelled = await flowHistoryPage.cancelAmsPortWorkOrder(amsPortId);
+            const duration = await flowHistoryPage.getDuration(fulfilmentProcessId);
 
             testInfo.annotations.push(
                 { type: 'Service Ticket ID', description: serviceTicketId },
                 { type: 'Fulfilment Sequence Process ID', description: fulfilmentProcessId },
-                { type: 'Process Duration', description: duration },
                 { type: 'Work Order ID', description: workOrderId },
+                { type: 'GLDS Order Cancelled', description: gldsOrderCancelled ? 'Yes' : 'No' },
+                { type: 'AMS Port Cancelled', description: amsPortCancelled ? 'Yes' : 'No' },
+                { type: 'Process Duration', description: duration },
                 { type: 'Process Status', description: status },
             );
 

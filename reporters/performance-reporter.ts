@@ -70,6 +70,7 @@ const EXECUTION_FIELDS: Array<{
     link?: (id: string) => string;
     mono?: boolean;
     multiline?: boolean;
+    appendItems?: Array<{ key: string; label: string }>;
 }> = [
     { key: 'Confirmation Number', label: 'Confirmation Number', mono: true },
     {
@@ -84,9 +85,17 @@ const EXECUTION_FIELDS: Array<{
         link: FULFILMENT_PROCESS_URL,
         mono: true,
     },
-    { key: 'Work Order ID', label: 'Work Order ID', mono: true },
+    {
+        key: 'Work Order ID',
+        label: 'Work Order ID',
+        mono: true,
+        appendItems: [
+            { key: 'GLDS Order Cancelled', label: 'GLDS Cancelled' },
+            { key: 'AMS Port Cancelled', label: 'AMS Port Cancelled' },
+        ],
+    },
     { key: 'Phone Number', label: 'Phone Number', mono: true },
-    { key: 'Process Duration', label: 'Process Duration' },
+    { key: 'Process Duration', label: 'Process Duration (sec)' },
     { key: 'Process Status', label: 'Process Status' },
     { key: 'Failed Step', label: 'Failed Step' },
     { key: 'Process Error', label: 'Process Error', multiline: true },
@@ -399,13 +408,27 @@ class PerformanceReporter implements Reporter {
   .tab-panel { display: none; }
   .tab-panel.active { display: block; }
 
-  /* Execution summary */
+  /* Execution summary stats */
+  .exec-stats { display: flex; gap: 1rem; margin-bottom: 1.5rem; flex-wrap: wrap; }
+  .exec-stat-card { background: var(--surface); border: 1px solid var(--border); border-left: 4px solid var(--border); border-radius: 8px; padding: 1rem 1.5rem; flex: 1; min-width: 140px; }
+  .exec-stat-card .label { font-size: .8rem; color: var(--text-muted); text-transform: uppercase; letter-spacing: .05em; }
+  .exec-stat-card .value { font-size: 1.4rem; font-weight: 700; margin-top: .25rem; }
+  .exec-stat-card.stat-ok { border-left-color: var(--green); }
+  .exec-stat-card.stat-warn { border-left-color: var(--yellow); }
+  .exec-stat-card.stat-fail { border-left-color: var(--red); }
+  .exec-stat-card.stat-neutral { border-left-color: var(--blue); }
+
+  /* Execution cards */
   .exec-grid { display: flex; flex-direction: column; gap: 1.5rem; }
-  .exec-card { background: var(--surface); border: 1px solid var(--border); border-left-width: 6px; border-radius: 8px; padding: 1.25rem 1.5rem; }
+  .exec-card { background: var(--surface); border: 1px solid var(--border); border-left-width: 6px; border-radius: 8px; overflow: hidden; }
   .exec-card.status-ok { border-left-color: var(--green); background: linear-gradient(to right, var(--green-bg) 0, var(--green-bg) 6px, var(--surface) 6px); }
   .exec-card.status-fail { border-left-color: var(--red); background: linear-gradient(to right, var(--red-bg) 0, var(--red-bg) 6px, var(--surface) 6px); }
   .exec-card.status-unknown { border-left-color: var(--text-muted); }
-  .exec-card-header { display: flex; align-items: flex-start; justify-content: space-between; gap: 1rem; flex-wrap: wrap; margin-bottom: .75rem; }
+  details.exec-card > summary { cursor: pointer; list-style: none; display: flex; align-items: center; gap: .75rem; flex-wrap: wrap; padding: 1.25rem 1.5rem; }
+  details.exec-card > summary::-webkit-details-marker, details.exec-card > summary::marker { display: none; }
+  .collapse-icon { font-size: .65rem; color: var(--text-muted); transition: transform .15s; flex-shrink: 0; }
+  details.exec-card[open] > summary .collapse-icon { transform: rotate(90deg); }
+  details.exec-card > ul.exec-details { border-top: 1px solid #eef0f2; padding: .25rem 1.5rem .75rem; }
   .exec-card-title { font-size: 1rem; font-weight: 700; display: flex; align-items: center; gap: .5rem; }
   .exec-card-title .exec-idx { background: var(--border); color: var(--text-muted); padding: 2px 8px; border-radius: 4px; font-size: .8rem; font-weight: 700; font-family: 'SF Mono', monospace; }
   .exec-status-badge { display: inline-block; padding: 4px 12px; border-radius: 4px; font-size: .8rem; font-weight: 700; text-transform: uppercase; letter-spacing: .05em; }
@@ -421,6 +444,12 @@ class PerformanceReporter implements Reporter {
   .exec-details .exec-value a { color: var(--blue); text-decoration: none; border-bottom: 1px dashed var(--blue); }
   .exec-details .exec-value a:hover { text-decoration: none; border-bottom-style: solid; }
   .exec-details .exec-value.error-block { white-space: pre-wrap; background: #fdf2f2; border: 1px solid #f5c6cb; border-radius: 6px; padding: .5rem .75rem; font-family: 'SF Mono', monospace; font-size: .8rem; color: #721c24; max-height: 220px; overflow: auto; }
+  .exec-append-group { display: flex; flex: 2; gap: 0; }
+  .exec-append-item { flex: 1; padding: 0 0 0 .75rem; border-left: 1px solid var(--border); }
+  .exec-append-item .append-label { font-size: .78rem; color: var(--text-muted); font-weight: 600; display: block; text-transform: uppercase; letter-spacing: .03em; }
+  .exec-append-item .append-value { font-size: .9rem; font-weight: 700; }
+  .append-yes { color: var(--green); }
+  .append-no { color: var(--red); }
 
   @media (max-width: 768px) { body { padding: 1rem; } .summary-cards { flex-direction: column; } .exec-details .exec-label { min-width: auto; } }
 </style>
@@ -432,11 +461,11 @@ class PerformanceReporter implements Reporter {
 
 <div class="tabs" role="tablist">
   <button type="button" class="tab-btn${hasExecutions || !hasTimings ? ' active' : ''}" role="tab" data-tab="execution" aria-selected="${hasExecutions || !hasTimings}">
-    <span>&#x1F4DD;</span> Execution Summary
+    Execution Summary
     <span class="count-pill">${executions.length}</span>
   </button>
   <button type="button" class="tab-btn${hasExecutions ? '' : ' active'}" role="tab" data-tab="performance" aria-selected="${!hasExecutions}">
-    <span>&#x1F4CA;</span> Performance
+    Performance
     <span class="count-pill">${this.testTimings.length}</span>
   </button>
 </div>
@@ -514,7 +543,6 @@ ${testsHtml}
     private renderExecutionTab(executions: ExecutionRecord[]): string {
         const header = `
 <div class="section-header">
-  <span class="section-icon">&#x1F4E6;</span>
   <h2>Execution Summary</h2>
 </div>
 <p class="section-desc">One section per address from <code>ADDRESSES</code>. Sections are highlighted red when the Fulfilment Sequence Process failed, green when it completed successfully.</p>`;
@@ -524,12 +552,50 @@ ${testsHtml}
 <div class="empty-section">No execution data was captured for this run.</div>`;
         }
 
+        const statsHtml = this.renderExecutionStats(executions);
         const cards = executions
             .map((record) => this.renderExecutionCard(record))
             .join('');
 
         return `${header}
+${statsHtml}
 <div class="exec-grid">${cards}</div>`;
+    }
+
+    private renderExecutionStats(executions: ExecutionRecord[]): string {
+        const total = executions.length;
+
+        const failedCount = executions.filter((r) => {
+            const ps = (r.annotations.get('Process Status') || '').toLowerCase();
+            return ps === 'failed' || r.statuses.has('failed') || r.statuses.has('timedOut');
+        }).length;
+
+        const failRate = total > 0 ? `${Math.round((failedCount / total) * 100)}%` : 'N/A';
+
+        const durations = executions
+            .map((r) => parseFloat(r.annotations.get('Process Duration') || ''))
+            .filter((d) => !isNaN(d));
+        const avgDuration =
+            durations.length > 0
+                ? `${(durations.reduce((a, b) => a + b, 0) / durations.length).toFixed(1)}s`
+                : 'N/A';
+
+        const failClass = failedCount > 0 ? 'stat-fail' : 'stat-ok';
+
+        return `<div class="exec-stats">
+  <div class="exec-stat-card stat-neutral">
+    <div class="label">Orders Submitted</div>
+    <div class="value">${total}</div>
+  </div>
+  <div class="exec-stat-card ${failClass}">
+    <div class="label">Fail Rate</div>
+    <div class="value">${failRate}</div>
+  </div>
+  <div class="exec-stat-card stat-neutral">
+    <div class="label">Avg Order Submission Duration</div>
+    <div class="value">${avgDuration}</div>
+  </div>
+</div>`;
     }
 
     private renderExecutionCard(record: ExecutionRecord): string {
@@ -538,49 +604,48 @@ ${testsHtml}
         const normalizedStatus = processStatus.toLowerCase();
 
         let cardClass = 'exec-card status-unknown';
-        let badgeClass = 'unknown';
-        let displayStatus = processStatus || 'Unknown';
 
         if (normalizedStatus === 'failed' || testsFailed) {
             cardClass = 'exec-card status-fail';
-            badgeClass = 'fail';
-            displayStatus = processStatus || 'Failed';
         } else if (normalizedStatus === 'success' || normalizedStatus === 'succeeded' || normalizedStatus === 'completed') {
             cardClass = 'exec-card status-ok';
-            badgeClass = 'ok';
-            displayStatus = processStatus;
         } else if (record.statuses.has('passed') && !processStatus) {
             cardClass = 'exec-card status-ok';
-            badgeClass = 'ok';
-            displayStatus = 'Passed';
         }
 
+        const appendOnlyKeys = new Set(
+            EXECUTION_FIELDS.flatMap((f) => f.appendItems?.map((a) => a.key) ?? []),
+        );
+
         const rows = EXECUTION_FIELDS
-            .filter((field) => record.annotations.has(field.key))
+            .filter((field) => record.annotations.has(field.key) && !appendOnlyKeys.has(field.key))
             .map((field) => {
                 const rawValue = record.annotations.get(field.key) || '';
-                return this.renderExecutionRow(field, rawValue);
+                const appendValues = field.appendItems
+                    ? new Map(field.appendItems.map((a) => [a.key, record.annotations.get(a.key) ?? '']))
+                    : undefined;
+                return this.renderExecutionRow(field, rawValue, appendValues);
             })
             .join('');
 
         return `
-<div class="${cardClass}">
-  <div class="exec-card-header">
+<details class="${cardClass}" open>
+  <summary>
+    <span class="collapse-icon">&#9654;</span>
     <div class="exec-card-title">
-      <span class="exec-idx">#${record.index}</span>
-      <span>Address: ${this.escapeHtml(record.address)}</span>
+      <span># Address - index ${record.index}: ${this.escapeHtml(record.address)}</span>
     </div>
-    <span class="exec-status-badge ${badgeClass}">${this.escapeHtml(displayStatus)}</span>
-  </div>
+  </summary>
   <ul class="exec-details">
     ${rows || '<li><span class="exec-label">No annotations captured</span><span class="exec-value">&mdash;</span></li>'}
   </ul>
-</div>`;
+</details>`;
     }
 
     private renderExecutionRow(
         field: (typeof EXECUTION_FIELDS)[number],
         rawValue: string,
+        appendValues?: Map<string, string>,
     ): string {
         const valueClasses = ['exec-value'];
         if (field.mono) valueClasses.push('mono');
@@ -603,9 +668,26 @@ ${testsHtml}
             valueHtml = this.escapeHtml(rawValue);
         }
 
+        let appendHtml = '';
+        if (field.appendItems && field.appendItems.length > 0 && appendValues) {
+            const items = field.appendItems.map((item) => {
+                const val = appendValues.get(item.key) ?? '';
+                const colorClass = val.toLowerCase() === 'yes'
+                    ? 'append-yes'
+                    : val.toLowerCase() === 'no'
+                        ? 'append-no'
+                        : '';
+                return `<span class="exec-append-item">
+          <span class="append-label">${this.escapeHtml(item.label)}</span>
+          <span class="append-value ${colorClass}">${this.escapeHtml(val || '\u2014')}</span>
+        </span>`;
+            }).join('');
+            appendHtml = `<span class="exec-append-group">${items}</span>`;
+        }
+
         return `<li>
       <span class="exec-label">${this.escapeHtml(field.label)}</span>
-      <span class="${valueClasses.join(' ')}">${valueHtml}</span>
+      <span class="${valueClasses.join(' ')}">${valueHtml}</span>${appendHtml}
     </li>`;
     }
 
@@ -644,10 +726,6 @@ ${testsHtml}
       <td><span class="cat-tag ${catClass}">${meta.label}</span>${this.escapeHtml(s.action)}</td>
       <td class="mono">${s.count}</td>
       <td class="mono"><span class="badge badge-${tier}">${this.formatMs(s.avg)}</span></td>
-      <td class="mono">${this.formatMs(s.min)}</td>
-      <td class="mono">${this.formatMs(s.max)}</td>
-      <td class="mono">${this.formatMs(s.p50)}</td>
-      <td class="mono">${this.formatMs(s.p95)}</td>
       <td><div class="bar-container"><div class="bar bar-${tier}" style="width:${barWidth}px"></div></div></td>
     </tr>`;
             })
@@ -660,10 +738,6 @@ ${testsHtml}
       <th>Action</th>
       <th>Count</th>
       <th>Avg</th>
-      <th>Min</th>
-      <th>Max</th>
-      <th>Median</th>
-      <th>P95</th>
       <th>Distribution</th>
     </tr>
   </thead>

@@ -661,7 +661,7 @@ export class CpqPage {
 
         await this.ticketsSearchInput.fill(confirmationNumber);
 
-        const matchingTicketRow = this.ticketRow.filter({ hasText: confirmationNumber });
+        const matchingTicketRow = this.ticketRow.filter({ hasText: confirmationNumber }).filter({ hasText: 'Install' });
         await this.tracker.measure(
             'Wait: Service ticket row visible',
             () => expect(matchingTicketRow).toBeVisible({ timeout: this.standardTimeout }),

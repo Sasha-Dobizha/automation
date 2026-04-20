@@ -1,5 +1,5 @@
 import { expect, type Page, type Locator } from '@playwright/test';
-import { COMMON_TIMEOUTS, COMMON_URLS } from '../../data/common.data';
+import { COMMON_TIMEOUTS, COMMON_URLS, GLDS_CONFIG } from '../../data/common.data';
 import { PROCESS_MANAGER_CONFIG } from '../../data/flow/processManager.data';
 
 export interface ProcessFailureDetails {
@@ -16,7 +16,6 @@ export class FlowHistoryPage {
     readonly refreshButton: Locator;
     readonly firstRow: Locator;
     readonly firstRowStatusCell: Locator;
-    readonly durationCell: Locator;
     readonly executionLogsAccordion: Locator;
     readonly executionLogsText: Locator;
     readonly firstFailedStep: Locator;
@@ -26,6 +25,7 @@ export class FlowHistoryPage {
     readonly leafFailedStepName: Locator;
     readonly leafFailedStepErrorEditor: Locator;
     readonly workOrderIdValue: Locator;
+    readonly amsPortIdValue: Locator;
     readonly statusValue: Locator;
 
     constructor(page: Page) {
@@ -39,7 +39,6 @@ export class FlowHistoryPage {
         // Table columns (0-based): processName(0), status(1), currentTask(2),
         // inputParameters(3), environment(4), startTime(5), endTime(6), duration(7)
         this.firstRowStatusCell = this.firstRow.locator('td').nth(1);
-        this.durationCell = this.firstRow.locator('td').nth(7);
 
         this.executionLogsText = page.getByText('Execution Logs', { exact: true });
         this.executionLogsAccordion = page
@@ -64,6 +63,8 @@ export class FlowHistoryPage {
             .first();
 
         this.workOrderIdValue = this.buildParameterValueLocator('workOrderID');
+        // TODO: replace 'portReservationId' with the exact label shown in the process output panel
+        this.amsPortIdValue = this.buildParameterValueLocator('portReservationId');
         this.statusValue = this.buildParameterValueLocator('Status');
     }
 
@@ -84,9 +85,73 @@ export class FlowHistoryPage {
         await expect(this.firstRow).toBeVisible({ timeout: COMMON_TIMEOUTS.standard });
     }
 
-    async getDuration(): Promise<string> {
-        await expect(this.durationCell).toBeVisible({ timeout: COMMON_TIMEOUTS.standard });
-        return ((await this.durationCell.textContent()) ?? '').trim();
+    async getDuration(fulfilmentProcessId: string): Promise<string> {
+        try {
+            const responsePromise = this.page.waitForResponse(
+                (res) =>
+                    res.url().includes(`/fulfillment/process/${fulfilmentProcessId}`) &&
+                    res.url().includes('skipLogs=false') &&
+                    res.status() === 200,
+                { timeout: COMMON_TIMEOUTS.standard },
+            );
+            await this.page.reload({ waitUntil: 'domcontentloaded' });
+            const response = await responsePromise;
+            const body = await response.json();
+            return String(body.duration ?? 'N/A');
+        } catch {
+            return 'N/A';
+        }
+    }
+
+    async cancelGldsWorkOrder(workOrderId: string): Promise<boolean> {
+        if (!workOrderId || workOrderId === 'Not Created') {
+            return false;
+        }
+
+        const credentials = Buffer.from(`${GLDS_CONFIG.username}:${GLDS_CONFIG.password}`).toString('base64');
+        const url = `${GLDS_CONFIG.baseUrl}/work-order/${workOrderId}/cancel?reason=DCN`;
+
+        try {
+            const response = await this.page.request.get(url, {
+                headers: { 'Authorization': `Basic ${credentials}` },
+                ignoreHTTPSErrors: true,
+            });
+            return response.ok();
+        } catch {
+            return false;
+        }
+    }
+
+    async getAmsPortId(): Promise<string> {
+        try {
+            await this.amsPortIdValue.first().waitFor({
+                state: 'visible',
+                timeout: COMMON_TIMEOUTS.short,
+            });
+        } catch {
+            return 'Not Created';
+        }
+
+        await this.amsPortIdValue.scrollIntoViewIfNeeded();
+        const value = ((await this.amsPortIdValue.textContent()) ?? '').trim();
+        return value.length > 0 ? value : 'Not Created';
+    }
+
+    async cancelAmsPortWorkOrder(amsPortId: string): Promise<boolean> {
+        if (!amsPortId || amsPortId === 'Not Created') {
+            return false;
+        }
+
+        const url = `https://216.19.176.8:8443/sms/api/portReservation/${encodeURIComponent(amsPortId)}`;
+
+        try {
+            const response = await this.page.request.delete(url, {
+                ignoreHTTPSErrors: true,
+            });
+            return response.ok();
+        } catch {
+            return false;
+        }
     }
 
     async getFirstRowStatus(): Promise<string> {
@@ -104,7 +169,7 @@ export class FlowHistoryPage {
     ): Promise<string> {
         const timeoutMs = options.timeoutMs ?? COMMON_TIMEOUTS.long;
         const pollIntervalMs = options.pollIntervalMs ?? 5000;
-        const deadline = Date.now() + timeoutMs;
+        const deadline = timeoutMs === 0 ? Infinity : Date.now() + timeoutMs;
 
         let status = await this.getFirstRowStatus();
         while (!TERMINAL_PROCESS_STATUSES.includes(status.toLowerCase() as (typeof TERMINAL_PROCESS_STATUSES)[number])) {
