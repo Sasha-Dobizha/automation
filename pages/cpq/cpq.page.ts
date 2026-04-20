@@ -497,6 +497,12 @@ export class CpqPage {
 
     async selectInstallationDate(): Promise<void> {
         const maxWeeks = 4;
+        // Each worker picks a stable but different offset within the first
+        // ~today + 2..5 non-Sunday candidates so parallel runs don't collide
+        // on the same (date, time slot). Falls back to offset 0 when running
+        // outside a Playwright worker context.
+        const maxCandidates = 4;
+        const workerIndex = Number(process.env.TEST_WORKER_INDEX ?? 0);
 
         for (let week = 0; week < maxWeeks; week++) {
             // Wait for the current week's date grid to render before inspecting it.
@@ -511,22 +517,36 @@ export class CpqPage {
             }
 
             const count = await this.enabledDateButtons.count();
-            for (let i = 0; i < count; i++) {
-                const button = this.enabledDateButtons.nth(i);
+            const candidates: { index: number; label: string }[] = [];
+            for (
+                let i = 0;
+                i < count && candidates.length < maxCandidates;
+                i++
+            ) {
                 const label =
-                    (await button.getAttribute("aria-label")) ?? "unknown";
+                    (await this.enabledDateButtons
+                        .nth(i)
+                        .getAttribute("aria-label")) ?? "unknown";
 
                 // Business rule: do not schedule installations on Sunday.
                 if (label.startsWith("Sun ")) continue;
 
-                await this.tracker.measure(
-                    `Click: Installation date ${label}`,
-                    () => button.click(),
-                );
-                return;
+                candidates.push({ index: i, label });
             }
 
-            await this.nextWeekButton.click();
+            if (candidates.length === 0) {
+                await this.nextWeekButton.click();
+                continue;
+            }
+
+            const picked = candidates[workerIndex % candidates.length];
+            const button = this.enabledDateButtons.nth(picked.index);
+
+            await this.tracker.measure(
+                `Click: Installation date ${picked.label} (worker ${workerIndex})`,
+                () => button.click(),
+            );
+            return;
         }
 
         throw new Error(

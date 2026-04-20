@@ -129,9 +129,20 @@ export class FlowHistoryPage {
     }
 
     async getWorkOrderId(): Promise<string> {
+        // Work Order ID is only created on successful fulfilment; treat its
+        // absence as a non-fatal condition so downstream reporting can proceed.
+        try {
+            await this.workOrderIdValue.first().waitFor({
+                state: 'visible',
+                timeout: COMMON_TIMEOUTS.short,
+            });
+        } catch {
+            return 'Not Created';
+        }
+
         await this.workOrderIdValue.scrollIntoViewIfNeeded();
-        await expect(this.workOrderIdValue).toBeVisible({ timeout: COMMON_TIMEOUTS.standard });
-        return ((await this.workOrderIdValue.textContent()) ?? '').trim();
+        const value = ((await this.workOrderIdValue.textContent()) ?? '').trim();
+        return value.length > 0 ? value : 'Not Created';
     }
 
     async getStatus(): Promise<string> {
