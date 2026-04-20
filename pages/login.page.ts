@@ -93,12 +93,17 @@ export class LoginPage {
     async loginToApp(params: { username: string | undefined; password: string | undefined }): Promise<LoginPage> {
         const { username, password } = this.validateCredentials(params.username, params.password);
         await this.navigateToLogin();
+        await this.loginOnCurrentPage({ username, password });
+        return this;
+    }
+
+    async loginOnCurrentPage(params: { username: string | undefined; password: string | undefined }): Promise<void> {
+        const { username, password } = this.validateCredentials(params.username, params.password);
         const isGoogleLogin = await this.googleEmailField.isVisible({ timeout: 3000 }).catch(() => false);
         if (isGoogleLogin) {
             throw new Error('Google login required. Please run: npx playwright codegen --save-storage=.auth/googleState.json');
         }
         await this.fillCredentialsAndSubmit(username, password);
-        return this;
     }
 
     async attemptLoginAndExpectError(params: { username: string; password: string }): Promise<void> {

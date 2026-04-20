@@ -8,7 +8,7 @@ export const COMMON_TIMEOUTS = {
 } as const;
 
 export const COMMON_URLS = {
-    baseUrl: process.env.BASE_URL || '',
+    baseUrl: (process.env.BASE_URL || '').replace(/\/+$/, ''),
 } as const;
 
 export type CommonTimeouts = typeof COMMON_TIMEOUTS;

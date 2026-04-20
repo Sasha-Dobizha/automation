@@ -6,6 +6,7 @@ import { RegistrationPage } from '../pages/registration.page';
 import { GeneralSettingsPage } from '../pages/settings/general.page';
 import { AccessManagementPage } from '../pages/settings/accessManagement.page';
 import { ProcessManagerPage } from '../pages/flow/processManager.page';
+import { FlowHistoryPage } from '../pages/flow/flowHistory.page';
 import { ServiceTicketPage } from '../pages/serve/serviceTicket.page';
 import { KnowledgeBasePage } from '../pages/settings/knowledgeBase.page';
 import { AgentManagerPage } from '../pages/converse/agentManager.page';
@@ -20,6 +21,7 @@ type BaseFixture = {
     generalSettingsPage: GeneralSettingsPage
     accessManagementPage: AccessManagementPage
     processManagerPage: ProcessManagerPage
+    flowHistoryPage: FlowHistoryPage
     serviceTicketPage: ServiceTicketPage
     knowledgeBasePage: KnowledgeBasePage
     agentManagerPage: AgentManagerPage
@@ -62,6 +64,11 @@ export const test = base.extend<BaseFixture>({
     processManagerPage: async ({ page }, use) => {
         const processManagerPage = new ProcessManagerPage(page);
         await use(processManagerPage);
+    },
+
+    flowHistoryPage: async ({ page }, use) => {
+        const flowHistoryPage = new FlowHistoryPage(page);
+        await use(flowHistoryPage);
     },
 
     serviceTicketPage: async ({ page }, use) => {

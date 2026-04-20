@@ -35,7 +35,62 @@ interface ActionStats {
     p95: number;
 }
 
+interface ExecutionAnnotation {
+    type: string;
+    description: string;
+}
+
+interface ExecutionRecord {
+    index: number;
+    address: string;
+    statuses: Set<string>;
+    annotations: Map<string, string>;
+}
+
 const ATTACHMENT_NAME = 'perf-timings';
+
+const ADDRESS_TITLE_REGEX = /^\[(\d+)\].*?\baddress:\s*(.+?)\s*$/i;
+
+const SYMPHONA_BASE_URL =
+    (process.env.BASE_URL || 'https://onprem.app.symphona.ai').replace(/\/+$/, '');
+
+const SERVICE_TICKET_URL = (id: string) =>
+    `${SYMPHONA_BASE_URL}/serve/tickets?isAscending=false&sortOrder=createdAt&pageNumber=0&pageSize=25&selectedItem=%22${encodeURIComponent(
+        id,
+    )}%22`;
+
+const FULFILMENT_PROCESS_URL = (id: string) =>
+    `${SYMPHONA_BASE_URL}/flow/history?isAscending=false&sortOrder=startTime&pageNumber=0&pageSize=25&selectedItem=%22${encodeURIComponent(
+        id,
+    )}%22`;
+
+const EXECUTION_FIELDS: Array<{
+    key: string;
+    label: string;
+    link?: (id: string) => string;
+    mono?: boolean;
+    multiline?: boolean;
+}> = [
+    { key: 'Confirmation Number', label: 'Confirmation Number', mono: true },
+    {
+        key: 'Service Ticket ID',
+        label: 'Service Ticket ID',
+        link: SERVICE_TICKET_URL,
+        mono: true,
+    },
+    {
+        key: 'Fulfilment Sequence Process ID',
+        label: 'Fulfilment Sequence Process ID',
+        link: FULFILMENT_PROCESS_URL,
+        mono: true,
+    },
+    { key: 'Work Order ID', label: 'Work Order ID', mono: true },
+    { key: 'Phone Number', label: 'Phone Number', mono: true },
+    { key: 'Process Duration', label: 'Process Duration' },
+    { key: 'Process Status', label: 'Process Status' },
+    { key: 'Failed Step', label: 'Failed Step' },
+    { key: 'Process Error', label: 'Process Error', multiline: true },
+];
 
 const CATEGORY_META: Record<
     TimingCategory,
@@ -69,6 +124,7 @@ const CATEGORY_ORDER: TimingCategory[] = [
 
 class PerformanceReporter implements Reporter {
     private testTimings: TestTimingData[] = [];
+    private executionByIndex: Map<number, ExecutionRecord> = new Map();
     private outputDir: string;
 
     constructor(options: { outputDir?: string } = {}) {
@@ -90,10 +146,48 @@ class PerformanceReporter implements Reporter {
                 });
             }
         }
+
+        this.collectExecutionData(test, result);
+    }
+
+    private collectExecutionData(test: TestCase, result: TestResult) {
+        const match = test.title.match(ADDRESS_TITLE_REGEX);
+        if (!match) return;
+
+        const index = parseInt(match[1], 10);
+        const address = match[2].trim();
+
+        const annotations: ExecutionAnnotation[] = [
+            ...(test.annotations as ExecutionAnnotation[] | undefined ?? []),
+            ...((result as unknown as { annotations?: ExecutionAnnotation[] })
+                .annotations ?? []),
+        ];
+
+        let record = this.executionByIndex.get(index);
+        if (!record) {
+            record = {
+                index,
+                address,
+                statuses: new Set<string>(),
+                annotations: new Map<string, string>(),
+            };
+            this.executionByIndex.set(index, record);
+        }
+
+        if (result.status) {
+            record.statuses.add(result.status);
+        }
+
+        for (const annotation of annotations) {
+            if (!annotation || !annotation.type) continue;
+            const description = (annotation.description ?? '').trim();
+            if (!description) continue;
+            record.annotations.set(annotation.type, description);
+        }
     }
 
     async onEnd(_result: FullResult) {
-        if (this.testTimings.length === 0) {
+        if (this.testTimings.length === 0 && this.executionByIndex.size === 0) {
             console.log(
                 '\n  Performance Reporter: no timing data collected (add PerformanceTracker to page objects).',
             );
@@ -101,6 +195,7 @@ class PerformanceReporter implements Reporter {
         }
 
         const stats = this.computeStats();
+        const executions = this.getSortedExecutions();
 
         fs.mkdirSync(this.outputDir, { recursive: true });
 
@@ -111,6 +206,12 @@ class PerformanceReporter implements Reporter {
                     generated: new Date().toISOString(),
                     tests: this.testTimings,
                     stats,
+                    executions: executions.map((e) => ({
+                        index: e.index,
+                        address: e.address,
+                        statuses: [...e.statuses],
+                        annotations: Object.fromEntries(e.annotations),
+                    })),
                 },
                 null,
                 2,
@@ -119,11 +220,17 @@ class PerformanceReporter implements Reporter {
 
         fs.writeFileSync(
             path.join(this.outputDir, 'index.html'),
-            this.generateHtml(stats),
+            this.generateHtml(stats, executions),
         );
 
         console.log(
             `\n  Performance report generated -> ${path.resolve(this.outputDir, 'index.html')}`,
+        );
+    }
+
+    private getSortedExecutions(): ExecutionRecord[] {
+        return [...this.executionByIndex.values()].sort(
+            (a, b) => a.index - b.index,
         );
     }
 
@@ -171,7 +278,7 @@ class PerformanceReporter implements Reporter {
     /*  HTML Generation                                                    */
     /* ------------------------------------------------------------------ */
 
-    private generateHtml(stats: ActionStats[]): string {
+    private generateHtml(stats: ActionStats[], executions: ExecutionRecord[]): string {
         const totalActions = this.testTimings.reduce(
             (sum, t) => sum + t.entries.length,
             0,
@@ -192,6 +299,10 @@ class PerformanceReporter implements Reporter {
         const testsHtml = this.testTimings
             .map((t) => this.renderTestSection(t))
             .join('');
+
+        const executionTabHtml = this.renderExecutionTab(executions);
+        const hasExecutions = executions.length > 0;
+        const hasTimings = this.testTimings.length > 0;
 
         return /* html */ `<!DOCTYPE html>
 <html lang="en">
@@ -278,7 +389,40 @@ class PerformanceReporter implements Reporter {
   /* Empty state */
   .empty-section { color: var(--text-muted); font-style: italic; padding: 1rem; background: var(--surface); border: 1px dashed var(--border); border-radius: 8px; margin-bottom: 2rem; }
 
-  @media (max-width: 768px) { body { padding: 1rem; } .summary-cards { flex-direction: column; } }
+  /* Tabs */
+  .tabs { display: flex; gap: .25rem; border-bottom: 2px solid var(--border); margin-bottom: 2rem; flex-wrap: wrap; }
+  .tab-btn { background: transparent; border: 0; padding: .75rem 1.25rem; cursor: pointer; font-size: .95rem; font-weight: 600; color: var(--text-muted); border-bottom: 3px solid transparent; margin-bottom: -2px; font-family: inherit; display: inline-flex; align-items: center; gap: .5rem; }
+  .tab-btn:hover { color: var(--text); }
+  .tab-btn.active { color: var(--blue); border-bottom-color: var(--blue); }
+  .tab-btn .count-pill { background: var(--border); color: var(--text-muted); padding: 1px 8px; border-radius: 10px; font-size: .75rem; font-weight: 700; }
+  .tab-btn.active .count-pill { background: var(--blue-bg); color: var(--blue); }
+  .tab-panel { display: none; }
+  .tab-panel.active { display: block; }
+
+  /* Execution summary */
+  .exec-grid { display: flex; flex-direction: column; gap: 1.5rem; }
+  .exec-card { background: var(--surface); border: 1px solid var(--border); border-left-width: 6px; border-radius: 8px; padding: 1.25rem 1.5rem; }
+  .exec-card.status-ok { border-left-color: var(--green); background: linear-gradient(to right, var(--green-bg) 0, var(--green-bg) 6px, var(--surface) 6px); }
+  .exec-card.status-fail { border-left-color: var(--red); background: linear-gradient(to right, var(--red-bg) 0, var(--red-bg) 6px, var(--surface) 6px); }
+  .exec-card.status-unknown { border-left-color: var(--text-muted); }
+  .exec-card-header { display: flex; align-items: flex-start; justify-content: space-between; gap: 1rem; flex-wrap: wrap; margin-bottom: .75rem; }
+  .exec-card-title { font-size: 1rem; font-weight: 700; display: flex; align-items: center; gap: .5rem; }
+  .exec-card-title .exec-idx { background: var(--border); color: var(--text-muted); padding: 2px 8px; border-radius: 4px; font-size: .8rem; font-weight: 700; font-family: 'SF Mono', monospace; }
+  .exec-status-badge { display: inline-block; padding: 4px 12px; border-radius: 4px; font-size: .8rem; font-weight: 700; text-transform: uppercase; letter-spacing: .05em; }
+  .exec-status-badge.ok { background: var(--green); color: #fff; }
+  .exec-status-badge.fail { background: var(--red); color: #fff; }
+  .exec-status-badge.unknown { background: var(--text-muted); color: #fff; }
+  .exec-details { list-style: none; margin: 0; padding: 0; }
+  .exec-details li { padding: .4rem 0; border-bottom: 1px solid #eef0f2; display: flex; gap: .75rem; align-items: baseline; flex-wrap: wrap; }
+  .exec-details li:last-child { border-bottom: none; }
+  .exec-details .exec-label { color: var(--text-muted); font-size: .85rem; min-width: 220px; font-weight: 600; }
+  .exec-details .exec-value { flex: 1; font-size: .9rem; word-break: break-word; }
+  .exec-details .exec-value.mono { font-family: 'SF Mono', 'Consolas', 'Monaco', monospace; font-size: .85rem; }
+  .exec-details .exec-value a { color: var(--blue); text-decoration: none; border-bottom: 1px dashed var(--blue); }
+  .exec-details .exec-value a:hover { text-decoration: none; border-bottom-style: solid; }
+  .exec-details .exec-value.error-block { white-space: pre-wrap; background: #fdf2f2; border: 1px solid #f5c6cb; border-radius: 6px; padding: .5rem .75rem; font-family: 'SF Mono', monospace; font-size: .8rem; color: #721c24; max-height: 220px; overflow: auto; }
+
+  @media (max-width: 768px) { body { padding: 1rem; } .summary-cards { flex-direction: column; } .exec-details .exec-label { min-width: auto; } }
 </style>
 </head>
 <body>
@@ -286,6 +430,22 @@ class PerformanceReporter implements Reporter {
 <h1>Performance Report</h1>
 <p class="subtitle">Generated ${new Date().toLocaleString()} &middot; ${this.testTimings.length} test(s) &middot; ${totalActions} action(s) measured</p>
 
+<div class="tabs" role="tablist">
+  <button type="button" class="tab-btn${hasExecutions || !hasTimings ? ' active' : ''}" role="tab" data-tab="execution" aria-selected="${hasExecutions || !hasTimings}">
+    <span>&#x1F4DD;</span> Execution Summary
+    <span class="count-pill">${executions.length}</span>
+  </button>
+  <button type="button" class="tab-btn${hasExecutions ? '' : ' active'}" role="tab" data-tab="performance" aria-selected="${!hasExecutions}">
+    <span>&#x1F4CA;</span> Performance
+    <span class="count-pill">${this.testTimings.length}</span>
+  </button>
+</div>
+
+<section id="tab-execution" class="tab-panel${hasExecutions || !hasTimings ? ' active' : ''}" role="tabpanel">
+${executionTabHtml}
+</section>
+
+<section id="tab-performance" class="tab-panel${hasExecutions ? '' : ' active'}" role="tabpanel">
 <div class="summary-cards">
   <div class="card">
     <div class="label">Tests Tracked</div>
@@ -321,9 +481,132 @@ ${categorySectionsHtml}
 </div>
 <p class="section-desc">Expand each test to see the full measurement timeline with category tags.</p>
 ${testsHtml}
+</section>
+
+<script>
+  (function () {
+    var buttons = document.querySelectorAll('.tab-btn');
+    var panels = document.querySelectorAll('.tab-panel');
+    buttons.forEach(function (btn) {
+      btn.addEventListener('click', function () {
+        var target = btn.getAttribute('data-tab');
+        buttons.forEach(function (b) {
+          var active = b.getAttribute('data-tab') === target;
+          b.classList.toggle('active', active);
+          b.setAttribute('aria-selected', active ? 'true' : 'false');
+        });
+        panels.forEach(function (p) {
+          p.classList.toggle('active', p.id === 'tab-' + target);
+        });
+      });
+    });
+  })();
+</script>
 
 </body>
 </html>`;
+    }
+
+    /* ------------------------------------------------------------------ */
+    /*  Execution Summary Tab                                              */
+    /* ------------------------------------------------------------------ */
+
+    private renderExecutionTab(executions: ExecutionRecord[]): string {
+        const header = `
+<div class="section-header">
+  <span class="section-icon">&#x1F4E6;</span>
+  <h2>Execution Summary</h2>
+</div>
+<p class="section-desc">One section per address from <code>ADDRESSES</code>. Sections are highlighted red when the Fulfilment Sequence Process failed, green when it completed successfully.</p>`;
+
+        if (executions.length === 0) {
+            return `${header}
+<div class="empty-section">No execution data was captured for this run.</div>`;
+        }
+
+        const cards = executions
+            .map((record) => this.renderExecutionCard(record))
+            .join('');
+
+        return `${header}
+<div class="exec-grid">${cards}</div>`;
+    }
+
+    private renderExecutionCard(record: ExecutionRecord): string {
+        const processStatus = (record.annotations.get('Process Status') || '').trim();
+        const testsFailed = record.statuses.has('failed') || record.statuses.has('timedOut');
+        const normalizedStatus = processStatus.toLowerCase();
+
+        let cardClass = 'exec-card status-unknown';
+        let badgeClass = 'unknown';
+        let displayStatus = processStatus || 'Unknown';
+
+        if (normalizedStatus === 'failed' || testsFailed) {
+            cardClass = 'exec-card status-fail';
+            badgeClass = 'fail';
+            displayStatus = processStatus || 'Failed';
+        } else if (normalizedStatus === 'success' || normalizedStatus === 'succeeded' || normalizedStatus === 'completed') {
+            cardClass = 'exec-card status-ok';
+            badgeClass = 'ok';
+            displayStatus = processStatus;
+        } else if (record.statuses.has('passed') && !processStatus) {
+            cardClass = 'exec-card status-ok';
+            badgeClass = 'ok';
+            displayStatus = 'Passed';
+        }
+
+        const rows = EXECUTION_FIELDS
+            .filter((field) => record.annotations.has(field.key))
+            .map((field) => {
+                const rawValue = record.annotations.get(field.key) || '';
+                return this.renderExecutionRow(field, rawValue);
+            })
+            .join('');
+
+        return `
+<div class="${cardClass}">
+  <div class="exec-card-header">
+    <div class="exec-card-title">
+      <span class="exec-idx">#${record.index}</span>
+      <span>Address: ${this.escapeHtml(record.address)}</span>
+    </div>
+    <span class="exec-status-badge ${badgeClass}">${this.escapeHtml(displayStatus)}</span>
+  </div>
+  <ul class="exec-details">
+    ${rows || '<li><span class="exec-label">No annotations captured</span><span class="exec-value">&mdash;</span></li>'}
+  </ul>
+</div>`;
+    }
+
+    private renderExecutionRow(
+        field: (typeof EXECUTION_FIELDS)[number],
+        rawValue: string,
+    ): string {
+        const valueClasses = ['exec-value'];
+        if (field.mono) valueClasses.push('mono');
+
+        let valueHtml: string;
+
+        if (field.link) {
+            const href = field.link(rawValue);
+            valueHtml = `<a href="${this.escapeAttr(href)}" target="_blank" rel="noopener noreferrer">${this.escapeHtml(rawValue)}</a>`;
+        } else if (field.multiline) {
+            valueClasses.push('error-block');
+            valueHtml = this.escapeHtml(rawValue);
+        } else if (field.key === 'Process Status') {
+            const lower = rawValue.toLowerCase();
+            let badge = 'unknown';
+            if (lower === 'failed') badge = 'fail';
+            else if (lower === 'success' || lower === 'succeeded' || lower === 'completed') badge = 'ok';
+            valueHtml = `<span class="exec-status-badge ${badge}">${this.escapeHtml(rawValue)}</span>`;
+        } else {
+            valueHtml = this.escapeHtml(rawValue);
+        }
+
+        return `<li>
+      <span class="exec-label">${this.escapeHtml(field.label)}</span>
+      <span class="${valueClasses.join(' ')}">${valueHtml}</span>
+    </li>`;
     }
 
     /* ------------------------------------------------------------------ */
@@ -441,6 +724,10 @@ ${testsHtml}
             .replace(/</g, '&lt;')
             .replace(/>/g, '&gt;')
             .replace(/"/g, '&quot;');
+    }
+
+    private escapeAttr(str: string): string {
+        return this.escapeHtml(str).replace(/'/g, '&#39;');
     }
 }
 

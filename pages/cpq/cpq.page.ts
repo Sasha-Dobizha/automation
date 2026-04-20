@@ -38,6 +38,8 @@ export class CpqPage {
     private readonly selectPlanButton: Locator;
     private readonly saveChangesButton: Locator;
     private readonly cartItemCount: Locator;
+    private readonly planCardCandidates: Locator;
+    private readonly autocompleteOption: Locator;
 
     // Checkout locators
     private readonly checkoutButton: Locator;
@@ -61,6 +63,7 @@ export class CpqPage {
     // Installation scheduling locators
     private readonly nextWeekButton: Locator;
     private readonly timeSlots: Locator;
+    private readonly enabledDateButtons: Locator;
 
     // Dialog locators
     private readonly individualChannelsDialog: Locator;
@@ -80,6 +83,9 @@ export class CpqPage {
 
     // Service ticket verification locators
     private readonly ticketsSearchInput: Locator;
+    private readonly ticketRow: Locator;
+    private readonly linkedItemsHeader: Locator;
+    private readonly fulfilmentSequenceLink: Locator;
 
     private readonly cpqBaseUrl: string;
     private readonly standardTimeout: number;
@@ -127,6 +133,8 @@ export class CpqPage {
             name: /save changes/i,
         });
         this.cartItemCount = this.cartItemSection.locator("span");
+        this.planCardCandidates = page.locator("div");
+        this.autocompleteOption = page.getByRole("option");
 
         // Checkout locators
         this.checkoutButton = page.getByRole("button", { name: "Checkout" });
@@ -170,6 +178,9 @@ export class CpqPage {
 
         this.nextWeekButton = page.getByRole("button", { name: "Next week" });
         this.timeSlots = page.locator('div[role="button"][aria-pressed]');
+        this.enabledDateButtons = page.locator(
+            'div[role="button"][aria-disabled="false"][aria-label*="options available"]',
+        );
 
         this.tcLabel = page.locator("label").filter({
             hasText: "I have read and agree to the Terms and Conditions",
@@ -189,7 +200,10 @@ export class CpqPage {
         this.downloadConfirmationButton = page.getByRole('button', { name: 'DOWNLOAD ORDER CONFIRMATION' });
 
         // Service ticket verification locators
-        this.ticketsSearchInput = page.getByPlaceholder('Search');
+        this.ticketsSearchInput = page.getByPlaceholder('Search', { exact: true });
+        this.ticketRow = page.locator('tr');
+        this.linkedItemsHeader = page.getByText('Linked Items', { exact: true });
+        this.fulfilmentSequenceLink = page.locator('a[href="/flow/history"]').first();
     }
 
     private async fillField(locator: Locator, value: string): Promise<void> {
@@ -251,8 +265,7 @@ export class CpqPage {
     }
 
     async selectPlan(planName: string): Promise<void> {
-        const planCard = this.page
-            .locator("div")
+        const planCard = this.planCardCandidates
             .filter({ has: this.page.getByText(planName, { exact: true }) })
             .filter({ has: this.selectPlanButton })
             .last();
@@ -418,7 +431,7 @@ export class CpqPage {
         label: string,
     ): Promise<void> {
         await this.clickWhenReady(combobox, `Open dropdown: ${label}`);
-        const option = this.page.getByRole("option").nth(optionIndex);
+        const option = this.autocompleteOption.nth(optionIndex);
         await this.tracker.measure(`Wait: ${label} option`, () =>
             option.waitFor({ timeout: this.standardTimeout }),
         );
@@ -483,36 +496,41 @@ export class CpqPage {
     // --- Installation Scheduling ---
 
     async selectInstallationDate(): Promise<void> {
-        const days = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
-        const targetDate = new Date();
-        targetDate.setDate(targetDate.getDate() + 2);
-        if (targetDate.getDay() === 0) {
-            targetDate.setDate(targetDate.getDate() + 1);
-        }
-        const dayAbbrev = days[targetDate.getDay()];
-        const dayOfMonth = targetDate.getDate();
+        const maxWeeks = 4;
 
-        for (let attempt = 0; attempt < 4; attempt++) {
-            const dateButton = this.page.locator(
-                `div[role="button"][aria-label^="${dayAbbrev} ${dayOfMonth},"][aria-disabled="false"]`,
-            );
+        for (let week = 0; week < maxWeeks; week++) {
+            // Wait for the current week's date grid to render before inspecting it.
             try {
-                await dateButton.waitFor({
-                    state: "visible",
-                    timeout: 3000,
-                });
+                await this.enabledDateButtons
+                    .first()
+                    .waitFor({ state: "visible", timeout: 5000 });
+            } catch {
+                // No enabled dates became visible in this week; advance.
+                await this.nextWeekButton.click();
+                continue;
+            }
+
+            const count = await this.enabledDateButtons.count();
+            for (let i = 0; i < count; i++) {
+                const button = this.enabledDateButtons.nth(i);
+                const label =
+                    (await button.getAttribute("aria-label")) ?? "unknown";
+
+                // Business rule: do not schedule installations on Sunday.
+                if (label.startsWith("Sun ")) continue;
+
                 await this.tracker.measure(
-                    `Click: Installation date ${dayAbbrev} ${dayOfMonth}`,
-                    () => dateButton.click(),
+                    `Click: Installation date ${label}`,
+                    () => button.click(),
                 );
                 return;
-            } catch {
-                await this.nextWeekButton.click();
             }
+
+            await this.nextWeekButton.click();
         }
 
         throw new Error(
-            `Could not find available installation date: ${dayAbbrev} ${dayOfMonth}`,
+            `Could not find any available installation date within ${maxWeeks} weeks`,
         );
     }
 
@@ -594,36 +612,24 @@ export class CpqPage {
     }
 
     async downloadOrderConfirmation(): Promise<void> {
-        // The "Download" button calls window.print() which opens a native print dialog.
-        // We use exposeFunction to detect the call in Node.js (survives page navigation),
-        // and addInitScript + evaluate to stub window.print on current and future pages.
-        let resolvePrint: () => void;
-        const printTriggered = new Promise<void>((resolve) => {
-            resolvePrint = resolve;
-        });
-
-        await this.page.exposeFunction('__onPrintRequested', () => {
-            resolvePrint();
-        });
-        await this.page.evaluate(() => {
-            window.print = () => (window as any).__onPrintRequested();
-        });
-        await this.page.addInitScript(() => {
-            window.print = () => (window as any).__onPrintRequested();
-        });
+        await this.page.addInitScript(() => { window.print = () => {}; });
+        await this.page.evaluate(() => { window.print = () => {}; });
 
         await this.tracker.measure(
             'Order Submit: Download Order Confirmation PDF',
             async () => {
                 await this.downloadConfirmationButton.click();
-                await printTriggered;
+                await this.page.waitForLoadState('load', { timeout: this.standardTimeout });
             },
         );
     }
 
     // --- Service Ticket Verification ---
 
-    async verifyServiceTicket(confirmationNumber: string): Promise<string> {
+    async verifyServiceTicket(confirmationNumber: string): Promise<{
+        serviceTicketId: string;
+        fulfilmentProcessId: string;
+    }> {
         await this.tracker.measure(
             'Navigate: Service Tickets page',
             async () => {
@@ -635,19 +641,42 @@ export class CpqPage {
 
         await this.ticketsSearchInput.fill(confirmationNumber);
 
-        const ticketRow = this.page.locator('tr').filter({ hasText: confirmationNumber });
+        const matchingTicketRow = this.ticketRow.filter({ hasText: confirmationNumber });
         await this.tracker.measure(
             'Wait: Service ticket row visible',
-            () => expect(ticketRow).toBeVisible({ timeout: this.standardTimeout }),
+            () => expect(matchingTicketRow).toBeVisible({ timeout: this.standardTimeout }),
             'element-visible',
         );
 
-        await expect(ticketRow.getByText('Assigned')).toBeVisible({ timeout: this.standardTimeout });
+        await expect(matchingTicketRow.getByText('Assigned', { exact: true })).toBeVisible({ timeout: this.standardTimeout });
 
-        const ticketLink = ticketRow.locator('a[href*="/serve/tickets/"]');
+        const ticketLink = matchingTicketRow.locator('a[href*="/serve/tickets/"]');
         const href = await ticketLink.getAttribute('href');
         const match = href?.match(/\/serve\/tickets\/(.+)/);
-        return match?.[1] ?? '';
+        const serviceTicketId = match?.[1] ?? '';
+
+        await this.tracker.measure(
+            'Click: Service ticket row',
+            async () => {
+                await ticketLink.click();
+                await expect(
+                    this.page.getByText(`#${serviceTicketId}`).first(),
+                ).toBeVisible({ timeout: this.standardTimeout });
+            },
+            'element-visible',
+        );
+
+        await this.tracker.measure(
+            'Scroll: Linked Items section',
+            () => this.linkedItemsHeader.scrollIntoViewIfNeeded(),
+        );
+        await expect(this.linkedItemsHeader).toBeVisible({ timeout: this.standardTimeout });
+
+        await expect(this.fulfilmentSequenceLink).toBeVisible({ timeout: this.standardTimeout });
+        const fulfilmentText = (await this.fulfilmentSequenceLink.textContent()) ?? '';
+        const fulfilmentProcessId = fulfilmentText.replace(/^#/, '').trim();
+
+        return { serviceTicketId, fulfilmentProcessId };
     }
 
     // --- Complete Checkout ---
